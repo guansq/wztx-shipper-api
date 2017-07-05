@@ -1,7 +1,7 @@
 <?php
 
 use think\Route;
-/*Route::any('apiCode','Index/apiCode');
+Route::any('apiCode','Index/apiCode');
 Route::any('appConfig','Index/appConfig');
 Route::any('lastApk','Index/lastApk');
 Route::get('index/home','Index/home');
@@ -36,7 +36,7 @@ Route::post('ask/reply','Ask/reply');
 Route::post('inquiry/quote','inquiry/quote');
 
 Route::put('po/agree','PO/agree');
-Route::put('po/refuse','PO/refuse');*/
+Route::put('po/refuse','PO/refuse');
 
 return [
     //-------------------
@@ -45,12 +45,12 @@ return [
     '__domain__'=>[
         'wztx.shp.api' => 'api',
     ],
-    /*'__rest__' => [
+    '__rest__' => [
         'index' => 'Index',             // 路径 =》 控制器
         'supporter' => 'Supporter',
         'inquiry' => 'Inquiry',
         'po' => 'PO',
         'message' => 'Message',
         'ask' => 'Ask',
-    ],*/
+    ],
 ];
