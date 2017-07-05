@@ -12,7 +12,7 @@ use jwt\JwtHelper;
 
 class User extends BaseLogic{
 
-    protected $table = 'atw_system_user';
+    protected $table = 'rt_system_user';
 
     /**
      * Author: WILL<314112362@qq.com>
