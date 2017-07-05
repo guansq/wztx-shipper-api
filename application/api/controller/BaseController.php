@@ -38,23 +38,6 @@ class BaseController extends Controller{
         $except_controller = [
             "User" => ["login", "reg", "forget",'computeQlfScore'],
             "Index" => ["apiCode", 'lastApk', 'appConfig', 'sendCaptcha'],
-            "U9Api" => [
-                'initU9Data',
-                'syncAll',
-                "initSupplier",
-                "syncSupplier",
-                'initItem',
-                'syncItem',
-                'syncItemTrade',
-                'syncSupItem',
-                'syncPr',
-                'initPr',
-                'prToInquiry',
-                'evaluateBid',
-                'ioToPo',
-                'syncPOState',
-                'placeOrder'
-            ]
         ];
 
         if(!array_key_exists($this->controller, $except_controller) || !in_array($this->action, $except_controller[$this->controller])){
@@ -123,7 +106,7 @@ class BaseController extends Controller{
     }
 
     protected function checkLogin($encodeData){
-        $this->getParams["lal"];
+        //$this->getParams["lal"];
         return JwtHelper::checkToken($encodeData);
     }
 
