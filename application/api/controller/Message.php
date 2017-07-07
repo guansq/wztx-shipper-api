@@ -16,7 +16,7 @@ class Message extends BaseController{
 
 
     /**
-     * @api      {GET} /message 01.我的消息-列表(ok)
+     * @api      {GET} /message 我的消息-列表(ok)
      * @apiName  index
      * @apiGroup Message
      * @apiHeader {String} authorization-token   token.
@@ -43,27 +43,9 @@ class Message extends BaseController{
         returnJson($ret);
     }
 
-    /**
-     * 显示创建资源表单页.
-     *
-     * @return \think\Response
-     */
-    public function create(){
-        //
-    }
 
     /**
-     * 保存新建的资源
-     *
-     * @param  \think\Request $request
-     * @return \think\Response
-     */
-    public function save(Request $request){
-        //
-    }
-
-    /**
-     * @api {GET} /message/:id  02.我的消息-详情(ok)
+     * @api {GET} /message/:id      我的消息-详情(ok)
      * @apiName read
      * @apiGroup Message
      * @apiHeader {String} authorization-token   token.
@@ -81,35 +63,16 @@ class Message extends BaseController{
     }
 
     /**
-     * 显示编辑资源表单页.
-     *
-     * @param  int $id
-     * @return \think\Response
+     * @api {GET} /message/onlineService      在线客服
+     * @apiName onlineService
+     * @apiGroup Message
+     * @apiHeader {String} authorization-token   token.
+     * @apiSuccess {String} custom_phone             客服电话.
+     * @apiSuccess {String} complain_phone           投诉电话.
+     * @apiSuccess {String} custom_email            我们的邮件地址.
      */
-    public function edit($id){
-        //
-    }
+    public function onlineService(){
 
-    /**
-     * 保存更新的资源
-     *
-     * @param  \think\Request $request
-     * @param  int            $id
-     * @return \think\Response
-     */
-    public function update(Request $request, $id){
-        //
     }
-
-    /**
-     * 删除指定资源
-     *
-     * @param  int $id
-     * @return \think\Response
-     */
-    public function delete($id){
-        //
-    }
-
 
 }

@@ -17,7 +17,7 @@ class Index extends BaseController{
 
 
     /**
-     * @api             {GET} /apiCode 00.返回码说明(ok)
+     * @api             {GET} /apiCode   返回码说明(ok)
      * @apiDescription  技术支持：<a href="http://www.ruitukeji.com" target="_blank">睿途科技</a>
      * @apiName         apiCode
      * @apiGroup        Index
@@ -31,7 +31,7 @@ class Index extends BaseController{
     }
 
     /**
-     * @api      {GET} /appConfig 01.应用配置参数(OK)
+     * @api      {GET} /appConfig   应用配置参数(OK)
      * @apiName  appConfig
      * @apiGroup Index
      * @apiSuccess {Array} payWays             付款方式 一维数组
@@ -56,8 +56,7 @@ class Index extends BaseController{
     }
 
     /**
-     * @api      {GET} /index/home 01.首页(ok)
-     * @apiDescription
+     * @api      {GET} /index/home 首页(ok)
      * @apiName  home
      * @apiGroup Index
      * @apiHeader {String} authorization-token           token.
@@ -93,7 +92,7 @@ class Index extends BaseController{
     }
 
     /**
-     * @api      {POST} /index/sendCaptcha 02.发送验证码(ok)
+     * @api      {POST} /index/sendCaptcha  发送验证码(ok)
      * @apiName  sendCaptcha
      * @apiGroup Index
      * @apiParam {String} mobile   手机号.
@@ -118,56 +117,6 @@ class Index extends BaseController{
         returnJson(2000, '显示创建资源表单页');
     }
 
-    /**
-     * 保存新建的资源
-     *
-     * @param  \think\Request $request
-     * @return \think\Response
-     */
-    public function save(Request $request){
-        returnJson();
-    }
-
-    /**
-     * 显示指定的资源
-     *
-     * @param  int $id
-     * @return \think\Response
-     */
-    public function read($id){
-        returnJson($id);
-    }
-
-    /**
-     * 显示编辑资源表单页.
-     *
-     * @param  int $id
-     * @return \think\Response
-     */
-    public function edit($id){
-        //
-    }
-
-    /**
-     * 保存更新的资源
-     *
-     * @param  \think\Request $request
-     * @param  int            $id
-     * @return \think\Response
-     */
-    public function update(Request $request, $id){
-        //
-    }
-
-    /**
-     * 删除指定资源
-     *
-     * @param  int $id
-     * @return \think\Response
-     */
-    public function delete($id){
-        //
-    }
 
 
 }
