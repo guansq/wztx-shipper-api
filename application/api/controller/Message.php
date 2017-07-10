@@ -62,7 +62,7 @@ class Message extends BaseController{
         returnJson($ret);
     }
 
-    /**
+    /*
      * @api {GET} /message/onlineService      在线客服
      * @apiName onlineService
      * @apiGroup Message

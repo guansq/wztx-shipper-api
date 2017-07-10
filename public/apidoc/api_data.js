@@ -230,13 +230,6 @@ define({ "api": [
             "optional": false,
             "field": "unreadMsg",
             "description": "<p>未读消息.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "unreadMsg.io",
-            "description": "<p>询价单未读数量.</p>"
           }
         ]
       }
@@ -314,6 +307,20 @@ define({ "api": [
             "optional": false,
             "field": "opt",
             "description": "<p>验证码类型 reg=注册 restpwd=找回密码 login=登陆 bind=绑定手机号.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "codeId",
+            "description": "<p>此为客户端系统当前时间截 除去前两位后经MD5 加密后字符串.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "validationId",
+            "description": "<p>codeIdvalidationId(此为手机号除去第一位后字符串+（codeId再次除去前三位） 生成字符串后经MD5加密后字符串) 后端接收到此三个字符串后      也同样生成validationId 与接收到的validationId进行对比 如果一致则发送短信验证码，否则不发送。同时建议对 codeId 进行唯一性检验   另外，错误时不要返回错误内容，只返回errCode，此设计仅限获取短信验证码</p>"
           }
         ]
       }
@@ -465,61 +472,6 @@ define({ "api": [
     "sampleRequest": [
       {
         "url": "http://wztx.shp.api.ruitukeji.com/message"
-      }
-    ]
-  },
-  {
-    "type": "GET",
-    "url": "/message/onlineService",
-    "title": "在线客服",
-    "name": "onlineService",
-    "group": "Message",
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "authorization-token",
-            "description": "<p>token.</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "custom_phone",
-            "description": "<p>客服电话.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "complain_phone",
-            "description": "<p>投诉电话.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "custom_email",
-            "description": "<p>我们的邮件地址.</p>"
-          }
-        ]
-      }
-    },
-    "version": "0.0.0",
-    "filename": "application/api/controller/Message.php",
-    "groupTitle": "Message",
-    "sampleRequest": [
-      {
-        "url": "http://wztx.shp.api.ruitukeji.com/message/onlineService"
       }
     ]
   },
@@ -1538,15 +1490,15 @@ define({ "api": [
     "title": "企业个人认证",
     "name": "businessAuth",
     "group": "User",
-    "success": {
+    "header": {
       "fields": {
-        "Success 200": [
+        "Header": [
           {
-            "group": "Success 200",
+            "group": "Header",
             "type": "String",
             "optional": false,
-            "field": "accessToken",
-            "description": "<p>接口调用凭证.</p>"
+            "field": "authorization-token",
+            "description": "<p>token</p>"
           }
         ]
       }
@@ -1554,13 +1506,6 @@ define({ "api": [
     "parameter": {
       "fields": {
         "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "int",
-            "optional": false,
-            "field": "id",
-            "description": "<p>ID.</p>"
-          },
           {
             "group": "Parameter",
             "type": "String",
@@ -1635,6 +1580,13 @@ define({ "api": [
             "group": "Parameter",
             "type": "String",
             "optional": false,
+            "field": "hold_pic",
+            "description": "<p>法人身份证手持照片.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
             "field": "front_pic",
             "description": "<p>法人身份证正面照片.</p>"
           },
@@ -1672,6 +1624,13 @@ define({ "api": [
             "optional": false,
             "field": "sp_back_pic",
             "description": "<p>操作人身份证反.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "buss_pic",
+            "description": "<p>企业营业执照.</p>"
           }
         ]
       }
@@ -2093,15 +2052,15 @@ define({ "api": [
     "title": "货主个人认证",
     "name": "personAuth",
     "group": "User",
-    "success": {
+    "header": {
       "fields": {
-        "Success 200": [
+        "Header": [
           {
-            "group": "Success 200",
+            "group": "Header",
             "type": "String",
             "optional": false,
-            "field": "accessToken",
-            "description": "<p>接口调用凭证.</p>"
+            "field": "authorization-token",
+            "description": "<p>token</p>"
           }
         ]
       }
@@ -2109,13 +2068,6 @@ define({ "api": [
     "parameter": {
       "fields": {
         "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "id",
-            "description": "<p>个人ID.</p>"
-          },
           {
             "group": "Parameter",
             "type": "String",
@@ -2129,13 +2081,6 @@ define({ "api": [
             "optional": false,
             "field": "sex",
             "description": "<p>性别 1=男 2=女 0=未知.</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "pushToken",
-            "description": "<p>消息推送token.</p>"
           },
           {
             "group": "Parameter",
@@ -2204,6 +2149,13 @@ define({ "api": [
             "group": "Parameter",
             "type": "String",
             "optional": false,
+            "field": "captcha",
+            "description": "<p>验证码.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
             "field": "password",
             "description": "<p>加密的密码. 加密方式：MD5(&quot;RUITU&quot;+明文密码+&quot;KEJI&quot;)</p>"
           },
@@ -2213,6 +2165,13 @@ define({ "api": [
             "optional": true,
             "field": "recommendcode",
             "description": "<p>推荐码</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "pushToken",
+            "description": "<p>消息推送token.</p>"
           }
         ]
       }

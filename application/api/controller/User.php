@@ -18,8 +18,10 @@ class User extends BaseController{
      * @apiGroup  User
      * @apiParam {String} type              注册类型 person-个人 company-公司.
      * @apiParam {String} phone             手机号.
+     * @apiParam {String} captcha           验证码.
      * @apiParam {String} password          加密的密码. 加密方式：MD5("RUITU"+明文密码+"KEJI")
      * @apiParam {String} [recommendcode]   推荐码
+     * @apiParam {String} pushToken         消息推送token.
      * @apiSuccess {Number} userId          用户id.
      * @apiSuccess {String} accessToken     接口调用凭证.
      */
@@ -41,11 +43,9 @@ class User extends BaseController{
      * @api      {POST} /User/personAuth  货主个人认证
      * @apiName  personAuth
      * @apiGroup User
-     * @apiSuccess {String} accessToken     接口调用凭证.
-     * @apiParam {String} id           个人ID.
+     * @apiHeader {String}  authorization-token     token
      * @apiParam {String} real_name          真实姓名.
      * @apiParam {String} sex        性别 1=男 2=女 0=未知.
-     * @apiParam {String} pushToken         消息推送token.
      * @apiParam {String} identity         身份证号.
      * @apiParam {String} hold_pic         手持身份证照.
      * @apiParam {String} front_pic        身份证正面照.
@@ -60,8 +60,7 @@ class User extends BaseController{
      * @api      {POST} /User/businessAuth  企业个人认证
      * @apiName  businessAuth
      * @apiGroup User
-     * @apiSuccess {String} accessToken        接口调用凭证.
-     * @apiParam {int} id                      ID.
+     * @apiHeader {String}  authorization-token     token
      * @apiParam {String} com_name             企业全称.
      * @apiParam {String} com_short_name       企业简称.
      * @apiParam {String} com_buss_num         营业执照注册号.
@@ -72,12 +71,14 @@ class User extends BaseController{
      * @apiParam {String} deposit_name         开户名称.
      * @apiParam {String} bank                 开户行.
      * @apiParam {String} account              结算账号.
+     * @apiParam {String} hold_pic            法人身份证手持照片.
      * @apiParam {String} front_pic            法人身份证正面照片.
      * @apiParam {String} back_pic             法人身份证背面照片.
      * @apiParam {String} sp_identity          操作人身份证号.
      * @apiParam {String} sp_hold_pic          操作人手持身份证照.
      * @apiParam {String} sp_front_pic         操作人身份证正.
      * @apiParam {String} sp_back_pic          操作人身份证反.
+     * @apiParam {String} buss_pic             企业营业执照.
      */
     public function busnessAuth(Request $request){
 
