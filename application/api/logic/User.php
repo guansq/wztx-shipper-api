@@ -267,13 +267,10 @@ class User extends BaseLogic{
     }
 
     /**
-     * Author: WILL<314112362@qq.com>
-     * Describe: TODO 计算用户信用等级
-     * @param $supInfo
+     * 用户注册 system_user_shipper 插入记录，并插入到sp_base_info表
      */
-    public function getCreditLevel($supInfo){
-        return '优';
-    }
+    public function reg(){
 
+    }
 
 }

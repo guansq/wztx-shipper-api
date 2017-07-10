@@ -24,8 +24,17 @@ class User extends BaseController{
      * @apiSuccess {String} accessToken     接口调用凭证.
      */
     public function reg(Request $request){
-
-        echo '123';
+        //校验参数
+        $paramAll = $this->getReqParams(['type','user_name', 'password', 'recommendcode', 'captcha']);
+        //$result=$this->validate($paramAll,'User');
+        $rule = [
+            'user_name'=>['regex'=>'/^[1]{1}[3|5|7|8]{1}[0-9]{9}$/','require','unique:system_user_shipper'],
+            'password' => 'require|length:6,128',
+            'captcha' => 'require|length:4,8',
+        ];
+        validateData($paramAll, $rule);
+        //写入数据库
+        //echo getenv('APP_API_HOME');
     }
 
     /**
