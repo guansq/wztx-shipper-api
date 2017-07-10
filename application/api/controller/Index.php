@@ -69,9 +69,6 @@ class Index extends BaseController{
      * @apiSuccess {String} [banners.title] 标题.
      * @apiSuccess {Object} unreadMsg        未读消息.
      * @apiSuccess {Number} unreadMsg.io    询价单未读数量.
-     * @apiSuccess {Number} unreadMsg.po    采购单未读数量.
-     * @apiSuccess {Number} unreadMsg.msg   推送消息未读数量.
-     * @apiSuccess {Number} unreadMsg.ask   咨询消息未读数量.
      */
     public function home(){
         $banners = model('SystemBanner', 'logic')->getBannerList();

@@ -18,6 +18,7 @@ class Order extends BaseController{
      * @apiParam  {String}  type=often                    often-实时 urgent-加急 appoint-预约
      * @apiParam  {String}  [appoint_at]                  预约时间
      * @apiParam  {String}  org_address_maps              出发地地址的坐标 如116.480881,39.989410
+     * @apiParam  {String}  org_city                      出发地省市区
      * @apiParam  {String}  org_address_name              出发地名称+出发地详细名称
      * @apiParam  {String}  start_address_name            出发地-地点名称
      * @apiParam  {String}  start_address_detail          出发地-详细名称
@@ -25,6 +26,7 @@ class Order extends BaseController{
      * @apiParam  {String}  start_phone                   出发地-手机号
      * @apiParam  {String}  start_telephone               出发地-电话号码
      * @apiParam  {String}  dest_address_maps             目的地地址的坐标 如116.480881,39.989410
+     * @apiParam  {String}  dest_city                     目的地省市区
      * @apiParam  {String}  dest_address_name             目的地名称+目的地详细名称
      * @apiParam  {String}  arr_address_name              目的地-地点名称
      * @apiParam  {String}  arr_address_detail            目的地-详细名称
