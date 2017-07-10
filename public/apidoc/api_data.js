@@ -237,27 +237,6 @@ define({ "api": [
             "optional": false,
             "field": "unreadMsg.io",
             "description": "<p>询价单未读数量.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "unreadMsg.po",
-            "description": "<p>采购单未读数量.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "unreadMsg.msg",
-            "description": "<p>推送消息未读数量.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "unreadMsg.ask",
-            "description": "<p>咨询消息未读数量.</p>"
           }
         ]
       }
@@ -681,6 +660,13 @@ define({ "api": [
             "group": "Parameter",
             "type": "String",
             "optional": false,
+            "field": "org_city",
+            "description": "<p>出发地省市区</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
             "field": "org_address_name",
             "description": "<p>出发地名称+出发地详细名称</p>"
           },
@@ -725,6 +711,13 @@ define({ "api": [
             "optional": false,
             "field": "dest_address_maps",
             "description": "<p>目的地地址的坐标 如116.480881,39.989410</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "dest_city",
+            "description": "<p>目的地省市区</p>"
           },
           {
             "group": "Parameter",
