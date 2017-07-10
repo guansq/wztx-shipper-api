@@ -45,6 +45,7 @@ class Order extends BaseController{
      * @apiParam  {Float}   system_price                  系统价 保留2位小数点
      * @apiParam  {Float}   [mind_price]                  心理价位 保留2位小数点
      * @apiParam  {String}  [remark]                      备注
+     * @apiParam  {String}  is_receipt                    货物回单1-是-默认，2-否
      */
     public function add(){
 
@@ -73,6 +74,7 @@ class Order extends BaseController{
      * @apiSuccess  {String} arr_time           到达时间
      * @apiSuccess  {String} real_name          车主姓名
      * @apiSuccess  {String} phone              联系电话
+     * @apiParam    {String} is_receipt          货物回单1-是-默认，2-否
      * @apiSuccess  {String} final_price        总运费
      */
     public function showOrderInfo(){

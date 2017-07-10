@@ -837,6 +837,13 @@ define({ "api": [
             "optional": true,
             "field": "remark",
             "description": "<p>备注</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "is_receipt",
+            "description": "<p>货物回单1-是-默认，2-否</p>"
           }
         ]
       }
@@ -989,6 +996,13 @@ define({ "api": [
             "optional": false,
             "field": "order_id",
             "description": "<p>订单ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "is_receipt",
+            "description": "<p>货物回单1-是-默认，2-否</p>"
           }
         ]
       }
