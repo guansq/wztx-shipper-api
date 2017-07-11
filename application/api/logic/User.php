@@ -9,10 +9,10 @@
 namespace app\api\logic;
 
 use jwt\JwtHelper;
-
+use think\Db;
 class User extends BaseLogic{
 
-    protected $table = 'rt_system_user';
+    protected $table = 'rt_system_user_shipper';
 
     /**
      * Author: WILL<314112362@qq.com>
@@ -269,8 +269,38 @@ class User extends BaseLogic{
     /**
      * 用户注册 system_user_shipper 插入记录，并插入到sp_base_info表
      */
-    public function reg(){
+    public function reg($params){
+        //启动事务
 
+            $systemUser = [];
+            $systemUser['salt'] = randomStr();//得到加密盐值
+            $systemUser['user_name'] = $params['user_name'];
+            $systemUser['mobile'] = $params['user_name'];
+            $systemUser['password'] = self::generatePwd($params['password'],$systemUser['salt']);
+            $systemUser['avatar'] = getSysconf('default_avatar');
+            $systemUser['push_token'] = $params['pushToken'];
+            //$this->create($systemUser);
+            $userId = Db::name('system_user_shipper')->insertGetId($systemUser);//得到user_id
+            $baseUser = [];
+            $baseUser['id'] = $userId;
+            $baseUser['user_id'] = $userId;
+            $baseUser['phone'] = $params['user_name'];
+            $baseUser['type'] = $params['type'];
+            $baseUser['avatar'] = $systemUser['avatar'];
+            if(isset($params['recom_code'])){
+                $baseUser['recom_code'] = $params['recom_code'];
+            }
+            $result = Db::name('sp_base_info')->insertGetId($baseUser);
+            //Db::commit();
+            echo 'chenggong';
+            return $result;
+            die;
+        Db::startTrans();
+        try{}catch(\Exception $e){
+            Db::rollback();
+            echo 'shibai';
+            return false;
+        }
     }
 
 }

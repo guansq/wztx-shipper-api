@@ -9,6 +9,7 @@
 namespace app\api\controller;
 
 use think\Request;
+use service\MsgService;
 
 class User extends BaseController{
 
@@ -17,25 +18,36 @@ class User extends BaseController{
      * @apiName   reg
      * @apiGroup  User
      * @apiParam {String} type              注册类型 person-个人 company-公司.
-     * @apiParam {String} phone             手机号.
+     * @apiParam {String} user_name         手机号/用户名.
      * @apiParam {String} captcha           验证码.
      * @apiParam {String} password          加密的密码. 加密方式：MD5("RUITU"+明文密码+"KEJI")
-     * @apiParam {String} [recommendcode]   推荐码
+     * @apiParam {String} [recom_code]   推荐码
      * @apiParam {String} pushToken         消息推送token.
      * @apiSuccess {Number} userId          用户id.
      * @apiSuccess {String} accessToken     接口调用凭证.
      */
     public function reg(Request $request){
         //校验参数
-        $paramAll = $this->getReqParams(['type','user_name', 'password', 'recommendcode', 'captcha']);
+        $paramAll = $this->getReqParams(['type','user_name', 'password', 'recommendcode', 'captcha','pushToken']);
         //$result=$this->validate($paramAll,'User');
         $rule = [
+            'type' => 'require',
             'user_name'=>['regex'=>'/^[1]{1}[3|5|7|8]{1}[0-9]{9}$/','require','unique:system_user_shipper'],
             'password' => 'require|length:6,128',
             'captcha' => 'require|length:4,8',
         ];
         validateData($paramAll, $rule);
-        //写入数据库
+        //校验验证码
+        /*$result = MsgService::verifyCaptcha($paramAll['user_name'],'reg',$paramAll['captcha']);
+        if($result['code'] != 2000){
+            returnJson($result);
+        }*/
+
+        //进行注册
+        $userLogic = model('User','logic');
+        $result = $userLogic->reg($paramAll);
+        //$userLogic
+        echo $result;
         //echo getenv('APP_API_HOME');
     }
 
@@ -142,9 +154,9 @@ class User extends BaseController{
      * @apiSuccess {Number} sex                 性别 1=男 2=女 0=未知.
      * @apiSuccess {String} avatar              头像.
      * @apiSuccess {String} real_name           真实姓名.
-     * @apiSuccess {String} auth_status         认证状态（init=未认证，pass=认证通过，refuse=认证失败，delete=后台删除）
+     * @apiSuccess {String} auth_status         认证状态（init=未认证，check=认证中，pass=认证通过，refuse=认证失败，delete=后台删除）
      * @apiSuccess {String} bond_status         保证金状态(init=未缴纳，checked=已缴纳,frozen=冻结)
-     * @apiSuccess {Float}  bond                保证金 保留两位小数点
+     * @apiSuccess {String}  bond                保证金 保留两位小数点
      */
 
     public function info(Request $request){
@@ -174,7 +186,7 @@ class User extends BaseController{
 
     }
 
-    /**
+    /*
      * @api      {PUT} /user/updateInfo  更新用户信息(ok)
      * @apiName  updateInfo
      * @apiGroup User
@@ -246,6 +258,7 @@ class User extends BaseController{
      * @apiSuccess {String} address                     地址
      * @apiSuccess {String} identity                    操作人身份证号
      * @apiSuccess {String} front_pic                   操作人身份证正
+     * @apiSuccess {String} back_pic                   操作人身份证反
      * @apiSuccess {String} law_front_pic               法人身份证正
      * @apiSuccess {String} law_back_pic                法人身份证反
      * @apiSuccess {String} buss_pic                    营业执照
@@ -253,4 +266,39 @@ class User extends BaseController{
     public function getCompanyAuthInfo(){
 
     }
+
+    /**
+     * @api {Get}   /user/refreshToken      刷新token
+     * @apiName refreshToken
+     * @apiGroup    User
+     * @apiHeader {String}  authorization-token     token.
+     * @apiSuccess {String} accessToken     接口调用凭证（token有效期为7200秒）.
+     */
+    public function refreshToken(){
+
+    }
+
+    /**
+     * @api      {POST} /User/updatePwd   修改密码
+     * @apiName  updatePwd
+     * @apiGroup User
+     * @apiParam {String} account           账号/手机号/邮箱.
+     * @apiParam {String} old_password      加密的密码. 加密方式：MD5("RUITU"+明文密码+"KEJI").
+     * @apiParam {String} new_password      加密的密码. 加密方式：MD5("RUITU"+明文密码+"KEJI").
+     * @apiParam {String} captcha           验证码.
+     */
+    public function updatePwd(Request $request){
+        //校验参数
+        $paramAll = $this->getReqParams(['account', 'password', 'captcha']);
+        $rule = [
+            'account' => 'require|max:32',
+            'password' => 'require|length:6,128',
+            'captcha' => 'require|length:4,8',
+        ];
+        validateData($paramAll, $rule);
+        $loginRet = \think\Loader::model('User', 'logic')->login($paramAll);
+        returnJson($loginRet);
+    }
+
+
 }

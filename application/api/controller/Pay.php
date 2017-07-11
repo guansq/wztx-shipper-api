@@ -13,14 +13,14 @@ class Pay extends BaseController{
      * @apiName index
      * @apiGroup Pay
      * @apiHeader {String} authorization-token      token.
-     * @apiSuccess {Float} balance         账户余额
-     * @apiSuccess {Float} bonus         我的推荐奖励
+     * @apiSuccess {String} balance         账户余额
+     * @apiSuccess {String} bonus         我的推荐奖励
      */
     public function index(){
 
     }
 
-    /**
+    /*
      * @api {POST} /pay/payBond  缴纳保证金
      * @apiName payBond
      * @apiGroup Pay
@@ -39,10 +39,8 @@ class Pay extends BaseController{
      * @apiName recharge
      * @apiGroup Pay
      * @apiHeader {String} authorization-token      token.
-     * @apiParam  {Float}  real_amount              充值金额
+     * @apiParam  {String}  real_amount              充值金额
      * @apiParam  {Int}    pay_way                  支付方式 1=支付宝，2=微信
-     * @apiSuccess {Int}   pay_status               支付状态 0=未支付，1=支付成功，2=支付失败
-     * @apiSuccess {Int}   balance                  充值之前的金额
      * @apiSuccess {Array} pay_info                 支付返回信息
      */
     public function recharge(){
@@ -59,8 +57,23 @@ class Pay extends BaseController{
      * @apiSuccess {String}   list.org_address_name     发货地址
      * @apiSuccess {String}   list.final_price          运价
      * @apiSuccess {String}   list.pay_time             订单完成时间
+     * @apiSuccess  {Int}     list.is_pay              是否支付1为已支付 0为未支付
      */
     public function showPayRecord(){
 
     }
+    /**
+     * @api {POST} /pay/rechargeRecord  充值记录
+     * @apiName rechargeRecord
+     * @apiGroup Pay
+     * @apiHeader {String} authorization-token      token.
+     * @apiParam  {Array}   list                     充值记录列表
+     * @apiParam  {String}  list.real_amount              充值金额
+     * @apiParam  {Int}    list.pay_way                  支付方式 1=支付宝，2=微信
+     * @apiSuccess {Int}   list.pay_status               支付状态 0=未支付，1=支付成功，2=支付失败
+     */
+    public function rechargeRecord(){
+
+    }
+
 }

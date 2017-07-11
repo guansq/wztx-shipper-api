@@ -34,16 +34,16 @@ class Order extends BaseController{
      * @apiParam  {String}  arr_phone                     目的地-手机号
      * @apiParam  {String}  arr_telephone                 目的地-电话号码
      * @apiParam  {String}  goods_name                    货物名称
-     * @apiParam  {Float}   weight                        总重量（吨）保留3位小数点
-     * @apiParam  {Float}   volume                        总体积（立方米）保留3位小数点
+     * @apiParam  {String}   weight                        总重量（吨）保留3位小数点
+     * @apiParam  {String}   volume                        总体积（立方米）保留3位小数点
      * @apiParam  {String}  car_style_length              车辆要求-车长
      * @apiParam  {String}  car_style_type                车辆要求-车型
      * @apiParam  {String}  car_style_type                车辆要求-车型
-     * @apiParam  {Float}   insured_amount                货物保险-投保金额 保留2位小数点
-     * @apiParam  {Float}   premium_amount                货物保险-保费金额 保留2位小数点
+     * @apiParam  {String}   insured_amount                货物保险-投保金额 保留2位小数点
+     * @apiParam  {String}   premium_amount                货物保险-保费金额 保留2位小数点
      * @apiParam  {Int}     effective_time                在途时效,统一换算成分钟
-     * @apiParam  {Float}   system_price                  系统价 保留2位小数点
-     * @apiParam  {Float}   [mind_price]                  心理价位 保留2位小数点
+     * @apiParam  {String}   system_price                  系统价 保留2位小数点
+     * @apiParam  {String}   [mind_price]                  心理价位 保留2位小数点
      * @apiParam  {String}  [remark]                      备注
      * @apiParam  {String}  is_receipt                    货物回单1-是-默认，2-否
      */
@@ -74,6 +74,8 @@ class Order extends BaseController{
      * @apiSuccess  {String} arr_time           到达时间
      * @apiSuccess  {String} real_name          车主姓名
      * @apiSuccess  {String} phone              联系电话
+     * @apiSuccess  {String} policy_code        保单编号
+     * @apiSuccess  {Int} is_pay              是否支付1为已支付 0为未支付
      * @apiSuccess    {String} is_receipt          货物回单1-是-默认，2-否
      * @apiSuccess  {String} final_price        总运费
      */
@@ -85,7 +87,7 @@ class Order extends BaseController{
      * @api {POST}  /order/showOrderList      显示订单列表
      * @apiName     showOrderList
      * @apiGroup    Order
-     * @apiParam   {String} type        订单状态（quote报价中，quoted已报价，待发货 distribute配送中（在配送-未拍照）发货中 photo 拍照完毕（订单已完成））
+     * @apiParam   {String} type        订单状态（all全部状态，quote报价中，quoted已报价，待发货 distribute配送中（在配送-未拍照）发货中 photo 拍照完毕（订单已完成））
      * @apiSuccess {Array}  list        订单列表
      * @apiSuccess {String} list.org_address_name        出发地名称
      * @apiSuccess {String} list.dest_address_name       目的地名称
@@ -96,22 +98,7 @@ class Order extends BaseController{
     public function showOrderList(){
 
     }
-    /**
-     * @api {POST}  /order/showOrderList      显示司机报价列表
-     * @apiName     showDriverQuoteList
-     * @apiGroup    Order
-     * @apiParam    {Int}    order_id        订单ID
-     * @apiSuccess  {Array}  list            报价列表
-     * @apiSuccess  {String} avatar          司机头像
-     * @apiSuccess  {String} score           司机评分
-     * @apiSuccess  {String} car_type        司机车型
-     * @apiSuccess  {String} car_length      司机车长
-     * @apiSuccess  {String} card_number     车牌号码
-     * @apiSuccess  {String} quote_price     报价
-     */
-    public function showDriverQuoteList(){
 
-    }
 
     /**
      * @api {POST}  /order/showCerPic      查看凭证
