@@ -25,10 +25,10 @@ class Pay extends BaseController{
      * @apiName payBond
      * @apiGroup Pay
      * @apiHeader {String} authorization-token      token.
-     * @apiParam  {Float}  bond                     保证金金额
-     * @apiParam  {Int}    pay_way                  支付方式 1=支付宝，2=微信
-     * @apiSuccess {Int}   pay_status               支付状态 0=未支付，1=支付成功，2=支付失败
-     * @apiSuccess {Array} pay_info                 支付返回信息
+     * @apiParam  {String}      amount                     提现金额
+     * @apiParam  {Int}         deposit_name                  银行名称
+     * @apiSuccess {String}     account               收款账号
+     * @apiSuccess {String}     real_name            开户名称
      */
     public function payBond(){
 

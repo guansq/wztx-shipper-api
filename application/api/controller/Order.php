@@ -74,7 +74,7 @@ class Order extends BaseController{
      * @apiSuccess  {String} arr_time           到达时间
      * @apiSuccess  {String} real_name          车主姓名
      * @apiSuccess  {String} phone              联系电话
-     * @apiParam    {String} is_receipt          货物回单1-是-默认，2-否
+     * @apiSuccess    {String} is_receipt          货物回单1-是-默认，2-否
      * @apiSuccess  {String} final_price        总运费
      */
     public function showOrderInfo(){

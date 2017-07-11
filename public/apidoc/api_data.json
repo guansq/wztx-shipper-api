@@ -948,13 +948,6 @@
             "optional": false,
             "field": "order_id",
             "description": "<p>订单ID</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "is_receipt",
-            "description": "<p>货物回单1-是-默认，2-否</p>"
           }
         ]
       }
@@ -1080,6 +1073,13 @@
             "optional": false,
             "field": "phone",
             "description": "<p>联系电话</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "is_receipt",
+            "description": "<p>货物回单1-是-默认，2-否</p>"
           },
           {
             "group": "Success 200",
@@ -1248,17 +1248,17 @@
         "Parameter": [
           {
             "group": "Parameter",
-            "type": "Float",
+            "type": "String",
             "optional": false,
-            "field": "bond",
-            "description": "<p>保证金金额</p>"
+            "field": "amount",
+            "description": "<p>提现金额</p>"
           },
           {
             "group": "Parameter",
             "type": "Int",
             "optional": false,
-            "field": "pay_way",
-            "description": "<p>支付方式 1=支付宝，2=微信</p>"
+            "field": "deposit_name",
+            "description": "<p>银行名称</p>"
           }
         ]
       }
@@ -1268,17 +1268,17 @@
         "Success 200": [
           {
             "group": "Success 200",
-            "type": "Int",
+            "type": "String",
             "optional": false,
-            "field": "pay_status",
-            "description": "<p>支付状态 0=未支付，1=支付成功，2=支付失败</p>"
+            "field": "account",
+            "description": "<p>收款账号</p>"
           },
           {
             "group": "Success 200",
-            "type": "Array",
+            "type": "String",
             "optional": false,
-            "field": "pay_info",
-            "description": "<p>支付返回信息</p>"
+            "field": "real_name",
+            "description": "<p>开户名称</p>"
           }
         ]
       }
