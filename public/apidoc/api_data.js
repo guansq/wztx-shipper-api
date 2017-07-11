@@ -112,7 +112,7 @@ define({ "api": [
   {
     "type": "GET",
     "url": "/comment/commentInfo",
-    "title": "",
+    "title": "获取评论内容",
     "name": "commentInfo",
     "group": "Comment",
     "header": {
@@ -223,7 +223,7 @@ define({ "api": [
   {
     "type": "GET",
     "url": "/comment/sendCommentInfo",
-    "title": "",
+    "title": "发送评论内容",
     "name": "sendCommentInfo",
     "group": "Comment",
     "header": {
