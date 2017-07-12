@@ -61,7 +61,7 @@ class User extends BaseLogic{
      * @Success {String} refreshToken    刷新凭证.
      * @Success {Number} expireTime      有效期.
      */
-    function login($params){
+    public function login($params){
         $now = time();
         $account = $params['account'];
         $password = $params['password'];
@@ -116,29 +116,6 @@ class User extends BaseLogic{
      * @Success {Number} sex                 性别 1=男 2=女 0=未知.
      * @Success {String} avatar              头像.
      * @Success {String} nickName            昵称.
-     * @Success {String} code                供应商编号.
-     * @Success {String} name                供应商名称.
-     * @Success {String} typeCode            主分类编码.
-     * @Success {String} typeName            主分类名称.
-     * @Success {String} taxCode             税号.
-     * @Success {String} foundDate           成立日期.
-     * @Success {String} taxRate             税率.
-     * @Success {String} mobile              电话.
-     * @Success {String} phone               手机.
-     * @Success {String} email               邮箱.
-     * @Success {String} fax                 传真.
-     * @Success {String} ctcName             联系人.
-     * @Success {String} address             地址.
-     * @Success {String} payWay              付款方式.
-     * @Success {String} comName             企业名称.
-     * @Success {String} purchCode           采购员工号.
-     * @Success {String} purchName           采购员工姓名.
-     * @Success {String} purchType           供应商采购属性.
-     * @Success {String} checkType           检验类型.
-     * @Success {String} checkRate           抽检比例.
-     * @Success {String} arvRate             到货率.
-     * @Success {String} passRate            合格率.
-     * @Success {String} creditLevel         信用等级.
      */
     public function getInfo($loginUser){
         $userFields = [
@@ -270,8 +247,11 @@ class User extends BaseLogic{
      * 用户注册 system_user_shipper 插入记录，并插入到sp_base_info表
      */
     public function reg($params){
-        //启动事务
 
+        Db::startTrans();
+        try{
+            //启动事务
+            $now = time();
             $systemUser = [];
             $systemUser['salt'] = randomStr();//得到加密盐值
             $systemUser['user_name'] = $params['user_name'];
@@ -279,28 +259,43 @@ class User extends BaseLogic{
             $systemUser['password'] = self::generatePwd($params['password'],$systemUser['salt']);
             $systemUser['avatar'] = getSysconf('default_avatar');
             $systemUser['push_token'] = $params['pushToken'];
+            $systemUser['last_login_time'] = $now;
+            $systemUser['create_at'] = $now;
+            $systemUser['update_at'] = $now;
             //$this->create($systemUser);
             $userId = Db::name('system_user_shipper')->insertGetId($systemUser);//得到user_id
+            //$systemUser['user_id'] = $userId;
             $baseUser = [];
             $baseUser['id'] = $userId;
             $baseUser['user_id'] = $userId;
             $baseUser['phone'] = $params['user_name'];
             $baseUser['type'] = $params['type'];
             $baseUser['avatar'] = $systemUser['avatar'];
+            $baseUser['create_at'] = $now;
+            $baseUser['update_at'] = $now;
             if(isset($params['recom_code'])){
                 $baseUser['recom_code'] = $params['recom_code'];
             }
             $result = Db::name('sp_base_info')->insertGetId($baseUser);
-            //Db::commit();
-            echo 'chenggong';
-            return $result;
-            die;
-        Db::startTrans();
-        try{}catch(\Exception $e){
+            Db::commit();
+        }catch(\Exception $e){
             Db::rollback();
-            echo 'shibai';
             return false;
         }
+        $userObj = new \StdClass;
+        $userObj->last_login_time = $now;
+        $userObj->password = $systemUser['password'];
+        $userObj->salt = $systemUser['salt'];
+        $userObj->id = $userId;
+
+        $token = JwtHelper::encodeToken($userObj);
+        $ret = [
+            'userId' => $result,
+            'accessToken' => $token,
+            'refreshToken' => '没有哟~',
+            'expireTime' => $now + JwtHelper::DUE_TIME,
+        ];
+        return resultArray(2000, '', $ret);
     }
 
 }

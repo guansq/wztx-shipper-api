@@ -2534,6 +2534,33 @@ define({ "api": [
         ]
       }
     },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>2000</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>'提交验证后重新提交验证信息'</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Array",
+            "optional": false,
+            "field": "result",
+            "description": "<p>['auth_status']不合法的状态</p>"
+          }
+        ]
+      }
+    },
     "version": "0.0.0",
     "filename": "application/api/controller/User.php",
     "groupTitle": "User",

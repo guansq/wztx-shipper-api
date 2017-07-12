@@ -47,7 +47,10 @@ class User extends BaseController{
         $userLogic = model('User','logic');
         $result = $userLogic->reg($paramAll);
         //$userLogic
-        echo $result;
+        if($result === false){
+            returnJson(['4020','注册失败',[]]);
+        }
+        returnJson($result);
         //echo getenv('APP_API_HOME');
     }
 
@@ -62,9 +65,40 @@ class User extends BaseController{
      * @apiParam {String} hold_pic         手持身份证照.
      * @apiParam {String} front_pic        身份证正面照.
      * @apiParam {String} back_pic         身份证反面照.
+     * @apiError {String} code             2000
+     * @apiError {String} msg              '提交验证后重新提交验证信息'
+     * @apiError {Array} result             ['auth_status']不合法的状态
      */
     public function personAuth(Request $request){
-
+        //校验参数
+        $paramAll = $this->getReqParams(['real_name','sex', 'identity', 'hold_pic', 'front_pic','back_pic']);
+        $rule = [
+            'real_name' => 'require|max:10',
+            'sex' => ['require','regex'=>'/^(0|1|2)$/'],
+            'identity' =>['require','regex'=>'/^(\d{15}$|^\d{18}$|^\d{17}(\d|X|x))$/'],
+            'hold_pic' =>'require',
+            'front_pic' =>'require',
+            'back_pic' =>'require'
+        ];
+        validateData($paramAll, $rule);
+        //查看验证状态为init才可以进行验证
+        $spBaseInfoLogic = model('SpBaseInfo','logic');
+        $authStatus = $spBaseInfoLogic->getAuthStatus($this->loginUser['id']);
+        if($authStatus != 'init'){
+            $ret = [
+                'code' => '4022',
+                'msg' => '状态不合法',
+                'result' => ['auth_status'=>$authStatus]
+            ];
+            returnJson($ret);
+        }
+        //验证信息入库更改状态为check
+        $paramAll['auth_status'] = 'check';
+        $where = [
+            'id' => $this->loginUser['id']
+        ];
+        $result = $spBaseInfoLogic->savePersonAuth($where,$paramAll);
+        returnJson($result);
     }
 
 
@@ -83,7 +117,7 @@ class User extends BaseController{
      * @apiParam {String} deposit_name         开户名称.
      * @apiParam {String} bank                 开户行.
      * @apiParam {String} account              结算账号.
-     * @apiParam {String} hold_pic            法人身份证手持照片.
+     * @apiParam {String} hold_pic             法人身份证手持照片.
      * @apiParam {String} front_pic            法人身份证正面照片.
      * @apiParam {String} back_pic             法人身份证背面照片.
      * @apiParam {String} sp_identity          操作人身份证号.
@@ -92,8 +126,61 @@ class User extends BaseController{
      * @apiParam {String} sp_back_pic          操作人身份证反.
      * @apiParam {String} buss_pic             企业营业执照.
      */
-    public function busnessAuth(Request $request){
-
+    public function businessAuth(Request $request){
+        //校验参数
+        $paramAll = $this->getReqParams([
+            'com_name',
+            'com_short_name',
+            'com_buss_num',
+            'law_person',
+            'identity',
+            'phone',
+            'address',
+            'deposit_name',
+            'bank',
+            'account',
+            'hold_pic',
+            'front_pic',
+            'back_pic',
+            'sp_identity',
+            'sp_hold_pic',
+            'sp_front_pic',
+            'sp_back_pic',
+            'buss_pic'
+        ]);
+        $rule = [
+            'com_name' =>'require|max:50',
+            'com_buss_num'=>'require|min:10|max:100',
+            'law_person'=>'require|max:50',
+            'identity' =>['require','regex'=>'/^(\d{15}$|^\d{18}$|^\d{17}(\d|X|x))$/'],
+            'phone'=>['regex'=>'/^[1]{1}[3|5|7|8]{1}[0-9]{9}$/','require'],
+            'address'=>'require|max:100',
+            'deposit_name'=>'require|max:50',
+            'bank'=>'require|max:50',
+            'account'=>'require|max:50',
+            'hold_pic'=>'require',
+            'front_pic'=>'require',
+            'back_pic'=>'require',
+            'sp_identity'=>['require','regex'=>'/^(\d{15}$|^\d{18}$|^\d{17}(\d|X|x))$/'],
+            'sp_hold_pic'=>'require',
+            'sp_front_pic'=>'require',
+            'sp_back_pic'=>'require',
+            'buss_pic'=>'require',
+        ];
+        validateData($paramAll, $rule);
+        //查看验证状态为init才可以进行验证
+        $spBaseInfoLogic = model('SpBaseInfo','logic');
+        $authStatus = $spBaseInfoLogic->getAuthStatus($this->loginUser['id']);
+        if($authStatus != 'init'){
+            $ret = [
+                'code' => '4022',
+                'msg' => '状态不合法',
+                'result' => ['auth_status'=>$authStatus]
+            ];
+            returnJson($ret);
+        }
+        $spBaseInfoLogic->
+        dump($paramAll);
     }
     /**
      * @api      {POST} /User/login     用户登录(ok)
@@ -118,7 +205,7 @@ class User extends BaseController{
             'pushToken' => 'require|length:6,128',
         ];
         validateData($paramAll, $rule);
-        $loginRet = \think\Loader::model('User', 'logic')->login($paramAll);
+        $loginRet = model('User','logic')->login($paramAll);
         returnJson($loginRet);
     }
 

@@ -46,13 +46,13 @@ class BaseController extends Controller{
                 returnJson(4011);
             }
             $this->loginUser = JwtHelper::checkToken($token);
-
-            $supplierInfo = model('SupplierInfo', 'logic')->findBySupId($this->loginUser['id']);
-            if(empty($supplierInfo)){
+            $spBaseInfo = model('SpBaseInfo', 'logic')->findInfoByUserId($this->loginUser['id']);
+            if(empty($spBaseInfo)){
                 returnJson(4011);
             }
-            $this->loginUser['sup_code'] = $supplierInfo['code'];
-            $this->loginUser['sup_name'] = $supplierInfo['name'];
+            $this->loginUser['type'] = $spBaseInfo['type'];
+            //$this->loginUser['sup_code'] = $supplierInfo['code'];
+            //$this->loginUser['sup_name'] = $supplierInfo['name'];
         }
     }
 
