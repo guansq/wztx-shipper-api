@@ -14,7 +14,7 @@ use service\MsgService;
 class User extends BaseController{
 
     /**
-     * @api     {POST} /User/reg            用户注册
+     * @api     {POST} /User/reg            用户注册done
      * @apiName   reg
      * @apiGroup  User
      * @apiParam {String} type              注册类型 person-个人 company-公司.
@@ -38,10 +38,10 @@ class User extends BaseController{
         ];
         validateData($paramAll, $rule);
         //校验验证码
-        /*$result = MsgService::verifyCaptcha($paramAll['user_name'],'reg',$paramAll['captcha']);
+        $result = MsgService::verifyCaptcha($paramAll['user_name'],'reg',$paramAll['captcha']);
         if($result['code'] != 2000){
             returnJson($result);
-        }*/
+        }
 
         //进行注册
         $userLogic = model('User','logic');
@@ -55,7 +55,7 @@ class User extends BaseController{
     }
 
     /**
-     * @api      {POST} /User/personAuth  货主个人认证
+     * @api      {POST} /User/personAuth  货主个人认证done
      * @apiName  personAuth
      * @apiGroup User
      * @apiHeader {String}  authorization-token     token
@@ -103,7 +103,7 @@ class User extends BaseController{
 
 
     /**
-     * @api      {POST} /User/businessAuth  企业个人认证
+     * @api      {POST} /User/businessAuth  企业个人认证done
      * @apiName  businessAuth
      * @apiGroup User
      * @apiHeader {String}  authorization-token     token
@@ -179,11 +179,12 @@ class User extends BaseController{
             ];
             returnJson($ret);
         }
-        $spBaseInfoLogic->
-        dump($paramAll);
+
+        $result = $spBaseInfoLogic->saveBusinessAuth($paramAll,$this->loginUser);
+        returnJson($result);
     }
     /**
-     * @api      {POST} /User/login     用户登录(ok)
+     * @api      {POST} /User/login     用户登录done
      * @apiName  login
      * @apiGroup User
      * @apiParam {String} account           账号/手机号/邮箱.
@@ -219,9 +220,9 @@ class User extends BaseController{
      */
     public function resetPwd(Request $request){
         //校验参数
-        $paramAll = $this->getReqParams(['account', 'password', 'captcha']);
+        $paramAll = $this->getReqParams(['user_name', 'password', 'captcha']);
         $rule = [
-            'account' => 'require|max:32',
+            'user_name' => ['regex'=>'/^[1]{1}[3|5|7|8]{1}[0-9]{9}$/','require','unique:system_user_shipper'],
             'password' => 'require|length:6,128',
             'captcha' => 'require|length:4,8',
         ];
@@ -309,7 +310,7 @@ class User extends BaseController{
 
 
     /**
-     * @api {GET} /user/getPersonAuthInfo   获取个人认证信息
+     * @api {GET} /user/getPersonAuthInfo   获取个人认证信息done
      * @apiName getPersonAuthInfo
      * @apiGroup User
      *
@@ -325,11 +326,17 @@ class User extends BaseController{
      *
      */
     public function getPersonAuthInfo(){
-
+        $spBaseInfoLogic = model('SpBaseInfo','logic');
+        //echo $this->loginUser['type'];die;
+        /*if($this->loginUser['type'] != 'person'){
+            returnJson('4000','请用个人类型的账号访问');
+        }*/
+        $result = $spBaseInfoLogic->getPersonAuthInfo($this->loginUser);
+        returnJson($result);
     }
 
     /**
-     * @api {GET} /user/getCompanyAuthInfo    获取企业公司认证信息
+     * @api {GET} /user/getCompanyAuthInfo    获取企业公司认证信息done
      * @apiName getCompanyAuthInfo
      * @apiGroup User
      *
@@ -348,10 +355,13 @@ class User extends BaseController{
      * @apiSuccess {String} back_pic                   操作人身份证反
      * @apiSuccess {String} law_front_pic               法人身份证正
      * @apiSuccess {String} law_back_pic                法人身份证反
+     * @apiSuccess {String} law_hold_pic                法人手拿身份证
      * @apiSuccess {String} buss_pic                    营业执照
      */
     public function getCompanyAuthInfo(){
-
+        $spBaseInfoLogic = model('SpBaseInfo','logic');
+        $result = $spBaseInfoLogic->getBusinessAuthInfo($this->loginUser);
+        returnJson($result);
     }
 
     /**
@@ -378,11 +388,18 @@ class User extends BaseController{
         //校验参数
         $paramAll = $this->getReqParams(['account', 'password', 'captcha']);
         $rule = [
-            'account' => 'require|max:32',
-            'password' => 'require|length:6,128',
+            'user_name' => ['regex'=>'/^[1]{1}[3|5|7|8]{1}[0-9]{9}$/','require','unique:system_user_shipper'],
+            'old_password' => 'require|length:6,128',
+            'new_password' => 'require|length:6,128',
             'captcha' => 'require|length:4,8',
         ];
+
         validateData($paramAll, $rule);
+        //校验验证码
+        $result = MsgService::verifyCaptcha($paramAll['user_name'],'resetpwd',$paramAll['captcha']);
+        if($result['code'] != 2000){
+            returnJson($result);
+        }
         $loginRet = \think\Loader::model('User', 'logic')->login($paramAll);
         returnJson($loginRet);
     }

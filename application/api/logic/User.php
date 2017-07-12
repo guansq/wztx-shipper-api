@@ -298,4 +298,13 @@ class User extends BaseLogic{
         return resultArray(2000, '', $ret);
     }
 
+    /**
+     * Auther: guanshaoqiu <94600115@qq.com>
+     * Describe:修改个人密码
+     */
+    public function resetPwd($params){
+        $salt = randomStr();
+        $newPwd = self::generatePwd($params['password'],$salt);
+    }
+
 }

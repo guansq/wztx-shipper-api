@@ -17,7 +17,7 @@ class Index extends BaseController{
 
 
     /**
-     * @api             {GET} /apiCode   返回码说明(ok)
+     * @api             {GET} /apiCode   返回码说明done
      * @apiDescription  技术支持：<a href="http://www.ruitukeji.com" target="_blank">睿途科技</a>
      * @apiName         apiCode
      * @apiGroup        Index
@@ -31,7 +31,7 @@ class Index extends BaseController{
     }
 
     /**
-     * @api      {GET} /appConfig   应用配置参数(OK)
+     * @api      {GET} /appConfig   应用配置参数done
      * @apiName  appConfig
      * @apiGroup Index
      * @apiSuccess {Array} payWays             付款方式 一维数组
@@ -43,7 +43,7 @@ class Index extends BaseController{
     }
 
     /**
-     * @api      {GET} /lastApk 获取最新apk下载地址(ok)
+     * @api      {GET} /lastApk 获取最新apk下载地址done
      * @apiName  lastApk
      * @apiGroup Index
      * @apiSuccess {String} url                 下载链接.
@@ -88,11 +88,11 @@ class Index extends BaseController{
     }
 
     /**
-     * @api      {POST} /index/sendCaptcha  发送验证码(ok)
+     * @api      {POST} /index/sendCaptcha  发送验证码done
      * @apiName  sendCaptcha
      * @apiGroup Index
      * @apiParam {String} mobile   手机号.
-     * @apiParam {String} opt      验证码类型 reg=注册 restpwd=找回密码 login=登陆 bind=绑定手机号.
+     * @apiParam {String} opt      验证码类型 reg=注册 resetpwd=找回密码 login=登陆 bind=绑定手机号.
      * @apiParam {String} codeId   此为客户端系统当前时间截 除去前两位后经MD5 加密后字符串.
      * @apiParam {String} validationId   codeIdvalidationId(此为手机号除去第一位后字符串+（codeId再次除去前三位） 生成字符串后经MD5加密后字符串)
      * 后端接收到此三个字符串后      也同样生成validationId
