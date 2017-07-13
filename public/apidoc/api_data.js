@@ -2794,7 +2794,7 @@ define({ "api": [
   {
     "type": "POST",
     "url": "/User/forget",
-    "title": "重置密码",
+    "title": "重置密码done",
     "name": "resetPwd",
     "group": "User",
     "parameter": {

@@ -211,7 +211,7 @@ class User extends BaseController{
     }
 
     /**
-     * @api      {POST} /User/forget   重置密码
+     * @api      {POST} /User/forget   重置密码done
      * @apiName  resetPwd
      * @apiGroup User
      * @apiParam {String} account           账号/手机号/邮箱.
