@@ -2351,7 +2351,7 @@
   {
     "type": "GET",
     "url": "/user/info",
-    "title": "获取用户信息(ok)",
+    "title": "获取用户信息done",
     "name": "info",
     "group": "User",
     "header": {
@@ -2383,6 +2383,13 @@
             "optional": false,
             "field": "phone",
             "description": "<p>绑定手机号.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "type",
+            "description": "<p>获取用户的类型. person-个人 company-公司</p>"
           },
           {
             "group": "Success 200",

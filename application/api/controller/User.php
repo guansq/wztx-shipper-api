@@ -233,12 +233,13 @@ class User extends BaseController{
 
 
     /**
-     * @api      {GET} /user/info   获取用户信息(ok)
+     * @api      {GET} /user/info   获取用户信息done
      * @apiName  info
      * @apiGroup User
      * @apiHeader {String} authorization-token           token.
      * @apiSuccess {Number} id                  id.
      * @apiSuccess {String} phone               绑定手机号.
+     * @apiSuccess {String} type                获取用户的类型. person-个人 company-公司
      * @apiSuccess {Number} sex                 性别 1=男 2=女 0=未知.
      * @apiSuccess {String} avatar              头像.
      * @apiSuccess {String} real_name           真实姓名.
@@ -248,7 +249,7 @@ class User extends BaseController{
      */
 
     public function info(Request $request){
-        $ret = model('User', 'logic')->getInfo($this->loginUser);
+        $ret = model('SpBaseInfo', 'logic')->getPersonBaseInfo($this->loginUser);
         returnJson($ret);
     }
 
@@ -372,7 +373,8 @@ class User extends BaseController{
      * @apiSuccess {String} accessToken     接口调用凭证（token有效期为7200秒）.
      */
     public function refreshToken(){
-
+        $loginRet = model('User','logic')->refreshToken($this->loginUser);
+        returnJson($loginRet);
     }
 
     /**

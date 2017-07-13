@@ -308,3 +308,26 @@ function randomNum($len = 4){
     }
     return $outputstr;
 }
+
+/*
+ * 时间的处理
+ */
+function wztxDate($time){
+    if(empty($time)){
+        return $time;
+    }
+    return date('Y-m-d',$time);
+}
+
+/*
+ * 金钱的处理-->统一后两位小数点
+ */
+function wztxMoney($num,$ispre = false){
+    $num = $num > 0 ? $num : 0;
+    $formattedNum = number_format($num, 2);
+    if($ispre){
+        return '¥'.$formattedNum;
+    }else{
+        return $formattedNum;
+    }
+}

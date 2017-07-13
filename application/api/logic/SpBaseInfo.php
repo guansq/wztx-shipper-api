@@ -96,4 +96,17 @@ class SpBaseInfo extends BaseLogic{
         }
         return resultArray('4004');
     }
+
+    /**
+     * Auther: guanshaoqiu <94600115@qq.com>
+     * Describe:得到用户基本信息
+     */
+    public function getPersonBaseInfo($userInfo){
+        $info = $this->field('id,phone,sex,avatar,real_name,auth_status,bond_status,bond')->where("id",$userInfo['id'])->find();
+        if($info){
+            $info['bond'] = wztxMoney($info['bond']);
+            return resultArray('2000','',$info);
+        }
+        return resultArray('4004');
+    }
 }

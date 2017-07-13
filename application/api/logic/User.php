@@ -105,6 +105,14 @@ class User extends BaseLogic{
     }
 
     /**
+     * Auther: guanshaoqiu <94600115@qq.com>
+     * Describe:刷新token信息
+     */
+    public function refreshToken($userInfo){
+
+    }
+
+    /**
      * Author: WILL<314112362@qq.com>
      * Time: 根据登录用户查询账号消息信息
      * Describe:
