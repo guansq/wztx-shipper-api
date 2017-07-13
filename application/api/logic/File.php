@@ -17,9 +17,9 @@ class File extends BaseLogic{
     // 上传文件 php 5.5
     function uploadFile(\think\File $file){
 
-        $info = $file->move('/tmp','atwwg_tmp_avatar.png');
+        $info = $file->move('/tmp','wztx_tmp_avatar.png');
         $data = [
-            'rt_appkey' => 'atw_wg',
+            'rt_appkey' => 'wztx',
             'file' => '@'.$info->getPathname()
         ];
 

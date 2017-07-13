@@ -327,7 +327,7 @@
   {
     "type": "GET",
     "url": "/apiCode",
-    "title": "返回码说明(ok)",
+    "title": "返回码说明done",
     "description": "<p>技术支持：<a href=\"http://www.ruitukeji.com\" target=\"_blank\">睿途科技</a></p>",
     "name": "apiCode",
     "group": "Index",
@@ -343,7 +343,7 @@
   {
     "type": "GET",
     "url": "/appConfig",
-    "title": "应用配置参数(OK)",
+    "title": "应用配置参数done",
     "name": "appConfig",
     "group": "Index",
     "success": {
@@ -461,7 +461,7 @@
   {
     "type": "GET",
     "url": "/lastApk",
-    "title": "获取最新apk下载地址(ok)",
+    "title": "获取最新apk下载地址done",
     "name": "lastApk",
     "group": "Index",
     "success": {
@@ -503,7 +503,7 @@
   {
     "type": "POST",
     "url": "/index/sendCaptcha",
-    "title": "发送验证码(ok)",
+    "title": "发送验证码done",
     "name": "sendCaptcha",
     "group": "Index",
     "parameter": {
@@ -521,7 +521,7 @@
             "type": "String",
             "optional": false,
             "field": "opt",
-            "description": "<p>验证码类型 reg=注册 restpwd=找回密码 login=登陆 bind=绑定手机号.</p>"
+            "description": "<p>验证码类型 reg=注册 resetpwd=找回密码 login=登陆 bind=绑定手机号.</p>"
           },
           {
             "group": "Parameter",
@@ -2746,7 +2746,7 @@
   {
     "type": "POST",
     "url": "/User/updatePwd",
-    "title": "修改密码",
+    "title": "修改密码done",
     "name": "updatePwd",
     "group": "User",
     "parameter": {
@@ -2777,8 +2777,8 @@
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "captcha",
-            "description": "<p>验证码.</p>"
+            "field": "repeat_password",
+            "description": "<p>重复密码.</p>"
           }
         ]
       }
@@ -2795,7 +2795,7 @@
   {
     "type": "POST",
     "url": "/user/uploadAvatar",
-    "title": "上传并修改头像(ok)",
+    "title": "上传并修改头像done",
     "name": "uploadAvatar",
     "group": "User",
     "header": {

@@ -179,6 +179,7 @@ class User extends BaseLogic{
             return resultArray($ossRet);
         }
         $dbRet = $this->where('id', $loginUser['id'])->update(['avatar' => $ossRet['result']['file']['url']]);
+        Db::name('sp_base_info')->where('id', $loginUser['id'])->update(['avatar' => $ossRet['result']['file']['url']]);
         if(!$dbRet){
             return resultArray(5000);
         }
@@ -256,7 +257,7 @@ class User extends BaseLogic{
             $systemUser['salt'] = randomStr();//得到加密盐值
             $systemUser['user_name'] = $params['user_name'];
             $systemUser['mobile'] = $params['user_name'];
-            $systemUser['password'] = self::generatePwd($params['password'],$systemUser['salt']);
+            $systemUser['password'] = self::encryptPwdSalt($params['password'],$systemUser['salt']);
             $systemUser['avatar'] = getSysconf('default_avatar');
             $systemUser['push_token'] = $params['pushToken'];
             $systemUser['last_login_time'] = $now;
@@ -302,9 +303,35 @@ class User extends BaseLogic{
      * Auther: guanshaoqiu <94600115@qq.com>
      * Describe:修改个人密码
      */
-    public function resetPwd($params){
+    public function resetPwd($userInfo,$params){
+
+        if(!is_array($userInfo)){
+            $account = $userInfo;
+        }else{
+            $account = $userInfo['user_name'];
+        }
+
+        $loginUser = $this->findByAccount($account);
+
+        if(empty($loginUser)){
+            return resultArray(4014);
+        }
+        // 校验密码
+        $ret = $this->checkPassword($loginUser, $params['old_password']);
+        if(!$ret){
+            return resultArray(4014);
+        }
         $salt = randomStr();
-        $newPwd = self::generatePwd($params['password'],$salt);
+        $newPwd = self::encryptPwdSalt($params['new_password'],$salt);
+        $data = [
+            'password' => $newPwd,
+            'salt' => $salt
+        ];
+        $result = $this->where("id",$userInfo['id'])->update($data);
+        if($result !== false){
+            return resultArray('2000','更改成功');
+        }
+        return resultArray('4020','更改失败');
     }
 
 }

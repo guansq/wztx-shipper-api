@@ -253,7 +253,7 @@ class User extends BaseController{
     }
 
     /**
-     * @api      {POST} /user/uploadAvatar 上传并修改头像(ok)
+     * @api      {POST} /user/uploadAvatar 上传并修改头像done
      * @apiName  uploadAvatar
      * @apiGroup User
      * @apiHeader {String} authorization-token           token.
@@ -376,32 +376,30 @@ class User extends BaseController{
     }
 
     /**
-     * @api      {POST} /User/updatePwd   修改密码
+     * @api      {POST} /User/updatePwd   修改密码done
      * @apiName  updatePwd
      * @apiGroup User
      * @apiParam {String} account           账号/手机号/邮箱.
      * @apiParam {String} old_password      加密的密码. 加密方式：MD5("RUITU"+明文密码+"KEJI").
      * @apiParam {String} new_password      加密的密码. 加密方式：MD5("RUITU"+明文密码+"KEJI").
-     * @apiParam {String} captcha           验证码.
+     * @apiParam {String} repeat_password   重复密码.
      */
     public function updatePwd(Request $request){
         //校验参数
-        $paramAll = $this->getReqParams(['account', 'password', 'captcha']);
+        $paramAll = $this->getReqParams(['account', 'old_password', 'new_password', 'repeat_password']);
         $rule = [
-            'user_name' => ['regex'=>'/^[1]{1}[3|5|7|8]{1}[0-9]{9}$/','require','unique:system_user_shipper'],
+            'account' => ['regex'=>'/^[1]{1}[3|5|7|8]{1}[0-9]{9}$/','require'],
             'old_password' => 'require|length:6,128',
             'new_password' => 'require|length:6,128',
-            'captcha' => 'require|length:4,8',
+            'repeat_password' => 'require|confirm:new_password',
         ];
 
         validateData($paramAll, $rule);
         //校验验证码
-        $result = MsgService::verifyCaptcha($paramAll['user_name'],'resetpwd',$paramAll['captcha']);
-        if($result['code'] != 2000){
-            returnJson($result);
-        }
-        $loginRet = \think\Loader::model('User', 'logic')->login($paramAll);
-        returnJson($loginRet);
+        $userLogic = model('User','logic');
+        $ret = $userLogic->resetPwd($this->loginUser,$paramAll);
+        //$loginRet = \think\Loader::model('User', 'logic')->login($paramAll);
+        returnJson($ret);
     }
 
 
