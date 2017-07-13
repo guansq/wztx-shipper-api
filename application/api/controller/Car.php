@@ -9,7 +9,7 @@ namespace app\api\controller;
 
 class Car extends BaseController{
     /**
-     * @api     {GET} /car/getAllCarStyle       获取车辆车长信息以及车型
+     * @api     {GET} /car/getAllCarStyle       获取车辆车长信息以及车型done
      * @apiName     getAllCarStyle
      * @apiGroup    Car
      * @apiHeader   {String} authorization-token           token.
