@@ -33,27 +33,64 @@ define({ "api": [
     },
     "success": {
       "fields": {
-        "Success 200": [
+        "type=1": [
           {
-            "group": "Success 200",
-            "type": "Array",
+            "group": "type=1",
+            "type": "Number",
             "optional": false,
-            "field": "list",
-            "description": "<p>车辆信息数组</p>"
+            "field": "id",
+            "description": "<p>id</p>"
           },
           {
-            "group": "Success 200",
-            "type": "Array",
+            "group": "type=1",
+            "type": "String",
             "optional": false,
-            "field": "list.length",
-            "description": "<p>车辆长度信息数组</p>"
+            "field": "name",
+            "description": "<p>车型</p>"
+          }
+        ],
+        "type=2": [
+          {
+            "group": "type=2",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>id</p>"
           },
           {
-            "group": "Success 200",
-            "type": "Array",
+            "group": "type=2",
+            "type": "String",
             "optional": false,
-            "field": "list.type",
-            "description": "<p>车辆类型信息数组</p>"
+            "field": "name",
+            "description": "<p>车长</p>"
+          },
+          {
+            "group": "type=2",
+            "type": "String",
+            "optional": false,
+            "field": "over_metres_price",
+            "description": "<p>超出起步公里费</p>"
+          },
+          {
+            "group": "type=2",
+            "type": "String",
+            "optional": false,
+            "field": "weight_price",
+            "description": "<p>计重费</p>"
+          },
+          {
+            "group": "type=2",
+            "type": "String",
+            "optional": false,
+            "field": "init_kilometres",
+            "description": "<p>起步公里数</p>"
+          },
+          {
+            "group": "type=2",
+            "type": "String",
+            "optional": false,
+            "field": "init_price",
+            "description": "<p>车长-起步价</p>"
           }
         ]
       }
