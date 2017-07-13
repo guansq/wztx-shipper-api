@@ -274,7 +274,7 @@ class User extends BaseController{
 
     }
 
-    /*
+    /**
      * @api      {PUT} /user/updateInfo  更新用户信息(ok)
      * @apiName  updateInfo
      * @apiGroup User

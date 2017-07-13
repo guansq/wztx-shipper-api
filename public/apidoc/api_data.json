@@ -2798,6 +2798,68 @@
     ]
   },
   {
+    "type": "PUT",
+    "url": "/user/updateInfo",
+    "title": "更新用户信息(ok)",
+    "name": "updateInfo",
+    "group": "User",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization-token",
+            "description": "<p>token.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": true,
+            "field": "sex",
+            "description": "<p>性别 1=男 2=女 0=未知.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "avatar",
+            "description": "<p>头像.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "nickName",
+            "description": "<p>昵称.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "payWay",
+            "description": "<p>付款方式.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "application/api/controller/User.php",
+    "groupTitle": "User",
+    "sampleRequest": [
+      {
+        "url": "http://wztx.shp.api.ruitukeji.com/user/updateInfo"
+      }
+    ]
+  },
+  {
     "type": "POST",
     "url": "/User/updatePwd",
     "title": "修改密码done",
