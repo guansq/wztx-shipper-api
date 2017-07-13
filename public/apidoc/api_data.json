@@ -5,92 +5,48 @@
     "title": "获取车辆车长信息以及车型done",
     "name": "getAllCarStyle",
     "group": "Car",
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "authorization-token",
-            "description": "<p>token.</p>"
-          }
-        ]
-      }
-    },
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "type",
-            "description": "<p>1=车型，2=车长</p>"
-          }
-        ]
-      }
-    },
     "success": {
       "fields": {
-        "type=1": [
+        "Success 200": [
           {
-            "group": "type=1",
-            "type": "Number",
+            "group": "Success 200",
+            "type": "Array",
             "optional": false,
-            "field": "id",
-            "description": "<p>id</p>"
+            "field": "length",
+            "description": "<p>车型数组</p>"
           },
           {
-            "group": "type=1",
-            "type": "String",
+            "group": "Success 200",
+            "type": "Array",
             "optional": false,
-            "field": "name",
-            "description": "<p>车型</p>"
+            "field": "type",
+            "description": "<p>车长数组</p>"
           }
         ],
-        "type=2": [
+        "String": [
           {
-            "group": "type=2",
-            "type": "String",
+            "group": "String",
             "optional": false,
-            "field": "id",
-            "description": "<p>id</p>"
+            "field": "length.id",
+            "description": "<p>车长id</p>"
           },
           {
-            "group": "type=2",
-            "type": "String",
+            "group": "String",
             "optional": false,
-            "field": "name",
-            "description": "<p>车长</p>"
+            "field": "length.name",
+            "description": "<p>车长名</p>"
           },
           {
-            "group": "type=2",
-            "type": "String",
+            "group": "String",
             "optional": false,
-            "field": "over_metres_price",
-            "description": "<p>超出起步公里费</p>"
+            "field": "type.id",
+            "description": "<p>车型id</p>"
           },
           {
-            "group": "type=2",
-            "type": "String",
+            "group": "String",
             "optional": false,
-            "field": "weight_price",
-            "description": "<p>计重费</p>"
-          },
-          {
-            "group": "type=2",
-            "type": "String",
-            "optional": false,
-            "field": "init_kilometres",
-            "description": "<p>起步公里数</p>"
-          },
-          {
-            "group": "type=2",
-            "type": "String",
-            "optional": false,
-            "field": "init_price",
-            "description": "<p>车长-起步价</p>"
+            "field": "type.name",
+            "description": "<p>车姓名</p>"
           }
         ]
       }

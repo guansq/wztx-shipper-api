@@ -12,27 +12,18 @@ class Car extends BaseController{
      * @api     {GET} /car/getAllCarStyle       获取车辆车长信息以及车型done
      * @apiName     getAllCarStyle
      * @apiGroup    Car
-     * @apiHeader   {String} authorization-token           token.
-     * @apiParam    {String}    type                        1=车型，2=车长
-     * @apiSuccess  (type=1) {Number}  id                   id
-     * @apiSuccess  (type=1) {String}  name                   车型
-     * @apiSuccess  (type=2) {String}  id                   id
-     * @apiSuccess  (type=2) {String}  name                   车长
-     * @apiSuccess  (type=2) {String}  over_metres_price      超出起步公里费
-     * @apiSuccess  (type=2) {String}  weight_price           计重费
-     * @apiSuccess  (type=2) {String}  init_kilometres        起步公里数
-     * @apiSuccess  (type=2) {String}  init_price             车长-起步价
+     * @apiSuccess  {Array}  length                 车型数组
+     * @apiSuccess  {Array}  type                   车长数组
+     * @apiSuccess  (String) length.id              车长id
+     * @apiSuccess  (String) length.name            车长名
+     * @apiSuccess  (String) type.id                车型id
+     * @apiSuccess  (String) type.name              车姓名
      *
      */
     public function getAllCarStyle(){
-        //校验参数
-        $paramAll = $this->getReqParams(['type']);
-        $rule = [
-            'type' => 'require'
-        ];
-        validateData($paramAll,$rule);
+
         //dump($paramAll);die;
-        $result = model('Car','logic')->getCarInfo($paramAll['type']);
+        $result = model('Car','logic')->getCarInfo();
         returnJson($result);
     }
 

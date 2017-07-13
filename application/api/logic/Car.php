@@ -14,16 +14,23 @@ class Car extends BaseLogic{
      * Auther: guanshaoqiu <94600115@qq.com>
      * Describe:获取车型信息
      */
-    public function getCarInfo($type){
+    public function getCarInfo(){
         $where = [
-            "type" => $type,
+            //"type" => $type,
             "status" => 0
         ];
-        $field = $type == 1 ? 'id,name' : 'id,name,over_metres_price,weight_price,init_kilometres,init_price';
-        $ret = $this->field($field)->where($where)->select();
+        $ret = $this->field('id,name,type')->where($where)->select();
+        $type = [1=>'type',2=>'length'];
+
         if(!$ret){
             return resultArray('4000','数据为空');
         }
-        return resultArray('2000','成功',$ret);
+        $newArr = [];
+        $ret = collection($ret)->toArray();
+        foreach($ret as $k=>$v){
+            $newArr[$type[$v['type']]][] = $v;
+        }
+        //dump($newArr);die;
+        return resultArray('2000','成功',$newArr);
     }
 }
