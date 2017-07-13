@@ -12,13 +12,15 @@ class Car extends BaseController{
      * @api     {GET} /car/getAllCarStyle       获取车辆车长信息以及车型done
      * @apiName     getAllCarStyle
      * @apiGroup    Car
-     * @apiSuccess  {Array}  length                 车型数组
-     * @apiSuccess  {Array}  type                   车长数组
-     * @apiSuccess  (String) length.id              车长id
-     * @apiSuccess  (String) length.name            车长名
-     * @apiSuccess  (String) type.id                车型id
-     * @apiSuccess  (String) type.name              车姓名
-     *
+     * @apiSuccess  {Array}  length                 车长数组
+     * @apiSuccess  {Array}  type                   车型数组
+     * @apiSuccess  {String} length-type.name                   名称
+     * @apiSuccess  {Number} length-type.type                   1=车型，2=车长
+     * @apiSuccess  {Number} length-type.status                 0=正常，1=删除
+     * @apiSuccess  {String} length-type.over_metres_price      超出起步公里费
+     * @apiSuccess  {String} length-type.weight_price           计重费
+     * @apiSuccess  {String} length-type.init_kilometres        起步公里数
+     * @apiSuccess  {String} length-type.init_price             车长-起步价
      */
     public function getAllCarStyle(){
 

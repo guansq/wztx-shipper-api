@@ -13,40 +13,63 @@ define({ "api": [
             "type": "Array",
             "optional": false,
             "field": "length",
-            "description": "<p>车型数组</p>"
+            "description": "<p>车长数组</p>"
           },
           {
             "group": "Success 200",
             "type": "Array",
             "optional": false,
             "field": "type",
-            "description": "<p>车长数组</p>"
-          }
-        ],
-        "String": [
-          {
-            "group": "String",
-            "optional": false,
-            "field": "length.id",
-            "description": "<p>车长id</p>"
+            "description": "<p>车型数组</p>"
           },
           {
-            "group": "String",
+            "group": "Success 200",
+            "type": "String",
             "optional": false,
-            "field": "length.name",
-            "description": "<p>车长名</p>"
+            "field": "length-type.name",
+            "description": "<p>名称</p>"
           },
           {
-            "group": "String",
+            "group": "Success 200",
+            "type": "Number",
             "optional": false,
-            "field": "type.id",
-            "description": "<p>车型id</p>"
+            "field": "length-type.type",
+            "description": "<p>1=车型，2=车长</p>"
           },
           {
-            "group": "String",
+            "group": "Success 200",
+            "type": "Number",
             "optional": false,
-            "field": "type.name",
-            "description": "<p>车姓名</p>"
+            "field": "length-type.status",
+            "description": "<p>0=正常，1=删除</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "length-type.over_metres_price",
+            "description": "<p>超出起步公里费</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "length-type.weight_price",
+            "description": "<p>计重费</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "length-type.init_kilometres",
+            "description": "<p>起步公里数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "length-type.init_price",
+            "description": "<p>车长-起步价</p>"
           }
         ]
       }
@@ -2770,7 +2793,7 @@ define({ "api": [
   },
   {
     "type": "POST",
-    "url": "/User/resetPwd",
+    "url": "/User/forget",
     "title": "重置密码",
     "name": "resetPwd",
     "group": "User",
@@ -2788,7 +2811,7 @@ define({ "api": [
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "password",
+            "field": "new_password",
             "description": "<p>加密的密码. 加密方式：MD5(&quot;RUITU&quot;+明文密码+&quot;KEJI&quot;).</p>"
           },
           {
@@ -2806,7 +2829,7 @@ define({ "api": [
     "groupTitle": "User",
     "sampleRequest": [
       {
-        "url": "http://wztx.shp.api.ruitukeji.com/User/resetPwd"
+        "url": "http://wztx.shp.api.ruitukeji.com/User/forget"
       }
     ]
   },

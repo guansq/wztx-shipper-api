@@ -324,18 +324,21 @@ class User extends BaseLogic{
         if(empty($loginUser)){
             return resultArray(4014);
         }
-        // 校验密码
-        $ret = $this->checkPassword($loginUser, $params['old_password']);
-        if(!$ret){
-            return resultArray(4014);
+        if(is_array($userInfo)){//存在数组 是修改密码 不存在则是重置密码
+            // 校验密码
+            $ret = $this->checkPassword($loginUser, $params['old_password']);
+            if(!$ret){
+                return resultArray(4014);
+            }
         }
+
         $salt = randomStr();
         $newPwd = self::encryptPwdSalt($params['new_password'],$salt);
         $data = [
             'password' => $newPwd,
             'salt' => $salt
         ];
-        $result = $this->where("id",$userInfo['id'])->update($data);
+        $result = $this->where("id",$loginUser['id'])->update($data);
         if($result !== false){
             return resultArray('2000','更改成功');
         }
