@@ -275,6 +275,13 @@ class User extends BaseLogic{
             $userId = Db::name('system_user_shipper')->insertGetId($systemUser);//得到user_id
             //$systemUser['user_id'] = $userId;
             $baseUser = [];
+            if(isset($params['recomm_code']) && !empty($params['recomm_code'])){
+                $recomm_id = Db::name('sp_base_info')->where("recomm_code",$params['recomm_code'])->value('id');
+                if(!empty($recomm_id)){
+                    $baseUser['recomm_id'] = $recomm_id;
+                }
+            }
+
             $baseUser['id'] = $userId;
             $baseUser['user_id'] = $userId;
             $baseUser['phone'] = $params['user_name'];
@@ -282,6 +289,7 @@ class User extends BaseLogic{
             $baseUser['avatar'] = $systemUser['avatar'];
             $baseUser['create_at'] = $now;
             $baseUser['update_at'] = $now;
+            $baseUser['recomm_code'] = randomStr(6);
             if(isset($params['recom_code'])){
                 $baseUser['recom_code'] = $params['recom_code'];
             }

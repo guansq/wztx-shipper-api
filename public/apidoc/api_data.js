@@ -2749,7 +2749,7 @@ define({ "api": [
             "group": "Parameter",
             "type": "String",
             "optional": true,
-            "field": "recom_code",
+            "field": "recomm_code",
             "description": "<p>推荐码</p>"
           },
           {

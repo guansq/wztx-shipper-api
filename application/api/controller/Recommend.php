@@ -17,7 +17,8 @@ class Recommend extends BaseController{
      *
      */
     public function showMyRecommInfo(){
-
+        $ret = model('sp_base_info','logic')->getRecommCode($this->loginUser);
+        returnJson($ret);
     }
 
 

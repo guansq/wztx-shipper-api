@@ -21,14 +21,14 @@ class User extends BaseController{
      * @apiParam {String} user_name         手机号/用户名.
      * @apiParam {String} captcha           验证码.
      * @apiParam {String} password          加密的密码. 加密方式：MD5("RUITU"+明文密码+"KEJI")
-     * @apiParam {String} [recom_code]   推荐码
+     * @apiParam {String} [recomm_code]   推荐码
      * @apiParam {String} pushToken         消息推送token.
      * @apiSuccess {Number} userId          用户id.
      * @apiSuccess {String} accessToken     接口调用凭证.
      */
     public function reg(Request $request){
         //校验参数
-        $paramAll = $this->getReqParams(['type','user_name', 'password', 'recommendcode', 'captcha','pushToken']);
+        $paramAll = $this->getReqParams(['type','user_name', 'password', 'recomm_code', 'captcha','pushToken']);
         //$result=$this->validate($paramAll,'User');
         $rule = [
             'type' => 'require',

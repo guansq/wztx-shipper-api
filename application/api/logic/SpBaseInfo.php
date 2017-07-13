@@ -109,4 +109,24 @@ class SpBaseInfo extends BaseLogic{
         }
         return resultArray('4004');
     }
+
+    /**
+     * Auther: guanshaoqiu <94600115@qq.com>
+     * Describe:得到推荐码
+     */
+    public function getRecommCode($userInfo){
+        $ret = $this->where("id",$userInfo['id'])->value('recomm_code');
+        if(empty($ret)){
+           return resultArray('4000','推荐码为空');
+        }
+        return resultArray('2000','成功',$ret);
+    }
+
+    /**
+     * Auther: guanshaoqiu <94600115@qq.com>
+     * Describe:得到推荐信息
+     */
+    public function getRecommList($userInfo){
+
+    }
 }
