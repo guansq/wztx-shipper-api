@@ -227,6 +227,11 @@ class User extends BaseController{
             'captcha' => 'require|length:4,8',
         ];
         validateData($paramAll, $rule);
+        //校验验证码
+        $result = MsgService::verifyCaptcha($paramAll['user_name'],'reg',$paramAll['captcha']);
+        if($result['code'] != 2000){
+            returnJson($result);
+        }
         $loginRet = \think\Loader::model('User', 'logic')->login($paramAll);
         returnJson($loginRet);
     }
@@ -239,6 +244,7 @@ class User extends BaseController{
      * @apiHeader {String} authorization-token           token.
      * @apiSuccess {Number} id                  id.
      * @apiSuccess {String} phone               绑定手机号.
+     * @apiSuccess {String} type                获取用户的类型. person-个人 company-公司
      * @apiSuccess {String} type                获取用户的类型. person-个人 company-公司
      * @apiSuccess {Number} sex                 性别 1=男 2=女 0=未知.
      * @apiSuccess {String} avatar              头像.
@@ -381,16 +387,16 @@ class User extends BaseController{
      * @api      {POST} /User/updatePwd   修改密码done
      * @apiName  updatePwd
      * @apiGroup User
-     * @apiParam {String} account           账号/手机号/邮箱.
+     * @apiHeader {String}  authorization-token     token.
      * @apiParam {String} old_password      加密的密码. 加密方式：MD5("RUITU"+明文密码+"KEJI").
      * @apiParam {String} new_password      加密的密码. 加密方式：MD5("RUITU"+明文密码+"KEJI").
      * @apiParam {String} repeat_password   重复密码.
      */
     public function updatePwd(Request $request){
         //校验参数
-        $paramAll = $this->getReqParams(['account', 'old_password', 'new_password', 'repeat_password']);
+        $paramAll = $this->getReqParams(['old_password', 'new_password', 'repeat_password']);
         $rule = [
-            'account' => ['regex'=>'/^[1]{1}[3|5|7|8]{1}[0-9]{9}$/','require'],
+            //'account' => ['regex'=>'/^[1]{1}[3|5|7|8]{1}[0-9]{9}$/','require'],
             'old_password' => 'require|length:6,128',
             'new_password' => 'require|length:6,128',
             'repeat_password' => 'require|confirm:new_password',
@@ -404,5 +410,7 @@ class User extends BaseController{
         returnJson($ret);
     }
 
+    public function forget(){
 
+    }
 }

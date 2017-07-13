@@ -102,7 +102,7 @@ class SpBaseInfo extends BaseLogic{
      * Describe:得到用户基本信息
      */
     public function getPersonBaseInfo($userInfo){
-        $info = $this->field('id,phone,sex,avatar,real_name,auth_status,bond_status,bond')->where("id",$userInfo['id'])->find();
+        $info = $this->field('id,phone,sex,avatar,real_name,auth_status,bond_status,bond,type,recomm_code')->where("id",$userInfo['id'])->find();
         if($info){
             $info['bond'] = wztxMoney($info['bond']);
             return resultArray('2000','',$info);

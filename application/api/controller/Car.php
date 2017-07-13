@@ -13,11 +13,15 @@ class Car extends BaseController{
      * @apiName     getAllCarStyle
      * @apiGroup    Car
      * @apiHeader   {String} authorization-token           token.
+     * @apiParam    {String}    type                        1=车型，2=车长
      * @apiSuccess  {Array}  list                          车辆信息数组
      * @apiSuccess  {Array}  list.length                   车辆长度信息数组
      * @apiSuccess  {Array}  list.type                     车辆类型信息数组
      */
     public function getAllCarStyle(){
+        //校验参数
+        $paramAll = $this->getReqParams(['type']);
+        $carLogic = model('Car','logic');
 
     }
 

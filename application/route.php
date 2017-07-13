@@ -4,23 +4,10 @@ use think\Route;
 Route::any('apiCode','Index/apiCode');
 Route::any('appConfig','Index/appConfig');
 Route::any('lastApk','Index/lastApk');
+
 Route::get('index/home','Index/home');
 Route::post('index/sendCaptcha','Index/sendCaptcha');
 
-Route::get('u9api/syncAll','U9Api/syncAll');
-Route::get('u9api/initU9Data','U9Api/initU9Data');
-Route::get('u9api/initSupplier','U9Api/initSupplier');
-Route::get('u9api/syncSupplier','U9Api/syncSupplier');
-Route::get('u9api/syncItem','U9Api/syncItem');
-Route::get('u9api/initItem','U9Api/initItem');
-Route::get('u9api/syncItemTrade','U9Api/syncItemTrade');
-Route::get('u9api/syncSupItem','U9Api/syncSupItem');
-Route::get('u9api/syncPr','U9Api/syncPr');
-Route::get('u9api/initPr','U9Api/initPr');
-Route::get('u9api/prToInquiry','U9Api/prToInquiry');
-Route::get('u9api/evaluateBid','U9Api/evaluateBid');
-Route::get('u9api/syncPOState','U9Api/syncPOState');
-Route::get('u9api/placeOrder','U9Api/placeOrder');
 
 Route::get('user/info','User/info');
 Route::get('user/computeQlfScore','User/computeQlfScore');
@@ -37,6 +24,7 @@ Route::post('inquiry/quote','inquiry/quote');
 
 Route::put('po/agree','PO/agree');
 Route::put('po/refuse','PO/refuse');
+
 
 return [
     //-------------------
