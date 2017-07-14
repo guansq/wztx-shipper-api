@@ -994,6 +994,13 @@
             "group": "Parameter",
             "type": "String",
             "optional": false,
+            "field": "dest_telphone",
+            "description": "<p>收货人电话</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
             "field": "goods_name",
             "description": "<p>货物名称</p>"
           },
@@ -1080,34 +1087,6 @@
             "optional": true,
             "field": "usecar_time",
             "description": "<p>用车时间</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": true,
-            "field": "arr_time",
-            "description": "<p>到达时间</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": true,
-            "field": "real_name",
-            "description": "<p>货主名</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": true,
-            "field": "company_name",
-            "description": "<p>公司名称</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": true,
-            "field": "customer_type",
-            "description": "<p>person-个人company-公司</p>"
           }
         ]
       }

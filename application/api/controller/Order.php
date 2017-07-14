@@ -30,6 +30,7 @@ class Order extends BaseController{
      * @apiParam  {String}  dest_address_name             目的地名称
      * @apiParam  {String}  dest_address_detail           目的地详情
      * @apiParam  {String}  dest_phone                    收货人手机
+     * @apiParam  {String}  dest_telphone                 收货人电话
      * @apiParam  {String}  goods_name                    货物名称
      * @apiParam  {String}  volume                        总体积（立方米）
      * @apiParam  {String}  weight                        总重量（吨）
@@ -43,10 +44,6 @@ class Order extends BaseController{
      * @apiParam  {String}  remark                        备注
      * @apiParam  {String}  tran_type                     0=短途1=长途
      * @apiParam  {String}  [usecar_time]                 用车时间
-     * @apiParam  {String}  [arr_time]                    到达时间
-     * @apiParam  {String}  [real_name]                   货主名
-     * @apiParam  {String}  [company_name]                公司名称
-     * @apiParam  {String}  [customer_type]               person-个人company-公司
      */
     public function add(){
 
