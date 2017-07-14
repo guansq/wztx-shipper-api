@@ -51,7 +51,6 @@ class User extends BaseController{
             returnJson(['4020','注册失败',[]]);
         }
         returnJson($result);
-        //echo getenv('APP_API_HOME');
     }
 
     /**

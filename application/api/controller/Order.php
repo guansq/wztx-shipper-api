@@ -148,9 +148,9 @@ class Order extends BaseController{
         }
         $systemPrice = wztxMoney($systemPrice);
         $paramAll['system_price'] = wztxMoney($paramAll['system_price']);
-        /*if($systemPrice != $paramAll['system_price']){
+        if($systemPrice != $paramAll['system_price']){
             returnJson(4022,'系统价格不一致');
-        }*/
+        }
         //完善个人信息填写  sp_id
         $paramAll['sp_id'] = $baseUserInfo['id'];
         $paramAll['real_name'] = $baseUserInfo['real_name'];
