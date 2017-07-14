@@ -10,7 +10,7 @@ namespace app\api\controller;
 class Order extends BaseController{
 
     /**
-     * @api {POST}  /order/add      提交订单
+     * @api {POST}  /order/add      提交订单done
      * @apiName     addOrder
      * @apiGroup    Order
      *
