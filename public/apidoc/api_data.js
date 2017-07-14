@@ -902,6 +902,13 @@ define({ "api": [
           {
             "group": "Parameter",
             "type": "String",
+            "optional": true,
+            "field": "premium_amount",
+            "description": "<p>保费金额</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
             "optional": false,
             "field": "org_address_maps",
             "description": "<p>出发地地址的坐标 如116.480881,39.989410</p>"
@@ -944,7 +951,7 @@ define({ "api": [
           {
             "group": "Parameter",
             "type": "String",
-            "optional": false,
+            "optional": true,
             "field": "org_telphone",
             "description": "<p>发货人电话</p>"
           },
@@ -993,7 +1000,7 @@ define({ "api": [
           {
             "group": "Parameter",
             "type": "String",
-            "optional": false,
+            "optional": true,
             "field": "dest_telphone",
             "description": "<p>收货人电话</p>"
           },
@@ -1071,6 +1078,13 @@ define({ "api": [
             "group": "Parameter",
             "type": "String",
             "optional": false,
+            "field": "system_price",
+            "description": "<p>系统价</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
             "field": "remark",
             "description": "<p>备注</p>"
           },
@@ -1084,9 +1098,29 @@ define({ "api": [
           {
             "group": "Parameter",
             "type": "String",
+            "optional": false,
+            "field": "kilometres",
+            "description": "<p>公里数</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
             "optional": true,
             "field": "usecar_time",
             "description": "<p>用车时间</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "order_id",
+            "description": "<p>订单ID</p>"
           }
         ]
       }

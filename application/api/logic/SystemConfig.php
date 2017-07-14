@@ -30,6 +30,16 @@ class SystemConfig extends BaseLogic{
             'lastApkVersion' => getSysconf('last_apk_version',''),
             'lastApkVersionNum' => intval(getSysconf('last_apk_version_num','')),
             'defaultAvatar' => 'http://opmnz562z.bkt.clouddn.com/b22e33502ca2e6e1d93a996e062e8f2d.png',
+            'share_percent' => getSysconf('share_percent'),
+            'grab_range' => getSysconf('grab_range'),
+            'premium_rate' => getSysconf('premium_rate'),
+            'bond_person_amount' => getSysconf('bond_person_amount'),
+            'bond_company_amount' => getSysconf('bond_company_amount'),
+            'withdraw_begintime' => getSysconf('withdraw_begintime'),
+            'withdraw_endtime' => getSysconf('withdraw_endtime'),
+            'custom_phone' => getSysconf('custom_phone'),
+            'custom_email' => getSysconf('custom_email'),
+            'complain_phone' => getSysconf('complain_phone'),
             'xx' => '其他参数',
         ];
 

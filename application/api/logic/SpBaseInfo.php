@@ -129,4 +129,12 @@ class SpBaseInfo extends BaseLogic{
     public function getRecommList($userInfo){
 
     }
+
+    public function getBaseUserInfo($userInfo){
+        $ret = $this->where("id",$userInfo['id'])->find();
+        if(empty($ret)){
+            return returnJson('4000','推荐码为空');
+        }
+        return $ret;
+    }
 }

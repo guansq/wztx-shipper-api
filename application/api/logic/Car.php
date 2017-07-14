@@ -33,4 +33,20 @@ class Car extends BaseLogic{
         //dump($newArr);die;
         return resultArray('2000','成功',$newArr);
     }
+
+    /**
+     * Auther: guanshaoqiu <94600115@qq.com>
+     * Describe:得到车辆信息
+     */
+    public function findCarInfoById($carId){
+        $where = [
+            'id' => $carId,
+            'status' => 0
+        ];
+        $ret = $this->where($where)->find();
+        if(empty($ret)){
+            returnJson('4000','暂无车辆信息');
+        }
+        return $ret;
+    }
 }

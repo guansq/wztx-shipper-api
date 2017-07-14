@@ -316,7 +316,7 @@ function wztxDate($time){
     if(empty($time)){
         return $time;
     }
-    return date('Y-m-d',$time);
+    return date('Y-m-d H:i:s',$time);
 }
 
 /*
@@ -324,10 +324,31 @@ function wztxDate($time){
  */
 function wztxMoney($num,$ispre = false){
     $num = $num > 0 ? $num : 0;
-    $formattedNum = number_format($num, 2);
+    //number_format(10000, 2, '.', '')
+    $formattedNum = number_format($num, 2,'.', '') ;
     if($ispre){
         return '¥'.$formattedNum;
     }else{
         return $formattedNum;
     }
+}
+
+/*
+ * 计算系统价格
+ */
+function accountSystemPrice(){
+
+}
+
+/*
+ * 得到公司名称
+ */
+function getCompanyName($userInfo){
+    if(!empty($userInfo)){
+        if(!empty($userInfo['company_id'])){
+            return Db::name('sp_company_auth')->where("sp_id",$userInfo['id'])->value('com_name');
+        }
+        return '';
+    }
+    return '';
 }
