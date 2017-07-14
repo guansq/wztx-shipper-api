@@ -918,98 +918,77 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "org_address_name",
-            "description": "<p>出发地名称+出发地详细名称</p>"
+            "description": "<p>出发地名称</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "org_address_detail",
+            "description": "<p>出发地详情</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "start_address_name",
-            "description": "<p>出发地-地点名称</p>"
+            "field": "org_send_name",
+            "description": "<p>发货人姓名</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "start_address_detail",
-            "description": "<p>出发地-详细名称</p>"
+            "field": "org_phone",
+            "description": "<p>发货人手机</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "start_name",
-            "description": "<p>出发地-发货人</p>"
+            "field": "org_telphone",
+            "description": "<p>发货人电话</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "start_phone",
-            "description": "<p>出发地-手机号</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "start_telephone",
-            "description": "<p>出发地-电话号码</p>"
+            "field": "dest_receive_name",
+            "description": "<p>收货人姓名</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
             "optional": false,
             "field": "dest_address_maps",
-            "description": "<p>目的地地址的坐标 如116.480881,39.989410</p>"
+            "description": "<p>目的地址的坐标 如116.480881,39.989410</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
             "optional": false,
             "field": "dest_city",
-            "description": "<p>目的地省市区</p>"
+            "description": "<p>到达城市</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
             "optional": false,
             "field": "dest_address_name",
-            "description": "<p>目的地名称+目的地详细名称</p>"
+            "description": "<p>目的地名称</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "arr_address_name",
-            "description": "<p>目的地-地点名称</p>"
+            "field": "dest_address_detail",
+            "description": "<p>目的地详情</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "arr_address_detail",
-            "description": "<p>目的地-详细名称</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "arr_name",
-            "description": "<p>目的地-发货人</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "arr_phone",
-            "description": "<p>目的地-手机号</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "arr_telephone",
-            "description": "<p>目的地-电话号码</p>"
+            "field": "dest_phone",
+            "description": "<p>收货人手机</p>"
           },
           {
             "group": "Parameter",
@@ -1022,71 +1001,50 @@ define({ "api": [
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "weight",
-            "description": "<p>总重量（吨）保留3位小数点</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
             "field": "volume",
-            "description": "<p>总体积（立方米）保留3位小数点</p>"
+            "description": "<p>总体积（立方米）</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "car_style_length",
-            "description": "<p>车辆要求-车长</p>"
+            "field": "weight",
+            "description": "<p>总重量（吨）</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
             "optional": false,
             "field": "car_style_type",
-            "description": "<p>车辆要求-车型</p>"
+            "description": "<p>车型名称-对应car_style里name</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "insured_amount",
-            "description": "<p>货物保险-投保金额 保留2位小数点</p>"
+            "field": "car_style_type_id",
+            "description": "<p>车型-对应car_style里id</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "premium_amount",
-            "description": "<p>货物保险-保费金额 保留2位小数点</p>"
+            "field": "car_style_length",
+            "description": "<p>车长-对应car_style里name</p>"
           },
           {
             "group": "Parameter",
-            "type": "Int",
+            "type": "String",
             "optional": false,
+            "field": "car_style_length_id",
+            "description": "<p>车长-对应car_style里id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
             "field": "effective_time",
-            "description": "<p>在途时效,统一换算成分钟</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "system_price",
-            "description": "<p>系统价 保留2位小数点</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": true,
-            "field": "mind_price",
-            "description": "<p>心理价位 保留2位小数点</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": true,
-            "field": "remark",
-            "description": "<p>备注</p>"
+            "description": "<p>在途时效（分钟）</p>"
           },
           {
             "group": "Parameter",
@@ -1094,6 +1052,62 @@ define({ "api": [
             "optional": false,
             "field": "is_receipt",
             "description": "<p>货物回单1-是-默认，2-否</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "mind_price",
+            "description": "<p>心理价位</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "remark",
+            "description": "<p>备注</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "tran_type",
+            "description": "<p>0=短途1=长途</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "usecar_time",
+            "description": "<p>用车时间</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "arr_time",
+            "description": "<p>到达时间</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "real_name",
+            "description": "<p>货主名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "company_name",
+            "description": "<p>公司名称</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "customer_type",
+            "description": "<p>person-个人company-公司</p>"
           }
         ]
       }
@@ -1833,7 +1847,7 @@ define({ "api": [
   {
     "type": "GET",
     "url": "recommend/showMyRecommInfo",
-    "title": "显示我的推荐信息",
+    "title": "显示我的推荐信息done",
     "name": "showMyRecommInfo",
     "group": "Recommend",
     "header": {

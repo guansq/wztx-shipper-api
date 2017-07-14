@@ -19,33 +19,34 @@ class Order extends BaseController{
      * @apiParam  {String}  [appoint_at]                  预约时间
      * @apiParam  {String}  org_address_maps              出发地地址的坐标 如116.480881,39.989410
      * @apiParam  {String}  org_city                      出发地省市区
-     * @apiParam  {String}  org_address_name              出发地名称+出发地详细名称
-     * @apiParam  {String}  start_address_name            出发地-地点名称
-     * @apiParam  {String}  start_address_detail          出发地-详细名称
-     * @apiParam  {String}  start_name                    出发地-发货人
-     * @apiParam  {String}  start_phone                   出发地-手机号
-     * @apiParam  {String}  start_telephone               出发地-电话号码
-     * @apiParam  {String}  dest_address_maps             目的地地址的坐标 如116.480881,39.989410
-     * @apiParam  {String}  dest_city                     目的地省市区
-     * @apiParam  {String}  dest_address_name             目的地名称+目的地详细名称
-     * @apiParam  {String}  arr_address_name              目的地-地点名称
-     * @apiParam  {String}  arr_address_detail            目的地-详细名称
-     * @apiParam  {String}  arr_name                      目的地-发货人
-     * @apiParam  {String}  arr_phone                     目的地-手机号
-     * @apiParam  {String}  arr_telephone                 目的地-电话号码
+     * @apiParam  {String}  org_address_name              出发地名称
+     * @apiParam  {String}  [org_address_detail]          出发地详情
+     * @apiParam  {String}  org_send_name                 发货人姓名
+     * @apiParam  {String}  org_phone                     发货人手机
+     * @apiParam  {String}  org_telphone                  发货人电话
+     * @apiParam  {String}  dest_receive_name             收货人姓名
+     * @apiParam  {String}  dest_address_maps             目的地址的坐标 如116.480881,39.989410
+     * @apiParam  {String}  dest_city                     到达城市
+     * @apiParam  {String}  dest_address_name             目的地名称
+     * @apiParam  {String}  dest_address_detail           目的地详情
+     * @apiParam  {String}  dest_phone                    收货人手机
      * @apiParam  {String}  goods_name                    货物名称
-     * @apiParam  {String}   weight                        总重量（吨）保留3位小数点
-     * @apiParam  {String}   volume                        总体积（立方米）保留3位小数点
-     * @apiParam  {String}  car_style_length              车辆要求-车长
-     * @apiParam  {String}  car_style_type                车辆要求-车型
-     * @apiParam  {String}  car_style_type                车辆要求-车型
-     * @apiParam  {String}   insured_amount                货物保险-投保金额 保留2位小数点
-     * @apiParam  {String}   premium_amount                货物保险-保费金额 保留2位小数点
-     * @apiParam  {Int}     effective_time                在途时效,统一换算成分钟
-     * @apiParam  {String}   system_price                  系统价 保留2位小数点
-     * @apiParam  {String}   [mind_price]                  心理价位 保留2位小数点
-     * @apiParam  {String}  [remark]                      备注
+     * @apiParam  {String}  volume                        总体积（立方米）
+     * @apiParam  {String}  weight                        总重量（吨）
+     * @apiParam  {String}  car_style_type                车型名称-对应car_style里name
+     * @apiParam  {String}  car_style_type_id             车型-对应car_style里id
+     * @apiParam  {String}  car_style_length              车长-对应car_style里name
+     * @apiParam  {String}  car_style_length_id           车长-对应car_style里id
+     * @apiParam  {String}  [effective_time]              在途时效（分钟）
      * @apiParam  {String}  is_receipt                    货物回单1-是-默认，2-否
+     * @apiParam  {String}  [mind_price]                  心理价位
+     * @apiParam  {String}  remark                        备注
+     * @apiParam  {String}  tran_type                     0=短途1=长途
+     * @apiParam  {String}  [usecar_time]                 用车时间
+     * @apiParam  {String}  [arr_time]                    到达时间
+     * @apiParam  {String}  [real_name]                   货主名
+     * @apiParam  {String}  [company_name]                公司名称
+     * @apiParam  {String}  [customer_type]               person-个人company-公司
      */
     public function add(){
 
