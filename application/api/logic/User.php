@@ -88,6 +88,7 @@ class User extends BaseLogic{
         $token = JwtHelper::encodeToken($loginUser);
         $ret = [
             'userId' => $loginUser->id,
+            'real_name' => $loginUser->real_name,
             'accessToken' => $token,
             'refreshToken' => '没有哟~',
             'expireTime' => $loginUser->last_login_time + JwtHelper::DUE_TIME,
@@ -229,7 +230,7 @@ class User extends BaseLogic{
      * @param $account
      */
     private function findByAccount($account){
-        return $this->where(['user_name' => $account])->find();
+        return $this->alias('a')->field('a.*,b.real_name')->join('sp_base_info b','a.user_name = b.phone','LEFT')->where(['a.user_name' => $account])->find();
     }
 
     /**
@@ -291,7 +292,7 @@ class User extends BaseLogic{
             $baseUser['update_at'] = $now;
             $baseUser['recomm_code'] = randomStr(6);
             if(isset($params['recom_code'])){
-                $baseUser['recom_code'] = $params['recom_code'];
+                $baseUser['recomm_id'] = getBaseIdByRecommCode($params['recom_code']);//写入推荐人ID进数据库
             }
             $result = Db::name('sp_base_info')->insertGetId($baseUser);
             Db::commit();

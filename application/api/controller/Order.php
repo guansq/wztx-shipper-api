@@ -144,8 +144,19 @@ class Order extends BaseController{
         if($paramAll['kilometres'] <= $carInfo['init_kilometres']){
             $systemPrice = $carInfo['init_price'];
         }else{
-            $systemPrice = $carInfo['init_price']+($paramAll['kilometres']-$carInfo['init_kilometres'])*$carInfo['over_metres_price']+$paramAll['weight']*$paramAll['kilometres']*$carInfo['weight_price'];
+            $init_price = $carInfo['init_price'];//起步价
+
+            $beyond_kilo = $paramAll['kilometres']-$carInfo['init_kilometres'];//超出公里
+
+            $beyond_price = $beyond_kilo*$carInfo['over_metres_price']+$paramAll['weight']*$carInfo['weight_price']*$beyond_kilo;//超出公里价格
+            $systemPrice = $init_price+$beyond_price;
         }
+        //echo $systemPrice.'<br>';
+        //echo $paramAll['system_price'];
+        //die;
+        //echo $paramAll['system_price'];
+        //echo '<br>';
+        //echo wztxMoney($paramAll['system_price']);die;
         $systemPrice = wztxMoney($systemPrice);
         $paramAll['system_price'] = wztxMoney($paramAll['system_price']);
         if($systemPrice != $paramAll['system_price']){

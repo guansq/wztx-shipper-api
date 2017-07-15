@@ -2488,6 +2488,13 @@
             "optional": false,
             "field": "bond",
             "description": "<p>保证金 保留两位小数点</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "recomm_code",
+            "description": "<p>推荐码</p>"
           }
         ]
       }
@@ -2571,6 +2578,13 @@
             "optional": false,
             "field": "userId",
             "description": "<p>用户id.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "real_name",
+            "description": "<p>用户真实姓名.</p>"
           },
           {
             "group": "Success 200",
@@ -2861,7 +2875,7 @@
     ]
   },
   {
-    "type": "PUT",
+    "type": "POST",
     "url": "/user/updateInfo",
     "title": "更新用户信息(ok)",
     "name": "updateInfo",

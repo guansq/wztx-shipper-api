@@ -194,6 +194,7 @@ class User extends BaseController{
      * @apiSuccess {String} refreshToken    刷新凭证.
      * @apiSuccess {Number} expireTime      有效期.
      * @apiSuccess {Number} userId          用户id.
+     * @apiSuccess {String} real_name       用户真实姓名.
      * @apiSuccess {String} type            用户类型.
      */
     public function login(Request $request){
@@ -253,6 +254,7 @@ class User extends BaseController{
      * @apiSuccess {String} auth_status         认证状态（init=未认证，check=认证中，pass=认证通过，refuse=认证失败，delete=后台删除）
      * @apiSuccess {String} bond_status         保证金状态(init=未缴纳，checked=已缴纳,frozen=冻结)
      * @apiSuccess {String}  bond                保证金 保留两位小数点
+     * @apiSuccess {String}  recomm_code         推荐码
      */
 
     public function info(Request $request){
@@ -283,7 +285,7 @@ class User extends BaseController{
     }
 
     /**
-     * @api      {PUT} /user/updateInfo  更新用户信息(ok)
+     * @api      {POST} /user/updateInfo  更新用户信息(ok)
      * @apiName  updateInfo
      * @apiGroup User
      * @apiHeader {String} authorization-token           token.

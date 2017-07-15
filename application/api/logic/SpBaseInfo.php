@@ -57,6 +57,7 @@ class SpBaseInfo extends BaseLogic{
         //更新法人信息 //'real_name' =>操作人名
         $updateArr = [
             'company_id' => $company_id,
+            'real_name' => $param['com_name'],
             'identity' => $param['identity'],
             'hold_pic' => $param['sp_hold_pic'],
             'front_pic' => $param['sp_front_pic'],
