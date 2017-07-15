@@ -30,9 +30,13 @@ class File extends BaseLogic{
             return resultArray(6001);
         }
         $ossRet = json_decode($return_data,true);
-        if(empty($ossRet) || $ossRet['code'] !=2000){
-            return resultArray(6001,'',$ossRet);
+        if(empty($ossRet)){
+            return resultArray(6001,'上传图片错误','');
         }
+        if($ossRet['code'] !=2000){
+            return resultArray(6001,$ossRet['msg'],'');
+        }
+
         return resultArray($ossRet);
     }
 
