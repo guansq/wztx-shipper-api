@@ -1687,9 +1687,9 @@
   },
   {
     "type": "POST",
-    "url": "/order/sendDriverPrice",
-    "title": "提交司机报价",
-    "name": "sendDriverPrice",
+    "url": "/order/sendOrder",
+    "title": "派单给司机",
+    "name": "sendOrder",
     "group": "Quote",
     "header": {
       "fields": {
@@ -1711,20 +1711,6 @@
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "quote_id",
-            "description": "<p>报价ID</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "driver_id",
-            "description": "<p>司机ID</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
             "field": "order_id",
             "description": "<p>订单ID</p>"
           },
@@ -1732,8 +1718,8 @@
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "quote_price",
-            "description": "<p>报价</p>"
+            "field": "maps",
+            "description": "<p>坐标 如   '120.733833,31.253328'</p>"
           }
         ]
       }
@@ -1743,7 +1729,7 @@
     "groupTitle": "Quote",
     "sampleRequest": [
       {
-        "url": "http://wztx.shp.api.ruitukeji.com/order/sendDriverPrice"
+        "url": "http://wztx.shp.api.ruitukeji.com/order/sendOrder"
       }
     ]
   },
