@@ -14,8 +14,10 @@
 
 
 use think\Validate;
-
-
+use service\HttpService;
+use DesUtils\DesUtils;
+use think\Db;
+//use DesUtils;
 /**
  * 打印输出数据到文件
  * @param mixed       $data
@@ -379,7 +381,7 @@ function sendMsg($sendeeId,$title,$content,$basetype=0,$type='single',$pri=3){
     $data = [
         'title' => $title,
         'content' => $content,
-        'type' => $type,
+        'type' => $basetype,
         'publish_time' => time(),
         'pri' => $pri,
         'create_at' => time(),
@@ -406,6 +408,7 @@ function sendSMS($phone,$content,$rt_key='wztx_shipper'){
         'rt_appkey' => 'wztx_shipper',
         'text' => $content,
     ];
+    //进行签名校验
     HttpService::curl(getenv('APP_API_MSG').'SendSms/sendText',$sendData);//sendSms($data)
 }
 
@@ -417,6 +420,8 @@ function pushInfo($token,$title,$content,$rt_key='wztx_shipper'){
     $sendData = [
         "platform" => "all",
         "rt_appkey" => "wztx_shipper",
+        "req_time" => 1500109289,
+        "req_action" => 'push',
         "alert" => $title,
         "regIds" => $token,
         //"platform" => "all",
@@ -433,5 +438,16 @@ function pushInfo($token,$title,$content,$rt_key='wztx_shipper'){
             ]
         ]
     ];
-    HttpService::curl(getenv('APP_API_MSG').'push',$sendData);
+    $desClass = new DesUtils();
+    $arrOrder = $desClass->naturalOrdering([$sendData['rt_appkey'],$sendData['req_time'],$sendData['req_action']]);
+    $skArr = explode('_',config('app_access_key'));
+    $sendData['sign'] = $desClass->strEnc($arrOrder,$skArr[0],$skArr[1],$skArr[2]);//签名
+    $result = HttpService::post(getenv('APP_API_HOME').'push',http_build_query($sendData));
+    //dump($result);
+}
+/*
+ * 得到推送token
+ */
+function getPushToken($id){
+    return Db::name('system_user_driver')->where("id",$id)->value('push_token');
 }

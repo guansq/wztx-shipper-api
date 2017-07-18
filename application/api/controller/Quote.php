@@ -10,6 +10,7 @@ namespace app\api\controller;
 use think\Request;
 
 use service\MapService;
+use DesUtils\DesUtils;
 class Quote extends BaseController{
     const MSG = '您有一条新的订单';
     const TITLE = '订单信息';
@@ -59,6 +60,8 @@ class Quote extends BaseController{
         }
         //写入询价表
         $quoteLogic = model('Quote','logic');
+        //更改订单为询价中
+        model('TransportOrder','logic')->updateTransport(['id'=>$paramAll['order_id']],['status'=>'quote']);//更改订单为询价中
         foreach($list as $k => $v){
             $info['goods_name'] = $orderInfo['goods_name'];
             $info['weight'] = $orderInfo['weight'];
@@ -76,8 +79,13 @@ class Quote extends BaseController{
             $info['org_address_detail'] = $orderInfo['org_address_detail'];
             $info['dest_address_detail'] = $orderInfo['dest_address_detail'];
             $quoteId = $quoteLogic->saveQuoteInfo($info);
-            //推送消息给司机
-            sendMsg($this->loginUser['id'],self::TITLE,self::CONTENT);
+            //发送系统消息给司机
+            sendMsg($info['dr_id'],self::TITLE,self::CONTENT,1);
+            //发送推送消息
+            $push_token = getPushToken($info['dr_id']);//得到推送token
+            if(!empty($push_token)){
+                pushInfo($push_token,self::TITLE,self::CONTENT);
+            }
         }
     }
 
@@ -106,6 +114,34 @@ class Quote extends BaseController{
             returnJson('4000','附近没有找到司机');
         }
         return $driver;//返回司机列表
+    }
+
+
+    public function test(Request $request){
+        $appKey = input('rt_appkey');
+        $reqTime = input('req_time');
+        $action = input('req_action');
+        $secret = config('app_access_key');
+        $secretArr = explode('_',$secret);
+        $params = [$appKey, $action ,$reqTime ];
+
+        $des = new DesUtils();
+        $naturalOrdering = $des->naturalOrdering($params);
+
+        $sign = $des->strEnc($naturalOrdering,$secretArr[0],$secretArr[1],$secretArr[2]);
+        if($request->isGet()){
+            $this->assign('action', $action);
+            $this->assign('appKey', $appKey);
+            $this->assign('secret', $secret);
+            $this->assign('naturalOrdering', $naturalOrdering);
+            $this->assign('sign', $sign);
+            return view();
+        }
+
+        if($request->isPost()){
+            returnJson(2000,$sign);
+        }
+
     }
 
 }

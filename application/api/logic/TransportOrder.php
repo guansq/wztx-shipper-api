@@ -12,7 +12,7 @@ class TransportOrder extends BaseLogic{
 
     /**
      * Auther: guanshaoqiu <94600115@qq.com>
-     * Describe:
+     * Describe: 保存订单信息
      */
     public function saveTransportOrder($param){
         //$param['system_price'] = '2017.02';
@@ -25,8 +25,27 @@ class TransportOrder extends BaseLogic{
         return resultArray(4000,'保存订单失败');
     }
 
+    /**
+     * Auther: guanshaoqiu <94600115@qq.com>
+     * Describe: * @param $where
+     * 得到单个订单信息
+     */
     public function getTransportOrderInfo($where){
         $ret = $this->where($where)->find();
         return $ret;
+    }
+
+    /**
+     * Auther: guanshaoqiu <94600115@qq.com>
+     * Describe: * @param $where
+     * @param $data
+     * 更改订单信息
+     */
+    public function updateTransport($where,$data){
+        $ret = $this->where($where)->update($data);
+        if($ret !== true){
+            return resultArray(4000,'更改订单状态失败');
+        }
+        return resultArray(2000,'更改订单状态成功');
     }
 }
