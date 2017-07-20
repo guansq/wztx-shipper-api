@@ -420,7 +420,7 @@ function pushInfo($token,$title,$content,$rt_key='wztx_shipper'){
     $sendData = [
         "platform" => "all",
         "rt_appkey" => "wztx_shipper",
-        "req_time" => 1500109289,
+        "req_time" => time(),
         "req_action" => 'push',
         "alert" => $title,
         "regIds" => $token,
@@ -450,4 +450,15 @@ function pushInfo($token,$title,$content,$rt_key='wztx_shipper'){
  */
 function getPushToken($id){
     return Db::name('system_user_driver')->where("id",$id)->value('push_token');
+}
+
+/*
+ * 生成签名
+ */
+function createSign($sendData){
+    dump($sendData);die;
+    $desClass = new DesUtils();
+    $arrOrder = $desClass->naturalOrdering([$sendData['rt_appkey'],$sendData['req_time'],$sendData['req_action']]);
+    $skArr = explode('_',config('app_access_key'));
+    return $desClass->strEnc($arrOrder,$skArr[0],$skArr[1],$skArr[2]);//签名
 }
