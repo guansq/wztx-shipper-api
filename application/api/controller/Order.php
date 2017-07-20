@@ -236,7 +236,7 @@ class Order extends BaseController {
             'org_phone' => $orderInfo['org_phone'],
             'org_address_name' => $orderInfo['org_address_name'],
             'org_address_detail' => $orderInfo['org_address_detail'],
-            'usecar_time' =>wztxDate( $orderInfo['usecar_time']),
+            'usecar_time' => wztxDate($orderInfo['usecar_time']),
             'send_time' => wztxDate($orderInfo['send_time']),
             'arr_time' => wztxDate($orderInfo['arr_time']),
             'real_name' => $dr_real_name,
@@ -244,7 +244,7 @@ class Order extends BaseController {
             'policy_code' => $orderInfo['policy_code'],
             'is_pay' => $orderInfo['is_pay'],
             'is_receipt' => $orderInfo['is_receipt'],
-            'final_price' =>wztxMoney($orderInfo['final_price']) ,
+            'final_price' => wztxMoney($orderInfo['final_price']),
         ];
         returnJson('2000', '成功', $detail);
     }
@@ -255,13 +255,19 @@ class Order extends BaseController {
      * @apiGroup    Order
      * @apiHeader {String}  authorization-token     token
      * @apiParam   {String} type        订单状态（all全部状态，quote报价中，quoted已报价，待发货 distribute配送中（在配送-未拍照）发货中 photo 拍照完毕（订单已完成））
+     * @apiParam {Number} [page=1]                  页码.
+     * @apiParam {Number} [pageSize=20]             每页数据量.
      * @apiSuccess {Array}  list        订单列表
      * @apiSuccess {String} list.org_city               出发地名称
      * @apiSuccess {String} list.dest_city              目的地名称
      * @apiSuccess {String} list.weight                 货物重量
      * @apiSuccess {String} list.goods_name             货物名称
      * @apiSuccess {String} list.status init 初始状态（未分发订单前）quote报价中（分发订单后）quoted已报价-未配送（装货中）distribute配送中（在配送-未拍照）发货中 photo 拍照完毕（订单已完成）pay_failed（支付失败）/pay_success（支付成功）comment（已评论）
-     */
+     * @apiSuccess {Number} page                页码.
+     * @apiSuccess {Number} pageSize            每页数据量.
+     * @apiSuccess {Number} dataTotal           数据总数.
+     * @apiSuccess {Number} pageTotal           总页码数.
+     * */
     public function showOrderList() {
         $paramAll = $this->getReqParams([
             'type',
@@ -271,25 +277,17 @@ class Order extends BaseController {
         ];
         validateData($paramAll, $rule);
         $where = [];
-        if($paramAll['type'] != 'all'){
-            $where['status'] =  $paramAll['type'];
+        if ($paramAll['type'] != 'all') {
+            $where['status'] = $paramAll['type'];
         }
         $where['sp_id'] = $this->loginUser['id'];
-        $orderInfo = model('TransportOrder', 'logic')->getTransportOrderList($where);
+        $pageParam = $this->getPagingParams();
+        $orderInfo = model('TransportOrder', 'logic')->getTransportOrderList($where, $pageParam);
         if (empty($orderInfo)) {
             returnJson('4000', '暂无订单信息');
         }
-        $list = [];
-        foreach ($orderInfo as $k => $v) {
-            $list[] = [
-                'org_city' => $v['org_city'],
-                'dest_city' => $v['dest_city'],
-                'weight' => $v['weight'],
-                'goods_name' => $v['goods_name'],
-                'status' => $v['status']
-            ];
-        }
-        returnJson('2000', '成功', ['list' => $list]);
+
+        returnJson('2000', '成功', $orderInfo);
     }
 
 
