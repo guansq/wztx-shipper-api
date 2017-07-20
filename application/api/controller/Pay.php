@@ -67,10 +67,16 @@ class Pay extends BaseController{
      * @apiName rechargeRecord
      * @apiGroup Pay
      * @apiHeader {String} authorization-token      token.
+     * @apiParam {Number} [page=1]                  页码.
+     * @apiParam {Number} [pageSize=20]             每页数据量.
      * @apiParam  {Array}   list                     充值记录列表
      * @apiParam  {String}  list.real_amount              充值金额
      * @apiParam  {Int}    list.pay_way                  支付方式 1=支付宝，2=微信
      * @apiSuccess {Int}   list.pay_status               支付状态 0=未支付，1=支付成功，2=支付失败
+     * @apiSuccess {Number} page                页码.
+     * @apiSuccess {Number} pageSize            每页数据量.
+     * @apiSuccess {Number} dataTotal           数据总数.
+     * @apiSuccess {Number} pageTotal           总页码数.
      */
     public function rechargeRecord(){
 

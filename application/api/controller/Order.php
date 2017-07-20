@@ -176,7 +176,7 @@ class Order extends BaseController {
 
 
     /**
-     * @api {POST}  /order/showOrderInfo      显示订单详情
+     * @api {POST}  /order/showOrderInfo      显示订单详情done
      * @apiName     showOrderInfo
      * @apiGroup    Order
      * @apiHeader {String}  authorization-token     token
@@ -250,7 +250,7 @@ class Order extends BaseController {
     }
 
     /**
-     * @api {POST}  /order/showOrderList      显示订单列表
+     * @api {POST}  /order/showOrderList      显示订单列表done
      * @apiName     showOrderList
      * @apiGroup    Order
      * @apiHeader {String}  authorization-token     token
@@ -262,6 +262,8 @@ class Order extends BaseController {
      * @apiSuccess {String} list.dest_city              目的地名称
      * @apiSuccess {String} list.weight                 货物重量
      * @apiSuccess {String} list.goods_name             货物名称
+     * @apiSuccess {String} list.car_style_length        车长
+     * @apiSuccess {String} list.car_style_type          车型
      * @apiSuccess {String} list.status init 初始状态（未分发订单前）quote报价中（分发订单后）quoted已报价-未配送（装货中）distribute配送中（在配送-未拍照）发货中 photo 拍照完毕（订单已完成）pay_failed（支付失败）/pay_success（支付成功）comment（已评论）
      * @apiSuccess {Number} page                页码.
      * @apiSuccess {Number} pageSize            每页数据量.
