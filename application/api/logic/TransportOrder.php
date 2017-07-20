@@ -43,7 +43,7 @@ class TransportOrder extends BaseLogic{
      */
     public function updateTransport($where,$data){
         $ret = $this->where($where)->update($data);
-        if($ret !== true){
+        if($ret === false){
             return resultArray(4000,'更改订单状态失败');
         }
         return resultArray(2000,'更改订单状态成功');

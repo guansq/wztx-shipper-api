@@ -27,9 +27,6 @@ class Comment extends BaseLogic{
      */
     public function getOrderCommentInfo($where){
         $ret = $this->where($where)->field("order_id,sp_id,sp_name,dr_id,dr_name,post_time,limit_ship,attitude,satisfaction,content,status")->find();
-        if($ret){
-            return resultArray(2000,'成功',$ret);
-        }
-        return resultArray(4000,'未获取到订单信息');
+       return $ret;
     }
 }

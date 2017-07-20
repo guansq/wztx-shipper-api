@@ -39,7 +39,12 @@ class Comment extends BaseController {
         validateData($paramAll, $rule);
         //获取订单评论详情
         $commetInfo = model('Comment', 'logic')->getOrderCommentInfo(['order_id' => $paramAll['order_id'], 'sp_id' => $this->loginUser['id']]);
-        returnJson($commetInfo);
+
+        if (!empty($commetInfo)) {
+            $commetInfo['post_time'] = wztxDate($commetInfo['post_time']);
+            return returnJson(2000, '成功', $commetInfo);
+        }
+        returnJson(4000, '未获取到订单信息');
     }
 
     /**
@@ -86,7 +91,7 @@ class Comment extends BaseController {
         $paramAll['sp_id'] = $this->loginUser['id'];
         if ($spBaseInfo['code'] == 2000) {
             $paramAll['sp_name'] = $spBaseInfo['result']['real_name'];
-        }else{
+        } else {
             $paramAll['sp_name'] = '';
         }
         $drBaseInfo = model('DrBaseInfo', 'logic')->findInfoByUserId($orderInfo['dr_id']);
@@ -98,9 +103,9 @@ class Comment extends BaseController {
         $paramAll['status'] = 0;
         //没有问题存入数据库
         $changeStatus = model('TransportOrder', 'logic')->updateTransport(['id' => $paramAll['order_id']], ['status' => 'comment']);
-       if($changeStatus['code'] != '2000'){
-           returnJson($changeStatus);
-       }
+        if ($changeStatus['code'] != '2000') {
+            returnJson($changeStatus);
+        }
         $ret = model('Comment', 'logic')->saveOrderComment($paramAll);
         returnJson($ret);
     }

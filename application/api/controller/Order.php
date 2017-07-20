@@ -236,15 +236,15 @@ class Order extends BaseController {
             'org_phone' => $orderInfo['org_phone'],
             'org_address_name' => $orderInfo['org_address_name'],
             'org_address_detail' => $orderInfo['org_address_detail'],
-            'usecar_time' => $orderInfo['usecar_time'],
-            'send_time' => $orderInfo['send_time'],
-            'arr_time' => $orderInfo['arr_time'],
+            'usecar_time' =>wztxDate( $orderInfo['usecar_time']),
+            'send_time' => wztxDate($orderInfo['send_time']),
+            'arr_time' => wztxDate($orderInfo['arr_time']),
             'real_name' => $dr_real_name,
             'phone' => $dr_phone,
             'policy_code' => $orderInfo['policy_code'],
             'is_pay' => $orderInfo['is_pay'],
             'is_receipt' => $orderInfo['is_receipt'],
-            'final_price' => $orderInfo['final_price'],
+            'final_price' =>wztxMoney($orderInfo['final_price']) ,
         ];
         returnJson('2000', '成功', $detail);
     }
