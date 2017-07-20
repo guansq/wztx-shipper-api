@@ -22,4 +22,12 @@ class Quote extends BaseLogic{
         }
         return $this->getLastInsID();
     }
+
+    /**
+     * Auther: guanshaoqiu <94600115@qq.com>
+     * Describe:显示当前个人的报价列表
+     */
+    public function showQuoteList(){
+
+    }
 }

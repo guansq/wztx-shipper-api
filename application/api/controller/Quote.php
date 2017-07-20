@@ -34,6 +34,7 @@ class Quote extends BaseController{
     public function showDriverQuoteList(){
         $paramAll = $this->getReqParams(['order_id']);
         $rule = ['order_id'=>'require'];
+
     }
 
     /**
@@ -45,20 +46,25 @@ class Quote extends BaseController{
      * @apiParam  {String} maps              坐标 如   '120.733833,31.253328'
      */
     public function sendOrder(){
+//        $paramAll = $this->getReqParams(['order_id','maps']);
+//        $rule = ['order_id'=>'require','maps'=>'require'];
         $maps = '120.733833,31.253328';//模拟的坐标
-        //取出合适的司机列表
-        $list = $this->getDriverList($maps);
+
         //获取订单id
         $paramAll = $this->getReqParams(['order_id','maps']);
         $rule = [
             'order_id' => 'require',
             'maps' => 'require'
         ];
+        validateData($paramAll,$rule);
         //获得订单信息
-        $orderInfo = model('TransportOrder','logic')->getTransportOrderInfo(['id'=>$paramAll['order_id']]);
+        $orderInfo = model('TransportOrder','logic')->getTransportOrderInfo(['id'=>$paramAll['order_id'],'sp_id'=>$this->loginUser['id'],'status'=>'init']);
         if(empty($orderInfo)){
            returnJson(4000,'获取订单信息失败');
         }
+        //取出合适的司机列表
+        $list = $this->getDriverList($maps);
+        //dump($list);die;
         //写入询价表
         $quoteLogic = model('Quote','logic');
         //更改订单为询价中
@@ -108,8 +114,10 @@ class Quote extends BaseController{
             $ids[] = $v['_name'];
         }
         $ids = array_unique($ids);
+        //认证通过的司机
         $where = [
             'id' => ['in',$ids],
+            'auth_status' => 'pass',
             'online' => 0
         ];
         $driver = model('DrBaseInfo','logic')->getEnableDriver($where);
