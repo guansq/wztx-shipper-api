@@ -466,5 +466,5 @@ function createSign($sendData){
  * 得到司机车牌号
  */
 function getCardNumber($id){
-    return Db::name('system_user_driver')->where("id",$id)->value('push_token');
+    return Db::name('dr_carinfo_auth')->where("id",$id)->value('card_number');
 }

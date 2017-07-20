@@ -44,7 +44,7 @@ class Quote extends BaseLogic{
                 'score' => 5,//司机评分
                 'car_style_type' => $item['car_style_type'],
                 'car_style_length' => $item['car_style_length'],
-                'card_number' => $item['card_number'],
+                'card_number' => getCardNumber($item['dr_id']),
                 'dr_price' => $item['dr_price'],
             ];
         }

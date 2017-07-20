@@ -42,7 +42,8 @@ class Quote extends BaseController{
             'order_id' => $paramAll['order_id'],
             'sp_id' => $this->loginUser['id']
         ];
-        model('Quote','logic')->showQuoteList($where,$pageParam);//显示我的报价列表
+        $ret = model('Quote','logic')->showQuoteList($where,$pageParam);//显示我的报价列表
+        returnJson($ret);
     }
 
     /**
