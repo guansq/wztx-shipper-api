@@ -16,7 +16,8 @@ class Quote extends BaseLogic{
      * Describe:保存报价信息
      */
     public function saveQuoteInfo($data){
-        $ret = $this->allowField(true)->save($data);
+        $ret = $this->data($data,true)->isUpdate(false)->save();
+        //echo $this->getLastSql();
         if($ret === false){
             returnJson('4020', '更新失败');
         }
@@ -27,7 +28,35 @@ class Quote extends BaseLogic{
      * Auther: guanshaoqiu <94600115@qq.com>
      * Describe:显示当前个人的报价列表
      */
-    public function showQuoteList(){
+    public function showQuoteList($where,$pageParam){
+        $list = [];
+        $dataTotal = $this->where($where)->count();
+        $dbRet = $this->field('id,dr_id,car_style_type,car_style_length,dr_price')->page($pageParam['page'], $pageParam['pageSize'])->where($where)->select();
+        if(empty($dataTotal)){
+            return resultArray(4004);
+        }
+        foreach($dbRet as $item){
+            $drInfo = model('DrBaseInfo','logic')->findInfoByUserId($item['dr_id']);
+            $list[] = [
+                'id' => $item['id'],
+                'dr_id' => $item['dr_id'],
+                'avatar' => $drInfo['avatar'],
+                'score' => 5,//司机评分
+                'car_style_type' => $item['car_style_type'],
+                'car_style_length' => $item['car_style_length'],
+                'card_number' => $item['card_number'],
+                'dr_price' => $item['dr_price'],
+            ];
+        }
 
+        $ret = [
+            'list' => $list,
+            'page' => $pageParam['page'],
+            'pageSize' => $pageParam['pageSize'],
+            'dataTotal' => $dataTotal,
+            'pageTotal' => floor($dataTotal/$pageParam['pageSize']) + 1,
+        ];
+
+        return resultArray(2000, '', $ret);
     }
 }

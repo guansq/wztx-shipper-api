@@ -16,25 +16,33 @@ class Quote extends BaseController{
     const TITLE = '订单信息';
     const CONTENT = '您有一条新的订单';
     /**
-     * @api {POST}  /order/showDriverQuoteList      显示司机报价列表
+     * @api {POST}  /order/showDriverQuoteList      显示司机报价列表 done
      * @apiName     showDriverQuoteList
      * @apiGroup    Quote
      * @apiHeader   {String}    authorization-token     token.
      * @apiParam    {Int}    order_id        订单ID
+     * @apiParam    {Number} [page=1]                  页码.
+     * @apiParam    {Number} [pageSize=20]             每页数据量.
      * @apiSuccess  {Array}  list            报价列表
-     * @apiSuccess  {String} list.quote_id        报价ID
-     * @apiSuccess  {String} list.driver_id       司机ID
+     * @apiSuccess  {String} list.id        报价ID
+     * @apiSuccess  {String} list.dr_id       司机ID
      * @apiSuccess  {String} list.avatar          司机头像
      * @apiSuccess  {String} list.score           司机评分
-     * @apiSuccess  {String} list.car_type        司机车型
-     * @apiSuccess  {String} list.car_length      司机车长
+     * @apiSuccess  {String} list.car_style_type        司机车型
+     * @apiSuccess  {String} list.car_style_length      司机车长
      * @apiSuccess  {String} list.card_number     车牌号码
-     * @apiSuccess  {String} list.quote_price     报价
+     * @apiSuccess  {String} list.dr_price     报价
      */
     public function showDriverQuoteList(){
+        $pageParam = $this->getPagingParams();
         $paramAll = $this->getReqParams(['order_id']);
         $rule = ['order_id'=>'require'];
-
+        validateData($paramAll,$rule);
+        $where = [
+            'order_id' => $paramAll['order_id'],
+            'sp_id' => $this->loginUser['id']
+        ];
+        model('Quote','logic')->showQuoteList($where,$pageParam);//显示我的报价列表
     }
 
     /**
@@ -63,7 +71,7 @@ class Quote extends BaseController{
            returnJson(4000,'获取订单信息失败');
         }
         //取出合适的司机列表
-        $list = $this->getDriverList($maps);
+        $list = $this->getDriverList($paramAll['maps']);
         //dump($list);die;
         //写入询价表
         $quoteLogic = model('Quote','logic');
@@ -86,6 +94,7 @@ class Quote extends BaseController{
             $info['dest_address_name'] = $orderInfo['dest_address_name'];
             $info['org_address_detail'] = $orderInfo['org_address_detail'];
             $info['dest_address_detail'] = $orderInfo['dest_address_detail'];
+            //dump($info);
             $quoteId = $quoteLogic->saveQuoteInfo($info);
             //发送系统消息给司机
             sendMsg($info['dr_id'],self::TITLE,self::CONTENT,1);
@@ -110,9 +119,11 @@ class Quote extends BaseController{
         if(empty($datas)){
             returnJson('4000','附近没有找到司机');
         }
+
         foreach($datas as $k => $v){
             $ids[] = $v['_name'];
         }
+        //dump($datas);die;
         $ids = array_unique($ids);
         //认证通过的司机
         $where = [

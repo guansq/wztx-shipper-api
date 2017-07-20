@@ -613,7 +613,7 @@ define({ "api": [
   {
     "type": "GET",
     "url": "/message",
-    "title": "我的消息-列表(ok)",
+    "title": "我的消息-列表done",
     "name": "index",
     "group": "Message",
     "header": {
@@ -754,7 +754,7 @@ define({ "api": [
   {
     "type": "GET",
     "url": "/message/:id",
-    "title": "我的消息-详情(ok)",
+    "title": "我的消息-详情done",
     "name": "read",
     "group": "Message",
     "header": {
@@ -1402,6 +1402,22 @@ define({ "api": [
             "optional": false,
             "field": "type",
             "description": "<p>订单状态（all全部状态，quote报价中，quoted已报价，待发货 distribute配送中（在配送-未拍照）发货中 photo 拍照完毕（订单已完成））</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": true,
+            "field": "page",
+            "defaultValue": "1",
+            "description": "<p>页码.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": true,
+            "field": "pageSize",
+            "defaultValue": "20",
+            "description": "<p>每页数据量.</p>"
           }
         ]
       }
@@ -1450,6 +1466,34 @@ define({ "api": [
             "optional": false,
             "field": "list.status",
             "description": "<p>init 初始状态（未分发订单前）quote报价中（分发订单后）quoted已报价-未配送（装货中）distribute配送中（在配送-未拍照）发货中 photo 拍照完毕（订单已完成）pay_failed（支付失败）/pay_success（支付成功）comment（已评论）</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "page",
+            "description": "<p>页码.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "pageSize",
+            "description": "<p>每页数据量.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "dataTotal",
+            "description": "<p>数据总数.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "pageTotal",
+            "description": "<p>总页码数.</p>"
           }
         ]
       }
@@ -1815,7 +1859,7 @@ define({ "api": [
   {
     "type": "POST",
     "url": "/order/showDriverQuoteList",
-    "title": "显示司机报价列表",
+    "title": "显示司机报价列表 done",
     "name": "showDriverQuoteList",
     "group": "Quote",
     "header": {
@@ -1840,6 +1884,22 @@ define({ "api": [
             "optional": false,
             "field": "order_id",
             "description": "<p>订单ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": true,
+            "field": "page",
+            "defaultValue": "1",
+            "description": "<p>页码.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": true,
+            "field": "pageSize",
+            "defaultValue": "20",
+            "description": "<p>每页数据量.</p>"
           }
         ]
       }
@@ -1858,14 +1918,14 @@ define({ "api": [
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "list.quote_id",
+            "field": "list.id",
             "description": "<p>报价ID</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "list.driver_id",
+            "field": "list.dr_id",
             "description": "<p>司机ID</p>"
           },
           {
@@ -1886,14 +1946,14 @@ define({ "api": [
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "list.car_type",
+            "field": "list.car_style_type",
             "description": "<p>司机车型</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "list.car_length",
+            "field": "list.car_style_length",
             "description": "<p>司机车长</p>"
           },
           {
@@ -1907,7 +1967,7 @@ define({ "api": [
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "list.quote_price",
+            "field": "list.dr_price",
             "description": "<p>报价</p>"
           }
         ]

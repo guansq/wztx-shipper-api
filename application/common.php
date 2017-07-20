@@ -461,3 +461,10 @@ function createSign($sendData){
     $skArr = explode('_',config('app_access_key'));
     return $desClass->strEnc($arrOrder,$skArr[0],$skArr[1],$skArr[2]);//签名
 }
+
+/*
+ * 得到司机车牌号
+ */
+function getCardNumber($id){
+    return Db::name('system_user_driver')->where("id",$id)->value('push_token');
+}
