@@ -16,7 +16,7 @@ class Quote extends BaseController{
     const TITLE = '订单信息';
     const CONTENT = '您有一条新的订单';
     /**
-     * @api {POST}  /order/showDriverQuoteList      显示司机报价列表 done
+     * @api {POST}  /quote/showDriverQuoteList      显示司机报价列表 done
      * @apiName     showDriverQuoteList
      * @apiGroup    Quote
      * @apiHeader   {String}    authorization-token     token.
@@ -169,7 +169,7 @@ class Quote extends BaseController{
     }
 
     /**
-     * @api {POST}  /quote/confirmQuotePrice      确认报价价格
+     * @api {POST}  /quote/confirmQuotePrice      确认报价价格done
      * @apiName     confirmQuotePrice
      * @apiGroup    Quote
      * @apiHeader   {String}    authorization-token     token.
@@ -177,7 +177,24 @@ class Quote extends BaseController{
      * @apiParam  {String} quote_id        报价ID
      */
     public function confirmQuotePrice(){
+        //最终价格确定 final_price（不含保费） 司机确定 dr_id status quoted
+        //查询订单信息是否合法 确定后更改报价状态订单状态，发送推送信息给司机让司机去执行订单
+        $paramAll = $this->getReqParams(['order_id','quote_id']);
+        $rule = ['order_id'=>'require','quote_id'=>'require'];
+        validateData($paramAll,$rule);
+        $where = [
+            'id' => $paramAll['quote_id'],
+            'status' => 'quote',
+            'sp_id' => $this->loginUser['id'],
+            'order_id' => $paramAll['order_id']
+        ];
+        $count = model('Quote','logic')->getQuoteCount($where);
+        if($count == 0){
+            returnJson(4000,'抱歉没有该条已报价的信息');
+        }
+        model('Quote','logic')->changeQuote(['id'=>$paramAll['quote_id']],['is_receive'=>1]);//货主确认的价格,更改
 
+        echo $count;
     }
 
 }

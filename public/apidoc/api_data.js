@@ -141,7 +141,7 @@ define({ "api": [
   {
     "type": "GET",
     "url": "/comment/commentInfo",
-    "title": "获取评论内容",
+    "title": "获取评论内容done",
     "name": "commentInfo",
     "group": "Comment",
     "header": {
@@ -265,7 +265,7 @@ define({ "api": [
   {
     "type": "GET",
     "url": "/comment/sendCommentInfo",
-    "title": "发送评论内容",
+    "title": "发送评论内容done",
     "name": "sendCommentInfo",
     "group": "Comment",
     "header": {
@@ -1169,7 +1169,7 @@ define({ "api": [
   {
     "type": "POST",
     "url": "/order/showOrderInfo",
-    "title": "显示订单详情",
+    "title": "显示订单详情done",
     "name": "showOrderInfo",
     "group": "Order",
     "header": {
@@ -1377,7 +1377,7 @@ define({ "api": [
   {
     "type": "POST",
     "url": "/order/showOrderList",
-    "title": "显示订单列表",
+    "title": "显示订单列表done",
     "name": "showOrderList",
     "group": "Order",
     "header": {
@@ -1436,6 +1436,13 @@ define({ "api": [
             "group": "Success 200",
             "type": "String",
             "optional": false,
+            "field": "list.order_id",
+            "description": "<p>订单ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
             "field": "list.org_city",
             "description": "<p>出发地名称</p>"
           },
@@ -1459,6 +1466,20 @@ define({ "api": [
             "optional": false,
             "field": "list.goods_name",
             "description": "<p>货物名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.car_style_length",
+            "description": "<p>车长</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.car_style_type",
+            "description": "<p>车型</p>"
           },
           {
             "group": "Success 200",
@@ -1640,6 +1661,22 @@ define({ "api": [
         "Parameter": [
           {
             "group": "Parameter",
+            "type": "Number",
+            "optional": true,
+            "field": "page",
+            "defaultValue": "1",
+            "description": "<p>页码.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": true,
+            "field": "pageSize",
+            "defaultValue": "20",
+            "description": "<p>每页数据量.</p>"
+          },
+          {
+            "group": "Parameter",
             "type": "Array",
             "optional": false,
             "field": "list",
@@ -1671,6 +1708,34 @@ define({ "api": [
             "optional": false,
             "field": "list.pay_status",
             "description": "<p>支付状态 0=未支付，1=支付成功，2=支付失败</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "page",
+            "description": "<p>页码.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "pageSize",
+            "description": "<p>每页数据量.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "dataTotal",
+            "description": "<p>数据总数.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "pageTotal",
+            "description": "<p>总页码数.</p>"
           }
         ]
       }
@@ -1763,7 +1828,7 @@ define({ "api": [
   {
     "type": "POST",
     "url": "/quote/confirmQuotePrice",
-    "title": "确认报价价格",
+    "title": "确认报价价格done",
     "name": "confirmQuotePrice",
     "group": "Quote",
     "header": {
@@ -1858,7 +1923,7 @@ define({ "api": [
   },
   {
     "type": "POST",
-    "url": "/order/showDriverQuoteList",
+    "url": "/quote/showDriverQuoteList",
     "title": "显示司机报价列表 done",
     "name": "showDriverQuoteList",
     "group": "Quote",
@@ -1978,7 +2043,7 @@ define({ "api": [
     "groupTitle": "Quote",
     "sampleRequest": [
       {
-        "url": "http://wztx.shp.api.ruitukeji.com/order/showDriverQuoteList"
+        "url": "http://wztx.shp.api.ruitukeji.com/quote/showDriverQuoteList"
       }
     ]
   },
@@ -2793,33 +2858,6 @@ define({ "api": [
             "optional": false,
             "field": "back_pic",
             "description": "<p>身份证反面照.</p>"
-          }
-        ]
-      }
-    },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "String",
-            "optional": false,
-            "field": "code",
-            "description": "<p>2000</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "String",
-            "optional": false,
-            "field": "msg",
-            "description": "<p>'提交验证后重新提交验证信息'</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "Array",
-            "optional": false,
-            "field": "result",
-            "description": "<p>['auth_status']不合法的状态</p>"
           }
         ]
       }

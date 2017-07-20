@@ -59,4 +59,25 @@ class Quote extends BaseLogic{
 
         return resultArray(2000, '', $ret);
     }
+
+    /**
+     * Auther: guanshaoqiu <94600115@qq.com>
+     * Describe:得到相关条件的报价数量
+     */
+    public function getQuoteCount($where){
+       return $this->where($where)->count();
+    }
+
+    /**
+     * Auther: guanshaoqiu <94600115@qq.com>
+     * Describe:更改报价信息状态
+     */
+    public function changeQuote($where,$data){
+        $ret =  $this->where($where)->update($data);
+        if($ret === fasle){
+            return resultArray(4000,'更改报价信息失败');
+        }
+    }
+
+
 }
