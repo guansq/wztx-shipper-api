@@ -318,7 +318,7 @@ function wztxDate($time){
     if(empty($time)){
         return $time;
     }
-    return date('Y-m-d H:i:s',$time);
+    return strval(date('Y-m-d H:i:s',$time));
 }
 
 /*
@@ -331,7 +331,7 @@ function wztxMoney($num,$ispre = false){
     if($ispre){
         return '¥'.$formattedNum;
     }else{
-        return $formattedNum;
+        return strval($formattedNum);
     }
 }
 
