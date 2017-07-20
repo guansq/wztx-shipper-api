@@ -5,16 +5,18 @@
  * Date: 2017/7/11
  * Time: 16:51
  */
+
 namespace app\api\controller;
 
 use think\Request;
 
-class Comment extends BaseController{
+class Comment extends BaseController {
     /**
      * @api {GET}   /comment/commentInfo    获取评论内容
      * @apiName     commentInfo
      * @apiGroup    Comment
      * @apiHeader   {String}    authorization-token     token.
+     * @apiParam    {Number}    order_id                订单ID
      * @apiSuccess  {Number}    order_id                订单ID
      * @apiSuccess  {Number}    sp_id                   评论人ID
      * @apiSuccess  {String}    sp_name                 评价人的姓名
@@ -27,8 +29,17 @@ class Comment extends BaseController{
      * @apiSuccess  {String}    content                 评论文字
      * @apiSuccess  {Int}    status                  0=正常显示，1=不显示给司机
      */
-    public function commentInfo(){
-
+    public function commentInfo() {
+        $paramAll = $this->getReqParams([
+            'order_id',
+        ]);
+        $rule = [
+            'order_id' => ['require', 'regex' => '\d'],
+        ];
+        validateData($paramAll, $rule);
+        //获取订单评论详情
+        $commetInfo = model('Comment', 'logic')->getOrderComment(['order_id' => $paramAll['order_id'], 'sp_id' => $this->loginUser['id']]);
+        returnJson($commetInfo);
     }
 
     /**
@@ -36,18 +47,57 @@ class Comment extends BaseController{
      * @apiName     sendCommentInfo
      * @apiGroup    Comment
      * @apiHeader   {String}    authorization-token     token.
-     * @apiParam    {Number}    sp_id                   评论人ID
-     * @apiParam  {String}    sp_name                 评价人的姓名
-     * @apiParam  {Number}    dr_id                   司机ID
-     * @apiParam  {String}    dr_name                 司机姓名
-     * @apiParam  {String}    post_time               提交时间
-     * @apiParam  {String}    limit_ship              发货时效几星
-     * @apiParam  {String}    attitude                服务态度几星
-     * @apiParam  {String}    satisfaction            满意度 几星
+     * @apiParam    {Number}    order_id                订单ID
+     * @apiParam  {Number}    limit_ship              发货时效几星
+     * @apiParam  {Number}    attitude                服务态度几星
+     * @apiParam  {Number}    satisfaction            满意度 几星
      * @apiParam  {String}    content                 评论文字
-     * @apiParam  {Int}    status                  0=正常显示，1=不显示给司机
      */
-    public function sendCommentInfo(){
-
+    public function sendCommentInfo() {
+        $paramAll = $this->getReqParams([
+            'order_id',
+            'limit_ship',
+            'attitude',
+            'satisfaction',
+            'content'
+        ]);
+        $rule = [
+            'order_id' => ['require', 'regex' => '\d'],
+            'limit_ship' => ['require', 'regex' => '[1-5]'],
+            'attitude' => ['require', 'regex' => '[1-5]'],
+            'satisfaction' => ['require', 'regex' => '[1-5]'],
+            'content' => ['require']
+        ];
+        validateData($paramAll, $rule);
+        //获取订单详情
+        $orderInfo = model('TransportOrder', 'logic')->getTransportOrderInfos(['sp_id' => $this->loginUser['id'], 'id' => $paramAll['order_id']]);
+        if (empty($orderInfo)) {
+            returnJson('4000', '未获取到订单信息');
+        }
+        if ($orderInfo[0]['status'] == 'comment') {
+            returnJson('4000', '当前订单已评价过');
+        }
+        if (!in_array($orderInfo[0]['status'], ['pay_success'])) {
+            returnJson('4000', '订单当前状态不能评论，请支付成功后评论');
+        }
+        $orderInfo = $orderInfo[0];
+        //获取pay_order_id undo
+        $paramAll['pay_orderid '] = '111111111111';
+        $spBaseInfo = model('SpBaseInfo', 'logic')->getPersonBaseInfo(['id' => $this->loginUser['id']]);
+        $paramAll['sp_id'] = $this->loginUser['id'];
+        if ($spBaseInfo['code'] == 2000) {
+            $paramAll['sp_name'] = $spBaseInfo['result']['real_name'];
+        }
+        $drBaseInfo = model('DrBaseInfo', 'logic')->findInfoByUserId($orderInfo['dr_id']);
+        $paramAll['dr_id'] = $orderInfo['dr_id'];
+        $paramAll['dr_name'] = $drBaseInfo['real_name'];
+        $paramAll['ip'] = $this->request->ip();
+        $paramAll['agent'] = $_SERVER['HTTP_USER_AGENT'];
+        $paramAll['post_time'] = $paramAll['create_at'] = $paramAll['update_at'] = time();
+        $paramAll['status'] = 0;
+        //没有问题存入数据库
+        $changeStatus = model('TransportOrder', 'logic')->updateTransport(['id' => $paramAll['order_id']], ['status' => 'comment']);
+        $ret = model('Comment', 'logic')->saveOrderComment($paramAll);
+        returnJson($ret);
     }
 }

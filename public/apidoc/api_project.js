@@ -1,10 +1,10 @@
 define({
   "name": "物载天下-货主端-接口文档",
   "version": "0.0.0",
-  "description": "返回数据格式说明：<br> <pre class=\"prettyprint language-json prettyprinted\" data-type=\"json\"><code class=\"sample-request-response-json\">{\n  \"code\": 2000, \t//状态码 \n  \"msg\": \"SUCCESS\", \t//返回信息\n  \"result\": {}\t\t//数据包 \n}</code></pre> \n 正式服地址：暂无 \n测试服地址：http://wztx.shp.api.ruitukeji.com",
+  "description": "返回数据格式说明：<br> <pre class=\"prettyprint language-json prettyprinted\" data-type=\"json\"><code class=\"sample-request-response-json\">{\n  \"code\": 2000, \t//状态码 \n  \"msg\": \"SUCCESS\", \t//返回信息\n  \"result\": {}\t\t//数据包 \n}</code></pre> \n 正式服地址：暂无 \n测试服地址：http://wztx.shp.api.wuzai.com",
   "title": "物载天下-货主端-接口文档 ",
-  "url": "http://wztx.shp.api.ruitukeji.com",
-  "sampleUrl": "http://wztx.shp.api.ruitukeji.com",
+  "url": "http://wztx.shp.api.wuzai.com",
+  "sampleUrl": "http://wztx.shp.api.wuzai.com",
   "header": {
     "title": "物载天下-货主端-接口文档",
     "filename": ""
@@ -23,11 +23,12 @@ define({
     "withGenerator": false,
     "jQueryAjaxSetup": {}
   },
-  "apidoc": "0.2.0",
+  "defaultVersion": "0.0.0",
+  "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
-    "time": "2017-07-17T11:43:31.055Z",
+    "time": "2017-07-19T07:53:45.705Z",
     "url": "http://apidocjs.com",
-    "version": "0.16.1"
+    "version": "0.17.6"
   }
 });

@@ -12,4 +12,13 @@ class DrBaseInfo extends BaseLogic{
     public function getEnableDriver($where){
         return $this->where($where)->select();
     }
+    /**
+     * Auther: guanshaoqiu <94600115@qq.com>
+     * Describe:通过用户ID获取相关信息
+     */
+    public function findInfoByUserId($user_id){
+        return $this->where("user_id",$user_id)->find();
+    }
+
+
 }

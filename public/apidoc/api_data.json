@@ -79,7 +79,7 @@
     "groupTitle": "Car",
     "sampleRequest": [
       {
-        "url": "http://wztx.shp.api.ruitukeji.com/car/getAllCarStyle"
+        "url": "http://wztx.shp.api.wuzai.com/car/getAllCarStyle"
       }
     ]
   },
@@ -134,7 +134,7 @@
     "groupTitle": "Car",
     "sampleRequest": [
       {
-        "url": "http://wztx.shp.api.ruitukeji.com/car/getOneCarStyle"
+        "url": "http://wztx.shp.api.wuzai.com/car/getOneCarStyle"
       }
     ]
   },
@@ -153,6 +153,19 @@
             "optional": false,
             "field": "authorization-token",
             "description": "<p>token.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "order_id",
+            "description": "<p>订单ID</p>"
           }
         ]
       }
@@ -245,7 +258,7 @@
     "groupTitle": "Comment",
     "sampleRequest": [
       {
-        "url": "http://wztx.shp.api.ruitukeji.com/comment/commentInfo"
+        "url": "http://wztx.shp.api.wuzai.com/comment/commentInfo"
       }
     ]
   },
@@ -275,54 +288,26 @@
             "group": "Parameter",
             "type": "Number",
             "optional": false,
-            "field": "sp_id",
-            "description": "<p>评论人ID</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "sp_name",
-            "description": "<p>评价人的姓名</p>"
+            "field": "order_id",
+            "description": "<p>订单ID</p>"
           },
           {
             "group": "Parameter",
             "type": "Number",
-            "optional": false,
-            "field": "dr_id",
-            "description": "<p>司机ID</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "dr_name",
-            "description": "<p>司机姓名</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "post_time",
-            "description": "<p>提交时间</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
             "optional": false,
             "field": "limit_ship",
             "description": "<p>发货时效几星</p>"
           },
           {
             "group": "Parameter",
-            "type": "String",
+            "type": "Number",
             "optional": false,
             "field": "attitude",
             "description": "<p>服务态度几星</p>"
           },
           {
             "group": "Parameter",
-            "type": "String",
+            "type": "Number",
             "optional": false,
             "field": "satisfaction",
             "description": "<p>满意度 几星</p>"
@@ -333,13 +318,6 @@
             "optional": false,
             "field": "content",
             "description": "<p>评论文字</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Int",
-            "optional": false,
-            "field": "status",
-            "description": "<p>0=正常显示，1=不显示给司机</p>"
           }
         ]
       }
@@ -349,7 +327,7 @@
     "groupTitle": "Comment",
     "sampleRequest": [
       {
-        "url": "http://wztx.shp.api.ruitukeji.com/comment/sendCommentInfo"
+        "url": "http://wztx.shp.api.wuzai.com/comment/sendCommentInfo"
       }
     ]
   },
@@ -403,7 +381,7 @@
     "groupTitle": "File",
     "sampleRequest": [
       {
-        "url": "http://wztx.shp.api.ruitukeji.com/file/uploadImg"
+        "url": "http://wztx.shp.api.wuzai.com/file/uploadImg"
       }
     ]
   },
@@ -419,7 +397,7 @@
     "groupTitle": "Index",
     "sampleRequest": [
       {
-        "url": "http://wztx.shp.api.ruitukeji.com/apiCode"
+        "url": "http://wztx.shp.api.wuzai.com/apiCode"
       }
     ]
   },
@@ -454,7 +432,7 @@
     "groupTitle": "Index",
     "sampleRequest": [
       {
-        "url": "http://wztx.shp.api.ruitukeji.com/appConfig"
+        "url": "http://wztx.shp.api.wuzai.com/appConfig"
       }
     ]
   },
@@ -537,7 +515,7 @@
     "groupTitle": "Index",
     "sampleRequest": [
       {
-        "url": "http://wztx.shp.api.ruitukeji.com/index/home"
+        "url": "http://wztx.shp.api.wuzai.com/index/home"
       }
     ]
   },
@@ -579,7 +557,7 @@
     "groupTitle": "Index",
     "sampleRequest": [
       {
-        "url": "http://wztx.shp.api.ruitukeji.com/lastApk"
+        "url": "http://wztx.shp.api.wuzai.com/lastApk"
       }
     ]
   },
@@ -628,7 +606,7 @@
     "groupTitle": "Index",
     "sampleRequest": [
       {
-        "url": "http://wztx.shp.api.ruitukeji.com/index/sendCaptcha"
+        "url": "http://wztx.shp.api.wuzai.com/index/sendCaptcha"
       }
     ]
   },
@@ -769,7 +747,7 @@
     "groupTitle": "Message",
     "sampleRequest": [
       {
-        "url": "http://wztx.shp.api.ruitukeji.com/message"
+        "url": "http://wztx.shp.api.wuzai.com/message"
       }
     ]
   },
@@ -858,7 +836,7 @@
     "groupTitle": "Message",
     "sampleRequest": [
       {
-        "url": "http://wztx.shp.api.ruitukeji.com/message/:id"
+        "url": "http://wztx.shp.api.wuzai.com/message/:id"
       }
     ]
   },
@@ -1130,7 +1108,7 @@
     "groupTitle": "Order",
     "sampleRequest": [
       {
-        "url": "http://wztx.shp.api.ruitukeji.com/order/add"
+        "url": "http://wztx.shp.api.wuzai.com/order/add"
       }
     ]
   },
@@ -1140,6 +1118,19 @@
     "title": "查看凭证",
     "name": "showCerPic",
     "group": "Order",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization-token",
+            "description": "<p>token</p>"
+          }
+        ]
+      }
+    },
     "parameter": {
       "fields": {
         "Parameter": [
@@ -1171,7 +1162,7 @@
     "groupTitle": "Order",
     "sampleRequest": [
       {
-        "url": "http://wztx.shp.api.ruitukeji.com/order/showCerPic"
+        "url": "http://wztx.shp.api.wuzai.com/order/showCerPic"
       }
     ]
   },
@@ -1181,6 +1172,19 @@
     "title": "显示订单详情",
     "name": "showOrderInfo",
     "group": "Order",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization-token",
+            "description": "<p>token</p>"
+          }
+        ]
+      }
+    },
     "parameter": {
       "fields": {
         "Parameter": [
@@ -1352,7 +1356,7 @@
     "groupTitle": "Order",
     "sampleRequest": [
       {
-        "url": "http://wztx.shp.api.ruitukeji.com/order/showOrderInfo"
+        "url": "http://wztx.shp.api.wuzai.com/order/showOrderInfo"
       }
     ]
   },
@@ -1362,6 +1366,19 @@
     "title": "显示订单列表",
     "name": "showOrderList",
     "group": "Order",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization-token",
+            "description": "<p>token</p>"
+          }
+        ]
+      }
+    },
     "parameter": {
       "fields": {
         "Parameter": [
@@ -1428,7 +1445,7 @@
     "groupTitle": "Order",
     "sampleRequest": [
       {
-        "url": "http://wztx.shp.api.ruitukeji.com/order/showOrderList"
+        "url": "http://wztx.shp.api.wuzai.com/order/showOrderList"
       }
     ]
   },
@@ -1476,7 +1493,7 @@
     "groupTitle": "Pay",
     "sampleRequest": [
       {
-        "url": "http://wztx.shp.api.ruitukeji.com/pay"
+        "url": "http://wztx.shp.api.wuzai.com/pay"
       }
     ]
   },
@@ -1537,7 +1554,7 @@
     "groupTitle": "Pay",
     "sampleRequest": [
       {
-        "url": "http://wztx.shp.api.ruitukeji.com/pay/recharge"
+        "url": "http://wztx.shp.api.wuzai.com/pay/recharge"
       }
     ]
   },
@@ -1605,7 +1622,7 @@
     "groupTitle": "Pay",
     "sampleRequest": [
       {
-        "url": "http://wztx.shp.api.ruitukeji.com/pay/rechargeRecord"
+        "url": "http://wztx.shp.api.wuzai.com/pay/rechargeRecord"
       }
     ]
   },
@@ -1681,7 +1698,7 @@
     "groupTitle": "Pay",
     "sampleRequest": [
       {
-        "url": "http://wztx.shp.api.ruitukeji.com/pay/showPayRecord"
+        "url": "http://wztx.shp.api.wuzai.com/pay/showPayRecord"
       }
     ]
   },
@@ -1729,7 +1746,7 @@
     "groupTitle": "Quote",
     "sampleRequest": [
       {
-        "url": "http://wztx.shp.api.ruitukeji.com/order/sendOrder"
+        "url": "http://wztx.shp.api.wuzai.com/order/sendOrder"
       }
     ]
   },
@@ -1839,7 +1856,7 @@
     "groupTitle": "Quote",
     "sampleRequest": [
       {
-        "url": "http://wztx.shp.api.ruitukeji.com/order/showDriverQuoteList"
+        "url": "http://wztx.shp.api.wuzai.com/order/showDriverQuoteList"
       }
     ]
   },
@@ -1880,7 +1897,7 @@
     "groupTitle": "Recommend",
     "sampleRequest": [
       {
-        "url": "http://wztx.shp.api.ruitukeji.comrecommend/showMyRecommInfo"
+        "url": "http://wztx.shp.api.wuzai.comrecommend/showMyRecommInfo"
       }
     ]
   },
@@ -1942,7 +1959,7 @@
     "groupTitle": "Recommend",
     "sampleRequest": [
       {
-        "url": "http://wztx.shp.api.ruitukeji.comrecommend/showMyRecommList"
+        "url": "http://wztx.shp.api.wuzai.comrecommend/showMyRecommList"
       }
     ]
   },
@@ -1990,7 +2007,7 @@
     "groupTitle": "Test",
     "sampleRequest": [
       {
-        "url": "http://wztx.shp.api.ruitukeji.com/test/test"
+        "url": "http://wztx.shp.api.wuzai.com/test/test"
       }
     ]
   },
@@ -2150,7 +2167,7 @@
     "groupTitle": "User",
     "sampleRequest": [
       {
-        "url": "http://wztx.shp.api.ruitukeji.com/User/businessAuth"
+        "url": "http://wztx.shp.api.wuzai.com/User/businessAuth"
       }
     ]
   },
@@ -2296,7 +2313,7 @@
     "groupTitle": "User",
     "sampleRequest": [
       {
-        "url": "http://wztx.shp.api.ruitukeji.com/user/getCompanyAuthInfo"
+        "url": "http://wztx.shp.api.wuzai.com/user/getCompanyAuthInfo"
       }
     ]
   },
@@ -2386,7 +2403,7 @@
     "groupTitle": "User",
     "sampleRequest": [
       {
-        "url": "http://wztx.shp.api.ruitukeji.com/user/getPersonAuthInfo"
+        "url": "http://wztx.shp.api.wuzai.com/user/getPersonAuthInfo"
       }
     ]
   },
@@ -2490,7 +2507,7 @@
     "groupTitle": "User",
     "sampleRequest": [
       {
-        "url": "http://wztx.shp.api.ruitukeji.com/user/info"
+        "url": "http://wztx.shp.api.wuzai.com/user/info"
       }
     ]
   },
@@ -2587,7 +2604,7 @@
     "groupTitle": "User",
     "sampleRequest": [
       {
-        "url": "http://wztx.shp.api.ruitukeji.com/User/login"
+        "url": "http://wztx.shp.api.wuzai.com/User/login"
       }
     ]
   },
@@ -2690,7 +2707,7 @@
     "groupTitle": "User",
     "sampleRequest": [
       {
-        "url": "http://wztx.shp.api.ruitukeji.com/User/personAuth"
+        "url": "http://wztx.shp.api.wuzai.com/User/personAuth"
       }
     ]
   },
@@ -2731,7 +2748,7 @@
     "groupTitle": "User",
     "sampleRequest": [
       {
-        "url": "http://wztx.shp.api.ruitukeji.com/user/refreshToken"
+        "url": "http://wztx.shp.api.wuzai.com/user/refreshToken"
       }
     ]
   },
@@ -2814,7 +2831,7 @@
     "groupTitle": "User",
     "sampleRequest": [
       {
-        "url": "http://wztx.shp.api.ruitukeji.com/User/reg"
+        "url": "http://wztx.shp.api.wuzai.com/User/reg"
       }
     ]
   },
@@ -2856,7 +2873,7 @@
     "groupTitle": "User",
     "sampleRequest": [
       {
-        "url": "http://wztx.shp.api.ruitukeji.com/User/forget"
+        "url": "http://wztx.shp.api.wuzai.com/User/forget"
       }
     ]
   },
@@ -2918,7 +2935,7 @@
     "groupTitle": "User",
     "sampleRequest": [
       {
-        "url": "http://wztx.shp.api.ruitukeji.com/user/updateInfo"
+        "url": "http://wztx.shp.api.wuzai.com/user/updateInfo"
       }
     ]
   },
@@ -2973,7 +2990,7 @@
     "groupTitle": "User",
     "sampleRequest": [
       {
-        "url": "http://wztx.shp.api.ruitukeji.com/User/updatePwd"
+        "url": "http://wztx.shp.api.wuzai.com/User/updatePwd"
       }
     ]
   },
@@ -3035,7 +3052,7 @@
     "groupTitle": "User",
     "sampleRequest": [
       {
-        "url": "http://wztx.shp.api.ruitukeji.com/user/uploadAvatar"
+        "url": "http://wztx.shp.api.wuzai.com/user/uploadAvatar"
       }
     ]
   }

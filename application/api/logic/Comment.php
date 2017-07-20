@@ -8,54 +8,28 @@
 
 namespace app\api\logic;
 
-class TransportOrder extends BaseLogic{
+class Comment extends BaseLogic{
 
     /**
-     * Auther: guanshaoqiu <94600115@qq.com>
-     * Describe: 保存订单信息
+     * Describe: 保存订单评论信息
      */
-    public function saveTransportOrder($param){
-        //$param['system_price'] = '2017.02';
-        $param['order_code'] = order_num();
+    public function saveOrderComment($param){
         $ret = $this->allowField(true)->save($param);
         if($ret > 0){
-            $order_id = $this->getLastInsID();
-            return resultArray(2000,'成功',['order_id'=>$order_id]);
+            $comment_id = $this->getLastInsID();
+            return resultArray(2000,'成功',['comment_id'=>$comment_id]);
         }
-        return resultArray(4000,'保存订单失败');
+        return resultArray(4000,'保存订单评论失败');
     }
 
     /**
-     * Auther: guanshaoqiu <94600115@qq.com>
-     * Describe: * @param $where
-     * 得到单个订单信息
+     * 得到单个订单评论信息
      */
-    public function getTransportOrderInfo($where){
-        $ret = $this->where($where)->find();
-        return $ret;
-    }
-
-    /**
-     * Auther: guanshaoqiu <94600115@qq.com>
-     * Describe: * @param $where
-     * @param $data
-     * 更改订单信息
-     */
-    public function updateTransport($where,$data){
-        $ret = $this->where($where)->update($data);
-        if($ret !== true){
-            return resultArray(4000,'更改订单状态失败');
+    public function getOrderComment($where){
+        $ret = $this->where($where)->field("order_id,sp_id,sp_name,dr_id,dr_name,post_time,limit_ship,attitude,satisfaction,content,status")->find();
+        if($ret){
+            return resultArray(2000,'成功',$ret);
         }
-        return resultArray(2000,'更改订单状态成功');
+        return resultArray(4000,'未获取到订单信息');
     }
-
-    //获取订单详情
-    public function getTransportOrderInfos($where){
-        $ret = $this->where($where)->select();
-        if (!empty($ret)){
-            $ret = collection($ret)->toArray();
-        }
-        return $ret;
-    }
-
 }

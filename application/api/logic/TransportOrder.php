@@ -48,4 +48,14 @@ class TransportOrder extends BaseLogic{
         }
         return resultArray(2000,'更改订单状态成功');
     }
+
+    //获取订单详情
+    public function getTransportOrderInfos($where){
+        $ret = $this->where($where)->select();
+        if (!empty($ret)){
+            $ret = collection($ret)->toArray();
+        }
+        return $ret;
+    }
+
 }
