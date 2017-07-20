@@ -45,7 +45,7 @@ class Quote extends BaseLogic{
                 'car_style_type' => $item['car_style_type'],
                 'car_style_length' => $item['car_style_length'],
                 'card_number' => getCardNumber($item['dr_id']),
-                'dr_price' => $item['dr_price'],
+                'dr_price' => wztxMoney($item['dr_price']),
             ];
         }
 

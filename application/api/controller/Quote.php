@@ -40,7 +40,8 @@ class Quote extends BaseController{
         validateData($paramAll,$rule);
         $where = [
             'order_id' => $paramAll['order_id'],
-            'sp_id' => $this->loginUser['id']
+            'sp_id' => $this->loginUser['id'],
+            'status' => 'quote',//司机已报价
         ];
         $ret = model('Quote','logic')->showQuoteList($where,$pageParam);//显示我的报价列表
         returnJson($ret);
