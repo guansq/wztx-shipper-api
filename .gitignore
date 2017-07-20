@@ -4,7 +4,5 @@
 /.idea
 /.svn
 /composer.lock
-/nbproject
-/static/runtime/
 /.env
 /apidoc.json
