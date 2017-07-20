@@ -456,7 +456,6 @@ function getPushToken($id){
  * 生成签名
  */
 function createSign($sendData){
-    dump($sendData);die;
     $desClass = new DesUtils();
     $arrOrder = $desClass->naturalOrdering([$sendData['rt_appkey'],$sendData['req_time'],$sendData['req_action']]);
     $skArr = explode('_',config('app_access_key'));

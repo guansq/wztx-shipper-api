@@ -51,7 +51,7 @@ class MsgService{
             'opt' => $opt,
         ];
 
-        //$data['sign'] = createSign($data);
+        $data['sign'] = createSign($data);
         $httpRet = HttpService::post(self::RT_MSG_HOME.'/SendSms/sendCaptcha', $data);
         if(empty($httpRet)){
             return resultArray(6000);
