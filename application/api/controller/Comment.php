@@ -38,7 +38,7 @@ class Comment extends BaseController {
         ];
         validateData($paramAll, $rule);
         //获取订单评论详情
-        $commetInfo = model('Comment', 'logic')->getOrderComment(['order_id' => $paramAll['order_id'], 'sp_id' => $this->loginUser['id']]);
+        $commetInfo = model('Comment', 'logic')->getOrderCommentInfo(['order_id' => $paramAll['order_id'], 'sp_id' => $this->loginUser['id']]);
         returnJson($commetInfo);
     }
 
@@ -70,23 +70,24 @@ class Comment extends BaseController {
         ];
         validateData($paramAll, $rule);
         //获取订单详情
-        $orderInfo = model('TransportOrder', 'logic')->getTransportOrderInfos(['sp_id' => $this->loginUser['id'], 'id' => $paramAll['order_id']]);
+        $orderInfo = model('TransportOrder', 'logic')->getTransportOrderInfo(['sp_id' => $this->loginUser['id'], 'id' => $paramAll['order_id']]);
         if (empty($orderInfo)) {
             returnJson('4000', '未获取到订单信息');
         }
-        if ($orderInfo[0]['status'] == 'comment') {
+        if ($orderInfo['status'] == 'comment') {
             returnJson('4000', '当前订单已评价过');
         }
-        if (!in_array($orderInfo[0]['status'], ['pay_success'])) {
+        if (!in_array($orderInfo['status'], ['pay_success'])) {
             returnJson('4000', '订单当前状态不能评论，请支付成功后评论');
         }
-        $orderInfo = $orderInfo[0];
         //获取pay_order_id undo
         $paramAll['pay_orderid '] = '111111111111';
         $spBaseInfo = model('SpBaseInfo', 'logic')->getPersonBaseInfo(['id' => $this->loginUser['id']]);
         $paramAll['sp_id'] = $this->loginUser['id'];
         if ($spBaseInfo['code'] == 2000) {
             $paramAll['sp_name'] = $spBaseInfo['result']['real_name'];
+        }else{
+            $paramAll['sp_name'] = '';
         }
         $drBaseInfo = model('DrBaseInfo', 'logic')->findInfoByUserId($orderInfo['dr_id']);
         $paramAll['dr_id'] = $orderInfo['dr_id'];
@@ -97,6 +98,9 @@ class Comment extends BaseController {
         $paramAll['status'] = 0;
         //没有问题存入数据库
         $changeStatus = model('TransportOrder', 'logic')->updateTransport(['id' => $paramAll['order_id']], ['status' => 'comment']);
+       if($changeStatus['code'] != '2000'){
+           returnJson($changeStatus);
+       }
         $ret = model('Comment', 'logic')->saveOrderComment($paramAll);
         returnJson($ret);
     }

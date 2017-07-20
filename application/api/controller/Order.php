@@ -185,22 +185,24 @@ class Order extends BaseController {
      * @apiSuccess  {String} order_code         订单号
      * @apiSuccess  {String} goods_name         货品名称
      * @apiSuccess  {String} weight             重量
-     * @apiSuccess  {String} org_address_name   起始地
-     * @apiSuccess  {String} dest_address_name  目的地
+     * @apiSuccess  {String} org_city           起始地
+     * @apiSuccess  {String} dest_city          目的地
      * @apiSuccess  {String} dest_receive_name  收货人姓名
      * @apiSuccess  {String} dest_phone         收货人电话
-     * @apiSuccess  {String} dest_address       收货人地址
+     * @apiSuccess  {String} dest_address_name  收货人地址
+     * @apiSuccess  {String} dest_address_detail收货人地址详情
      * @apiSuccess  {String} org_send_name      寄件人姓名
      * @apiSuccess  {String} org_phone          寄件人电话
-     * @apiSuccess  {String} org_address        寄件人地址
+     * @apiSuccess  {String} org_address_name   寄件人地址
+     * @apiSuccess  {String} org_address_datail 寄件人地址详情
      * @apiSuccess  {String} usecar_time        用车时间
      * @apiSuccess  {String} send_time          发货时间
      * @apiSuccess  {String} arr_time           到达时间
      * @apiSuccess  {String} real_name          车主姓名
      * @apiSuccess  {String} phone              联系电话
      * @apiSuccess  {String} policy_code        保单编号
-     * @apiSuccess  {Int} is_pay              是否支付1为已支付 0为未支付
-     * @apiSuccess    {String} is_receipt          货物回单1-是-默认，2-否
+     * @apiSuccess  {Int} is_pay                是否支付1为已支付 0为未支付
+     * @apiSuccess    {String} is_receipt       货物回单1-是-默认，2-否
      * @apiSuccess  {String} final_price        总运费
      */
     public function showOrderInfo() {
@@ -212,29 +214,28 @@ class Order extends BaseController {
         ];
 
         validateData($paramAll, $rule);
-        $orderInfo = model('TransportOrder', 'logic')->getTransportOrderInfos(['sp_id' => $this->loginUser['id'], 'id' => $paramAll['order_id']]);
-
+        $orderInfo = model('TransportOrder', 'logic')->getTransportOrderInfo(['sp_id' => $this->loginUser['id'], 'id' => $paramAll['order_id']]);
         if (empty($orderInfo)) {
             returnJson('4000', '未获取到订单信息');
         }
-        $orderInfo = $orderInfo[0];
         $drBaseInfo = model('DrBaseInfo', 'logic')->findInfoByUserId($orderInfo['dr_id']);
         $dr_phone = $drBaseInfo['phone'];
         $dr_real_name = $drBaseInfo['real_name'];
-        //$real_name = ($orderInfo['customer_type'] == 'company')?$orderInfo['company_name']:$orderInfo['real_name'];
         $detail = [
             'status' => $orderInfo['status'],
             'order_code' => $orderInfo['order_code'],
             'goods_name' => $orderInfo['goods_name'],
             'weight' => $orderInfo['weight'],
-            'org_address_name' => $orderInfo['org_address_name'],
-            'dest_address_name' => $orderInfo['dest_address_name'],
+            'org_city' => $orderInfo['org_city'],
+            'dest_city' => $orderInfo['dest_city'],
             'dest_receive_name' => $orderInfo['dest_receive_name'],
             'dest_phone' => $orderInfo['dest_phone'],
-            'dest_address' => $orderInfo['dest_address_name'] . $orderInfo['dest_address_detail'],
+            'dest_address_name' => $orderInfo['dest_address_name'],
+            'dest_address_detail' => $orderInfo['dest_address_detail'],
             'org_send_name' => $orderInfo['org_send_name'],
             'org_phone' => $orderInfo['org_phone'],
-            'org_address' => $orderInfo['org_address_name'] . $orderInfo['org_address_detail'],
+            'org_address_name' => $orderInfo['org_address_name'],
+            'org_address_detail' => $orderInfo['org_address_detail'],
             'usecar_time' => $orderInfo['usecar_time'],
             'send_time' => $orderInfo['send_time'],
             'arr_time' => $orderInfo['arr_time'],
@@ -245,7 +246,7 @@ class Order extends BaseController {
             'is_receipt' => $orderInfo['is_receipt'],
             'final_price' => $orderInfo['final_price'],
         ];
-        returnJson(resultArray('2000', '成功', $detail));
+        returnJson('2000', '成功', $detail);
     }
 
     /**
@@ -255,10 +256,10 @@ class Order extends BaseController {
      * @apiHeader {String}  authorization-token     token
      * @apiParam   {String} type        订单状态（all全部状态，quote报价中，quoted已报价，待发货 distribute配送中（在配送-未拍照）发货中 photo 拍照完毕（订单已完成））
      * @apiSuccess {Array}  list        订单列表
-     * @apiSuccess {String} list.org_address_name        出发地名称
-     * @apiSuccess {String} list.dest_address_name       目的地名称
-     * @apiSuccess {String} list.weight                  货物重量
-     * @apiSuccess {String} list.goods_name              货物名称
+     * @apiSuccess {String} list.org_city               出发地名称
+     * @apiSuccess {String} list.dest_city              目的地名称
+     * @apiSuccess {String} list.weight                 货物重量
+     * @apiSuccess {String} list.goods_name             货物名称
      * @apiSuccess {String} list.status init 初始状态（未分发订单前）quote报价中（分发订单后）quoted已报价-未配送（装货中）distribute配送中（在配送-未拍照）发货中 photo 拍照完毕（订单已完成）pay_failed（支付失败）/pay_success（支付成功）comment（已评论）
      */
     public function showOrderList() {
@@ -274,21 +275,21 @@ class Order extends BaseController {
             $where['status'] =  $paramAll['type'];
         }
         $where['sp_id'] = $this->loginUser['id'];
-        $orderInfo = model('TransportOrder', 'logic')->getTransportOrderInfos($where);
+        $orderInfo = model('TransportOrder', 'logic')->getTransportOrderList($where);
         if (empty($orderInfo)) {
             returnJson('4000', '暂无订单信息');
         }
         $list = [];
         foreach ($orderInfo as $k => $v) {
             $list[] = [
-                'org_address_name' => $v['org_address_name'],
-                'dest_address_name' => $v['dest_address_name'],
+                'org_city' => $v['org_city'],
+                'dest_city' => $v['dest_city'],
                 'weight' => $v['weight'],
                 'goods_name' => $v['goods_name'],
                 'status' => $v['status']
             ];
         }
-        returnJson(resultArray('2000', '成功', ['list' => $list]));
+        returnJson('2000', '成功', ['list' => $list]);
     }
 
 
@@ -309,13 +310,13 @@ class Order extends BaseController {
         ];
 
         validateData($paramAll, $rule);
-        $orderInfo = model('TransportOrder', 'logic')->getTransportOrderInfos(['sp_id' => $this->loginUser['id'], 'id' => $paramAll['order_id']]);
+        $orderInfo = model('TransportOrder', 'logic')->getTransportOrderInfo(['sp_id' => $this->loginUser['id'], 'id' => $paramAll['order_id']]);
 
         if (empty($orderInfo)) {
             returnJson('4000', '未获取到订单信息');
         }
-        $arrCerPic = $orderInfo[0]['arr_cer_pic'];
+        $arrCerPic = $orderInfo['arr_cer_pic'];
         $detail = explode('|', $arrCerPic);
-        returnJson(resultArray('2000', '成功', ['list' => $detail]));
+        returnJson('2000', '成功', ['list' => $detail]);
     }
 }

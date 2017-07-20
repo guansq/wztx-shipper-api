@@ -50,7 +50,7 @@ class TransportOrder extends BaseLogic{
     }
 
     //获取订单详情
-    public function getTransportOrderInfos($where){
+    public function getTransportOrderList($where){
         $ret = $this->where($where)->select();
         if (!empty($ret)){
             $ret = collection($ret)->toArray();
