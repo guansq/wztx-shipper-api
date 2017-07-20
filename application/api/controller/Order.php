@@ -266,10 +266,15 @@ class Order extends BaseController {
             'type',
         ]);
         $rule = [
-            'type' => ['require', '/^(init|quote|quoted|distribute|photo|pay_failed|pay_failed|pay_success|comment)$/'],
+            'type' => ['require', '/^(all|quote|quoted|distribute|photo)$/'],
         ];
         validateData($paramAll, $rule);
-        $orderInfo = model('TransportOrder', 'logic')->getTransportOrderInfos(['sp_id' => $this->loginUser['id'], 'status' => $paramAll['type']]);
+        $where = [];
+        if($paramAll['type'] != 'all'){
+            $where['status'] =  $paramAll['type'];
+        }
+        $where['sp_id'] = $this->loginUser['id'];
+        $orderInfo = model('TransportOrder', 'logic')->getTransportOrderInfos($where);
         if (empty($orderInfo)) {
             returnJson('4000', '暂无订单信息');
         }
