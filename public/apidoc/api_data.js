@@ -1233,14 +1233,14 @@ define({ "api": [
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "org_address_name",
+            "field": "org_city",
             "description": "<p>起始地</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "dest_address_name",
+            "field": "dest_city",
             "description": "<p>目的地</p>"
           },
           {
@@ -1261,8 +1261,15 @@ define({ "api": [
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "dest_address",
+            "field": "dest_address_name",
             "description": "<p>收货人地址</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "dest_address_detail",
+            "description": "<p>收货人地址详情</p>"
           },
           {
             "group": "Success 200",
@@ -1282,8 +1289,15 @@ define({ "api": [
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "org_address",
+            "field": "org_address_name",
             "description": "<p>寄件人地址</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "org_address_datail",
+            "description": "<p>寄件人地址详情</p>"
           },
           {
             "group": "Success 200",
@@ -1406,14 +1420,14 @@ define({ "api": [
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "list.org_address_name",
+            "field": "list.org_city",
             "description": "<p>出发地名称</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "list.dest_address_name",
+            "field": "list.dest_city",
             "description": "<p>目的地名称</p>"
           },
           {
