@@ -222,10 +222,11 @@ class Order extends BaseController {
         $dr_phone = $drBaseInfo['phone'];
         $dr_real_name = $drBaseInfo['real_name'];
         $detail = [
+            'order_id'=>$orderInfo['id'],
             'status' => $orderInfo['status'],
             'order_code' => $orderInfo['order_code'],
             'goods_name' => $orderInfo['goods_name'],
-            'weight' => $orderInfo['weight'],
+            'weight' => strval($orderInfo['weight']),
             'org_city' => $orderInfo['org_city'],
             'dest_city' => $orderInfo['dest_city'],
             'dest_receive_name' => $orderInfo['dest_receive_name'],
@@ -258,6 +259,7 @@ class Order extends BaseController {
      * @apiParam {Number} [page=1]                  页码.
      * @apiParam {Number} [pageSize=20]             每页数据量.
      * @apiSuccess {Array}  list        订单列表
+     * @apiSuccess {String} list.order_id        订单ID
      * @apiSuccess {String} list.org_city               出发地名称
      * @apiSuccess {String} list.dest_city              目的地名称
      * @apiSuccess {String} list.weight                 货物重量
