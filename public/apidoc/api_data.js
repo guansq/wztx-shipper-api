@@ -1704,8 +1704,56 @@ define({ "api": [
   },
   {
     "type": "POST",
-    "url": "/order/sendOrder",
-    "title": "派单给司机",
+    "url": "/quote/confirmQuotePrice",
+    "title": "确认报价价格",
+    "name": "confirmQuotePrice",
+    "group": "Quote",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization-token",
+            "description": "<p>token.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "order_id",
+            "description": "<p>订单ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "quote_id",
+            "description": "<p>报价ID</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "application/api/controller/Quote.php",
+    "groupTitle": "Quote",
+    "sampleRequest": [
+      {
+        "url": "http://wztx.shp.api.ruitukeji.com/quote/confirmQuotePrice"
+      }
+    ]
+  },
+  {
+    "type": "POST",
+    "url": "/quote/sendOrder",
+    "title": "派单给司机done",
     "name": "sendOrder",
     "group": "Quote",
     "header": {
@@ -1746,7 +1794,7 @@ define({ "api": [
     "groupTitle": "Quote",
     "sampleRequest": [
       {
-        "url": "http://wztx.shp.api.ruitukeji.com/order/sendOrder"
+        "url": "http://wztx.shp.api.ruitukeji.com/quote/sendOrder"
       }
     ]
   },

@@ -32,11 +32,12 @@ class Quote extends BaseController{
      * @apiSuccess  {String} list.quote_price     报价
      */
     public function showDriverQuoteList(){
-
+        $paramAll = $this->getReqParams(['order_id']);
+        $rule = ['order_id'=>'require'];
     }
 
     /**
-     * @api {POST}  /order/sendOrder      派单给司机
+     * @api {POST}  /quote/sendOrder      派单给司机done
      * @apiName     sendOrder
      * @apiGroup    Quote
      * @apiHeader   {String}    authorization-token     token.
@@ -56,7 +57,7 @@ class Quote extends BaseController{
         //获得订单信息
         $orderInfo = model('TransportOrder','logic')->getTransportOrderInfo(['id'=>$paramAll['order_id']]);
         if(empty($orderInfo)){
-           returnJson('4000','获取订单信息失败');
+           returnJson(4000,'获取订单信息失败');
         }
         //写入询价表
         $quoteLogic = model('Quote','logic');
@@ -67,6 +68,7 @@ class Quote extends BaseController{
             $info['weight'] = $orderInfo['weight'];
             $info['order_id'] = $orderInfo['id'];
             $info['dr_id'] = $v['id'];
+            $info['sp_id'] = $this->loginUser['id'];
             $info['system_price'] = $orderInfo['system_price'];
             $info['sp_price'] = $orderInfo['mind_price'];
             $info['usecar_time'] = $orderInfo['usecar_time'];
@@ -84,9 +86,10 @@ class Quote extends BaseController{
             //发送推送消息
             $push_token = getPushToken($info['dr_id']);//得到推送token
             if(!empty($push_token)){
-                pushInfo($push_token,self::TITLE,self::CONTENT);
+                pushInfo($push_token,self::TITLE,self::CONTENT,'wztx_driver');//推送给司机
             }
         }
+        returnJson(2000,'派单成功');
     }
 
 
@@ -141,6 +144,18 @@ class Quote extends BaseController{
         if($request->isPost()){
             returnJson(2000,$sign);
         }
+
+    }
+
+    /**
+     * @api {POST}  /quote/confirmQuotePrice      确认报价价格
+     * @apiName     confirmQuotePrice
+     * @apiGroup    Quote
+     * @apiHeader   {String}    authorization-token     token.
+     * @apiParam  {String} order_id        订单ID
+     * @apiParam  {String} quote_id        报价ID
+     */
+    public function confirmQuotePrice(){
 
     }
 
