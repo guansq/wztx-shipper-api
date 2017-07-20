@@ -55,7 +55,8 @@ class TransportOrder extends BaseLogic {
         if (empty($dataTotal)) {
             return resultArray(4004);
         }
-        $list = $this->where($where)->order('create_at desc')->page($pageParam['page'], $pageParam['pageSize'])->field('org_city,dest_city,weight,goods_name,status,car_style_length,car_style_type')->select();
+        $list = $this->where($where)->order('create_at desc')->page($pageParam['page'], $pageParam['pageSize'])
+            ->field('id order_id,org_city,dest_city,weight,goods_name,status,car_style_length,car_style_type')->select();
         foreach ($list as $k =>$v){
             $v['weight'] =strval($v['weight']);
         }
