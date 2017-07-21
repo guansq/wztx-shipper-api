@@ -210,7 +210,7 @@ class Order extends BaseController {
             'order_id',
         ]);
         $rule = [
-            'order_id' => ['require', 'regex' => '\d'],
+            'order_id' => ['require', 'regex' => '^[0-9]*$'],
         ];
 
         validateData($paramAll, $rule);
@@ -308,7 +308,7 @@ class Order extends BaseController {
             'order_id',
         ]);
         $rule = [
-            'order_id' => ['require', 'regex' => '\d'],
+            'order_id' => ['require', 'regex' => '^[0-9]*$'],
         ];
 
         validateData($paramAll, $rule);
