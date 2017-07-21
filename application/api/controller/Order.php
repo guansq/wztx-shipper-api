@@ -202,7 +202,9 @@ class Order extends BaseController {
      * @apiSuccess  {String} phone              联系电话
      * @apiSuccess  {String} policy_code        保单编号
      * @apiSuccess  {Int} is_pay                是否支付1为已支付 0为未支付
-     * @apiSuccess    {String} is_receipt       货物回单1-是-默认，2-否
+     * @apiSuccess  {String} is_receipt         货物回单1-是-默认，2-否
+     * @apiSuccess  {String} system_price       系统出价
+     * @apiSuccess  {String} mind_price         货主出价
      * @apiSuccess  {String} final_price        总运费
      */
     public function showOrderInfo() {
@@ -245,6 +247,8 @@ class Order extends BaseController {
             'policy_code' => $orderInfo['policy_code'],
             'is_pay' => $orderInfo['is_pay'],
             'is_receipt' => $orderInfo['is_receipt'],
+            'system_price' => wztxMoney($orderInfo['system_price']),
+            'mind_price' => wztxMoney($orderInfo['mind_price']),
             'final_price' => wztxMoney($orderInfo['final_price']),
         ];
         returnJson('2000', '成功', $detail);
