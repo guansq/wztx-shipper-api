@@ -190,11 +190,12 @@ class Quote extends BaseController{
             'id' => $paramAll['quote_id'],
             'status' => 'quote',
             'sp_id' => $this->loginUser['id'],
+            'is_receive' => 0,
             'order_id' => $paramAll['order_id']
         ];
         $count = model('Quote','logic')->getQuoteCount($where);
         if($count == 0){
-            returnJson(4000,'抱歉没有该条已报价的信息');
+            returnJson(4000,'抱歉该条信息已报价过了，或没有改报价信息');
         }
         model('Quote','logic')->changeQuote(['id'=>$paramAll['quote_id']],['is_receive'=>1]);//货主确认的价格,更改
         $ret = model('Quote','logic')->getQuoteInfo(['id'=>$paramAll['quote_id']]);
@@ -205,7 +206,7 @@ class Quote extends BaseController{
         $final_price = $quoteInfo['dr_price'];
         //获得司机报价的价格
         $data = [
-            'satatus' => 'quoted',
+            'status' => 'quoted',
             'final_price' => $final_price,
             'dr_id' => $quoteInfo['dr_id'],
         ];
