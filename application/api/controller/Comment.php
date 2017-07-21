@@ -34,7 +34,7 @@ class Comment extends BaseController {
             'order_id',
         ]);
         $rule = [
-            'order_id' => ['require', 'regex' => '\d'],
+            'order_id' => ['require', 'regex' => '^[0-9]*$'],
         ];
         validateData($paramAll, $rule);
         //获取订单评论详情
@@ -67,7 +67,7 @@ class Comment extends BaseController {
             'content'
         ]);
         $rule = [
-            'order_id' => ['require', 'regex' => '\d'],
+            'order_id' => ['require', 'regex' => '^[0-9]*$'],
             'limit_ship' => ['require', 'regex' => '[1-5]'],
             'attitude' => ['require', 'regex' => '[1-5]'],
             'satisfaction' => ['require', 'regex' => '[1-5]'],
