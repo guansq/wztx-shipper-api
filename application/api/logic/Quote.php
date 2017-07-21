@@ -45,7 +45,7 @@ class Quote extends BaseLogic{
                 'car_style_type' => $item['car_style_type'],
                 'car_style_length' => $item['car_style_length'],
                 'card_number' => getCardNumber($item['dr_id']),
-                'dr_price' => $item['dr_price'],
+                'dr_price' => wztxMoney($item['dr_price']),
             ];
         }
 
@@ -59,4 +59,25 @@ class Quote extends BaseLogic{
 
         return resultArray(2000, '', $ret);
     }
+
+    /**
+     * Auther: guanshaoqiu <94600115@qq.com>
+     * Describe:得到相关条件的报价数量
+     */
+    public function getQuoteCount($where){
+       return $this->where($where)->count();
+    }
+
+    /**
+     * Auther: guanshaoqiu <94600115@qq.com>
+     * Describe:更改报价信息状态
+     */
+    public function changeQuote($where,$data){
+        $ret =  $this->where($where)->update($data);
+        if($ret === fasle){
+            return resultArray(4000,'更改报价信息失败');
+        }
+    }
+
+
 }

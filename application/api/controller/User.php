@@ -64,9 +64,6 @@ class User extends BaseController{
      * @apiParam {String} hold_pic         手持身份证照.
      * @apiParam {String} front_pic        身份证正面照.
      * @apiParam {String} back_pic         身份证反面照.
-     * @apiError {String} code             2000
-     * @apiError {String} msg              '提交验证后重新提交验证信息'
-     * @apiError {Array} result             ['auth_status']不合法的状态
      */
     public function personAuth(Request $request){
         //校验参数
