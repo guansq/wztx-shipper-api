@@ -321,4 +321,39 @@ class Order extends BaseController {
         $detail = explode('|', $arrCerPic);
         returnJson('2000', '成功', ['list' => $detail]);
     }
+
+    /**
+     * @api     {POST}  /order/uploadCerPic            上传支付凭证done
+     * @apiName uploadCerPic
+     * @apiGroup Order
+     * @apiHeader {String} authorization-token           token.
+     * @apiParam    {Int}    order_id           order_id
+     * @apiParam    {String}    img_url         图片链接，多个用 | 分隔
+     * @apiSuccess  {String} order_id         order_id
+     */
+    public function uploadCerPic() {
+        $paramAll = $this->getReqParams([
+            'order_id',
+            'img_url',
+        ]);
+        $rule = [
+            'order_id' => ['require', 'regex' => '^[0-9]*$'],
+            'img_url' => 'require',
+        ];
+
+        validateData($paramAll, $rule);
+        $orderInfo = model('TransportOrder', 'logic')->getTransportOrderInfo(['sp_id' => $this->loginUser['id'], 'id' => $paramAll['order_id']]);
+        if (empty($orderInfo)) {
+            returnJson('4004', '未获取到订单信息');
+        }
+        if($orderInfo['status'] != 'photo'){
+            returnJson('4000', '当前状态不能拍照上传');
+        }
+        //没有问题存入数据库
+        $changeStatus = model('TransportOrder', 'logic')->updateTransport(['id' => $paramAll['order_id']], ['pay_cer_pic'=>$paramAll['img_url']]);
+        if ($changeStatus['code'] != '2000') {
+            returnJson($changeStatus);
+        }
+        returnJson('200', '成功',['order_id'=>$paramAll['order_id']]);
+    }
 }
