@@ -476,5 +476,12 @@ function getCardNumber($id){
  * 获得司机报价价格
  */
 function getDrPrice($id){
-    return Db::name('quote')->where()->value('dr_price');
+    return Db::name('quote')->where("id",$id)->value('dr_price');
+}
+
+/*
+ * 获得司机手机
+ */
+function getDrPhone($id){
+    return Db::name('dr_base_info')->where("id",$id)->value('phone');
 }

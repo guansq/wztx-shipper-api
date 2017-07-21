@@ -1359,6 +1359,20 @@
             "group": "Success 200",
             "type": "String",
             "optional": false,
+            "field": "system_price",
+            "description": "<p>系统出价</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "mind_price",
+            "description": "<p>货主出价</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
             "field": "final_price",
             "description": "<p>总运费</p>"
           }
@@ -1525,6 +1539,67 @@
     "sampleRequest": [
       {
         "url": "http://wztx.shp.api.ruitukeji.com/order/showOrderList"
+      }
+    ]
+  },
+  {
+    "type": "POST",
+    "url": "/order/uploadCerPic",
+    "title": "上传支付凭证done",
+    "name": "uploadCerPic",
+    "group": "Order",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization-token",
+            "description": "<p>token.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Int",
+            "optional": false,
+            "field": "order_id",
+            "description": "<p>order_id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "img_url",
+            "description": "<p>图片链接，多个用 | 分隔</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "order_id",
+            "description": "<p>order_id</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "application/api/controller/Order.php",
+    "groupTitle": "Order",
+    "sampleRequest": [
+      {
+        "url": "http://wztx.shp.api.ruitukeji.com/order/uploadCerPic"
       }
     ]
   },

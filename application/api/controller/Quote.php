@@ -222,8 +222,9 @@ class Quote extends BaseController{
         if(!empty($push_token)){
             pushInfo($push_token,self::DRTITLE,self::DRCONTENT,'wztx_driver');//推送给司机
         }
-        //发送短信
-        sendSMS($this->loginUser['user_name'],self::DRCONTENT,'wztx_driver');
+        //发送短信给司机
+
+        sendSMS(getDrPhone($quoteInfo['dr_id']),self::DRCONTENT,'wztx_driver');
         returnJson(2000,'订单成功确定');
     }
 
