@@ -202,7 +202,9 @@ class Order extends BaseController {
      * @apiSuccess  {String} phone              联系电话
      * @apiSuccess  {String} policy_code        保单编号
      * @apiSuccess  {Int} is_pay                是否支付1为已支付 0为未支付
-     * @apiSuccess    {String} is_receipt       货物回单1-是-默认，2-否
+     * @apiSuccess  {String} is_receipt         货物回单1-是-默认，2-否
+     * @apiSuccess  {String} system_price       系统出价
+     * @apiSuccess  {String} mind_price         货主出价
      * @apiSuccess  {String} final_price        总运费
      */
     public function showOrderInfo() {
@@ -245,6 +247,8 @@ class Order extends BaseController {
             'policy_code' => $orderInfo['policy_code'],
             'is_pay' => $orderInfo['is_pay'],
             'is_receipt' => $orderInfo['is_receipt'],
+            'system_price' => wztxMoney($orderInfo['system_price']),
+            'mind_price' => wztxMoney($orderInfo['mind_price']),
             'final_price' => wztxMoney($orderInfo['final_price']),
         ];
         returnJson('2000', '成功', $detail);
@@ -320,5 +324,40 @@ class Order extends BaseController {
         $arrCerPic = $orderInfo['arr_cer_pic'];
         $detail = explode('|', $arrCerPic);
         returnJson('2000', '成功', ['list' => $detail]);
+    }
+
+    /**
+     * @api     {POST}  /order/uploadCerPic            上传支付凭证done
+     * @apiName uploadCerPic
+     * @apiGroup Order
+     * @apiHeader {String} authorization-token           token.
+     * @apiParam    {Int}    order_id           order_id
+     * @apiParam    {String}    img_url         图片链接，多个用 | 分隔
+     * @apiSuccess  {String} order_id         order_id
+     */
+    public function uploadCerPic() {
+        $paramAll = $this->getReqParams([
+            'order_id',
+            'img_url',
+        ]);
+        $rule = [
+            'order_id' => ['require', 'regex' => '^[0-9]*$'],
+            'img_url' => 'require',
+        ];
+
+        validateData($paramAll, $rule);
+        $orderInfo = model('TransportOrder', 'logic')->getTransportOrderInfo(['sp_id' => $this->loginUser['id'], 'id' => $paramAll['order_id']]);
+        if (empty($orderInfo)) {
+            returnJson('4004', '未获取到订单信息');
+        }
+        if($orderInfo['status'] != 'photo'){
+            returnJson('4000', '当前状态不能拍照上传');
+        }
+        //没有问题存入数据库
+        $changeStatus = model('TransportOrder', 'logic')->updateTransport(['id' => $paramAll['order_id']], ['pay_cer_pic'=>$paramAll['img_url']]);
+        if ($changeStatus['code'] != '2000') {
+            returnJson($changeStatus);
+        }
+        returnJson('200', '成功',['order_id'=>$paramAll['order_id']]);
     }
 }
