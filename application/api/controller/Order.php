@@ -216,7 +216,7 @@ class Order extends BaseController {
         validateData($paramAll, $rule);
         $orderInfo = model('TransportOrder', 'logic')->getTransportOrderInfo(['sp_id' => $this->loginUser['id'], 'id' => $paramAll['order_id']]);
         if (empty($orderInfo)) {
-            returnJson('4000', '未获取到订单信息');
+            returnJson('4004', '未获取到订单信息');
         }
         $drBaseInfo = model('DrBaseInfo', 'logic')->findInfoByUserId($orderInfo['dr_id']);
         $dr_phone = $drBaseInfo['phone'];
@@ -288,7 +288,7 @@ class Order extends BaseController {
         $pageParam = $this->getPagingParams();
         $orderInfo = model('TransportOrder', 'logic')->getTransportOrderList($where, $pageParam);
         if (empty($orderInfo)) {
-            returnJson('4000', '暂无订单信息');
+            returnJson('4004', '暂无订单信息');
         }
 
         returnJson('2000', '成功', $orderInfo);
@@ -315,7 +315,7 @@ class Order extends BaseController {
         $orderInfo = model('TransportOrder', 'logic')->getTransportOrderInfo(['sp_id' => $this->loginUser['id'], 'id' => $paramAll['order_id']]);
 
         if (empty($orderInfo)) {
-            returnJson('4000', '未获取到订单信息');
+            returnJson('4004', '未获取到订单信息');
         }
         $arrCerPic = $orderInfo['arr_cer_pic'];
         $detail = explode('|', $arrCerPic);

@@ -44,7 +44,7 @@ class Comment extends BaseController {
             $commetInfo['post_time'] = wztxDate($commetInfo['post_time']);
             return returnJson(2000, '成功', $commetInfo);
         }
-        returnJson(4000, '未获取到订单信息');
+        returnJson(4004, '未获取到订单信息');
     }
 
     /**
@@ -77,13 +77,13 @@ class Comment extends BaseController {
         //获取订单详情
         $orderInfo = model('TransportOrder', 'logic')->getTransportOrderInfo(['sp_id' => $this->loginUser['id'], 'id' => $paramAll['order_id']]);
         if (empty($orderInfo)) {
-            returnJson('4000', '未获取到订单信息');
+            returnJson('4004', '未获取到订单信息');
         }
         if ($orderInfo['status'] == 'comment') {
-            returnJson('4000', '当前订单已评价过');
+            returnJson('4004', '当前订单已评价过');
         }
         if (!in_array($orderInfo['status'], ['pay_success'])) {
-            returnJson('4000', '订单当前状态不能评论，请支付成功后评论');
+            returnJson('4004', '订单当前状态不能评论，请支付成功后评论');
         }
         //获取pay_order_id undo
         $paramAll['pay_orderid '] = '111111111111';
