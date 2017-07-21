@@ -449,7 +449,7 @@ function pushInfo($token,$title,$content,$rt_key='wztx_shipper'){
     //dump($result);
 }
 /*
- * 得到推送token
+ * 得到司机推送token
  */
 function getPushToken($id){
     return Db::name('system_user_driver')->where("id",$id)->value('push_token');
@@ -470,4 +470,11 @@ function createSign($sendData){
  */
 function getCardNumber($id){
     return Db::name('dr_carinfo_auth')->where("id",$id)->value('card_number');
+}
+
+/*
+ * 获得司机报价价格
+ */
+function getDrPrice($id){
+    return Db::name('quote')->where()->value('dr_price');
 }

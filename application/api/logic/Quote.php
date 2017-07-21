@@ -74,10 +74,21 @@ class Quote extends BaseLogic{
      */
     public function changeQuote($where,$data){
         $ret =  $this->where($where)->update($data);
-        if($ret === fasle){
+        if($ret === false){
             return resultArray(4000,'更改报价信息失败');
         }
     }
 
+    /**
+     * Auther: guanshaoqiu <94600115@qq.com>
+     * Describe:得到报价信息
+     */
+    public function getQuoteInfo($where){
+        $ret = $this->where($where)->find();
+        if(empty($ret)){
+            return resultArray(4000,'获取信息失败');
+        }
+        return resultArray(2000,'',$ret);
+    }
 
 }

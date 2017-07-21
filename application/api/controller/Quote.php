@@ -15,6 +15,9 @@ class Quote extends BaseController{
     const MSG = '您有一条新的订单';
     const TITLE = '订单信息';
     const CONTENT = '您有一条新的订单';
+    const DRMSG = '您的报价已被货主接收';
+    const DRTITLE = '您的报价已被货主接收';
+    const DRCONTENT = '您的报价已被货主接收';
     /**
      * @api {POST}  /quote/showDriverQuoteList      显示司机报价列表 done
      * @apiName     showDriverQuoteList
@@ -142,6 +145,7 @@ class Quote extends BaseController{
 
 
     public function test(Request $request){
+        dump($this->loginUser);die;
         $appKey = input('rt_appkey');
         $reqTime = input('req_time');
         $action = input('req_action');
@@ -193,8 +197,33 @@ class Quote extends BaseController{
             returnJson(4000,'抱歉没有该条已报价的信息');
         }
         model('Quote','logic')->changeQuote(['id'=>$paramAll['quote_id']],['is_receive'=>1]);//货主确认的价格,更改
-
-        echo $count;
+        $ret = model('Quote','logic')->getQuoteInfo(['id'=>$paramAll['quote_id']]);
+        if($ret['code'] == 4000){
+            returnJson($ret);
+        }
+        $quoteInfo = $ret['result'];
+        $final_price = $quoteInfo['dr_price'];
+        //获得司机报价的价格
+        $data = [
+            'satatus' => 'quoted',
+            'final_price' => $final_price,
+            'dr_id' => $quoteInfo['dr_id'],
+        ];
+        //更改订单状态
+        $result = model('TransportOrder','logic')->updateTransport(['id'=>$paramAll['order_id'],'sp_id'=>$this->loginUser['id'],'status'=>'quote'],$data);
+        if($result['code'] == 4000){
+            returnJson($result);
+        }
+        //发送消息给司机
+        sendMsg($quoteInfo['dr_id'],self::DRTITLE,self::DRCONTENT,1);
+        //发送推送消息
+        $push_token = getPushToken($quoteInfo['dr_id']);//得到推送token
+        if(!empty($push_token)){
+            pushInfo($push_token,self::DRTITLE,self::DRCONTENT,'wztx_driver');//推送给司机
+        }
+        //发送短信
+        sendSMS($this->loginUser['user_name'],self::DRCONTENT,'wztx_driver');
+        returnJson(2000,'订单成功确定');
     }
 
 }
