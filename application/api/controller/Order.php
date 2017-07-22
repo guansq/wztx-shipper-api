@@ -304,6 +304,8 @@ class Order extends BaseController {
             }else{
                 $where['status'] = $paramAll['type'];
             }
+        }else{
+            $where['status'] = ['not in',['init']];
         }
         $where['sp_id'] = $this->loginUser['id'];
         $pageParam = $this->getPagingParams();
