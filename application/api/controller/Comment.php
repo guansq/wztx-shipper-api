@@ -71,7 +71,6 @@ class Comment extends BaseController {
             'limit_ship' => ['require', 'regex' => '[1-5]'],
             'attitude' => ['require', 'regex' => '[1-5]'],
             'satisfaction' => ['require', 'regex' => '[1-5]'],
-            'content' => ['require']
         ];
         validateData($paramAll, $rule);
         //获取订单详情

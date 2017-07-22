@@ -9,7 +9,7 @@ namespace app\api\controller;
 
 class Pay extends BaseController{
     /**
-     * @api {GET} /pay 我的钱包
+     * @api {GET} /pay 我的钱包done
      * @apiName index
      * @apiGroup Pay
      * @apiHeader {String} authorization-token      token.
@@ -17,7 +17,8 @@ class Pay extends BaseController{
      * @apiSuccess {String} bonus         我的推荐奖励
      */
     public function index(){
-
+       $spBaseInfo = model('SpBaseInfo', 'logic')->findInfoByUserId($this->loginUser['id']);
+        returnJson('2000', '成功', ['balance'=>wztxMoney($spBaseInfo['balance']),'bonus'=>wztxMoney($spBaseInfo['bonus'])]);
     }
 
     /*
