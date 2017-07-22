@@ -71,7 +71,6 @@ class Comment extends BaseController {
             'limit_ship' => ['require', 'regex' => '[1-5]'],
             'attitude' => ['require', 'regex' => '[1-5]'],
             'satisfaction' => ['require', 'regex' => '[1-5]'],
-            'content' => ['require']
         ];
         validateData($paramAll, $rule);
         //获取订单详情
@@ -85,8 +84,7 @@ class Comment extends BaseController {
         if (!in_array($orderInfo['status'], ['pay_success'])) {
             returnJson('4004', '订单当前状态不能评论，请支付成功后评论');
         }
-        //获取pay_order_id undo
-        $paramAll['pay_orderid '] = '111111111111';
+
         $spBaseInfo = model('SpBaseInfo', 'logic')->getPersonBaseInfo(['id' => $this->loginUser['id']]);
         $paramAll['sp_id'] = $this->loginUser['id'];
         if ($spBaseInfo['code'] == 2000) {
@@ -101,6 +99,8 @@ class Comment extends BaseController {
         $paramAll['agent'] = $_SERVER['HTTP_USER_AGENT'];
         $paramAll['post_time'] = $paramAll['create_at'] = $paramAll['update_at'] = time();
         $paramAll['status'] = 0;
+        //获取pay_order_id undo
+        $paramAll['pay_orderid'] = '111111111111';
         //没有问题存入数据库
         $changeStatus = model('TransportOrder', 'logic')->updateTransport(['id' => $paramAll['order_id']], ['status' => 'comment']);
         if ($changeStatus['code'] != '2000') {

@@ -200,6 +200,8 @@ class Order extends BaseController {
      * @apiSuccess  {String} arr_time           到达时间
      * @apiSuccess  {String} real_name          车主姓名
      * @apiSuccess  {String} phone              联系电话
+     * @apiSuccess  {String} avatar             车主头像
+     * @apiSuccess  {String} card_number        司机车牌号
      * @apiSuccess  {String} policy_code        保单编号
      * @apiSuccess  {Int} is_pay                是否支付1为已支付 0为未支付
      * @apiSuccess  {String} is_receipt         货物回单1-是-默认，2-否
@@ -220,11 +222,20 @@ class Order extends BaseController {
         if (empty($orderInfo)) {
             returnJson('4004', '未获取到订单信息');
         }
-        $drBaseInfo = model('DrBaseInfo', 'logic')->findInfoByUserId($orderInfo['dr_id']);
-        $dr_phone = $drBaseInfo['phone'];
-        $dr_real_name = $drBaseInfo['real_name'];
+        if (!empty($orderInfo['dr_id'])) {
+            $drBaseInfo = model('DrBaseInfo', 'logic')->findInfoByUserId($orderInfo['dr_id']);
+            $dr_phone = $drBaseInfo['phone'];
+            $dr_real_name = $drBaseInfo['real_name'];
+            $dr_avatar = $drBaseInfo['avatar'];
+            $dr_card_number = getCardNumber($drBaseInfo['car_id']);
+        } else {
+            $dr_phone = '';
+            $dr_real_name = '';
+            $dr_avatar = '';
+            $dr_card_number = '';
+        }
         $detail = [
-            'order_id'=>$orderInfo['id'],
+            'order_id' => $orderInfo['id'],
             'status' => $orderInfo['status'],
             'order_code' => $orderInfo['order_code'],
             'goods_name' => $orderInfo['goods_name'],
@@ -244,6 +255,8 @@ class Order extends BaseController {
             'arr_time' => wztxDate($orderInfo['arr_time']),
             'real_name' => $dr_real_name,
             'phone' => $dr_phone,
+            'avatar' => $dr_avatar,
+            'card_number' => $dr_card_number,
             'policy_code' => $orderInfo['policy_code'],
             'is_pay' => $orderInfo['is_pay'],
             'is_receipt' => $orderInfo['is_receipt'],
@@ -304,7 +317,7 @@ class Order extends BaseController {
 
 
     /**
-     * @api {POST}  /order/showCerPic      查看凭证
+     * @api {POST}  /order/showCerPic      查看收货凭证done
      * @apiName     showCerPic
      * @apiGroup    Order
      * @apiHeader {String}  authorization-token     token
@@ -354,14 +367,14 @@ class Order extends BaseController {
         if (empty($orderInfo)) {
             returnJson('4004', '未获取到订单信息');
         }
-        if($orderInfo['status'] != 'photo'){
+        if ($orderInfo['status'] != 'photo') {
             returnJson('4000', '当前状态不能拍照上传');
         }
         //没有问题存入数据库
-        $changeStatus = model('TransportOrder', 'logic')->updateTransport(['id' => $paramAll['order_id']], ['pay_cer_pic'=>$paramAll['img_url']]);
+        $changeStatus = model('TransportOrder', 'logic')->updateTransport(['id' => $paramAll['order_id']], ['pay_cer_pic' => $paramAll['img_url']]);
         if ($changeStatus['code'] != '2000') {
             returnJson($changeStatus);
         }
-        returnJson('200', '成功',['order_id'=>$paramAll['order_id']]);
+        returnJson('200', '成功', ['order_id' => $paramAll['order_id']]);
     }
 }

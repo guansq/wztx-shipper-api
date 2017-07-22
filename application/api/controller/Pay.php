@@ -9,7 +9,7 @@ namespace app\api\controller;
 
 class Pay extends BaseController{
     /**
-     * @api {GET} /pay 我的钱包
+     * @api {GET} /pay 我的钱包done
      * @apiName index
      * @apiGroup Pay
      * @apiHeader {String} authorization-token      token.
@@ -17,7 +17,8 @@ class Pay extends BaseController{
      * @apiSuccess {String} bonus         我的推荐奖励
      */
     public function index(){
-
+       $spBaseInfo = model('SpBaseInfo', 'logic')->findInfoByUserId($this->loginUser['id']);
+        returnJson('2000', '成功', ['balance'=>wztxMoney($spBaseInfo['balance']),'bonus'=>wztxMoney($spBaseInfo['bonus'])]);
     }
 
     /*
@@ -69,17 +70,33 @@ class Pay extends BaseController{
      * @apiHeader {String} authorization-token      token.
      * @apiParam {Number} [page=1]                  页码.
      * @apiParam {Number} [pageSize=20]             每页数据量.
-     * @apiParam  {Array}   list                     充值记录列表
-     * @apiParam  {String}  list.real_amount              充值金额
-     * @apiParam  {Int}    list.pay_way                  支付方式 1=支付宝，2=微信
-     * @apiSuccess {Int}   list.pay_status               支付状态 0=未支付，1=支付成功，2=支付失败
+     * @apiSuccess  {Array}     list                     充值记录列表
+     * @apiSuccess  {String}    list.real_amount              充值金额
+     * @apiSuccess  {Int}       list.pay_way                  支付方式 1=支付宝，2=微信
+     * @apiSuccess  {String}    list.pay_time                  支付时间
+     * @apiSuccess  {Int}       list.pay_status               支付状态 0=未支付，1=支付成功，2=支付失败
      * @apiSuccess {Number} page                页码.
      * @apiSuccess {Number} pageSize            每页数据量.
      * @apiSuccess {Number} dataTotal           数据总数.
      * @apiSuccess {Number} pageTotal           总页码数.
      */
     public function rechargeRecord(){
+        $where['sp_id'] = $this->loginUser['id'];
+        $where['type'] = $this->loginUser['type'];
+        $pageParam = $this->getPagingParams();
+        $recordInfo = model('Pay', 'logic')->getRechargeRecordList($where, $pageParam);
+        if (empty($recordInfo)) {
+            returnJson('4004', '暂无订单信息');
+        }
+        $list = $recordInfo['list'];
 
+        foreach ($list as $k =>$v){
+            $list[$k]['real_amount'] =wztxMoney($v['real_amount']);
+            $list[$k]['balance'] =wztxMoney($v['balance']);
+            $list[$k]['pay_time'] =wztxDate($v['pay_time']);
+        }
+        $recordInfo['list'] = $list;
+        returnJson('2000', '成功', $recordInfo);
     }
 
 }
