@@ -270,7 +270,7 @@ class Order extends BaseController {
      * @apiSuccess {String} list.goods_name             货物名称
      * @apiSuccess {String} list.car_style_length        车长
      * @apiSuccess {String} list.car_style_type          车型
-     * @apiSuccess {String} list.status init 初始状态（未分发订单前）quote报价中（分发订单后）quoted已报价-未配送（装货中）distribute配送中（在配送-未拍照）发货中 photo 拍照完毕（订单已完成）pay_failed（支付失败）/pay_success（支付成功）comment（已评论）
+     * @apiSuccess {String} list.status init 初始状态（未分发订单前）quote报价中（分发订单后）quoted已报价-未配送（装货中）distribute配送中（在配送-未拍照）发货中 photo 拍照完毕（订单已完成） sucess(完成后的所有状态)pay_failed（支付失败）/pay_success（支付成功）comment（已评论）
      * @apiSuccess {Number} page                页码.
      * @apiSuccess {Number} pageSize            每页数据量.
      * @apiSuccess {Number} dataTotal           数据总数.
@@ -281,12 +281,16 @@ class Order extends BaseController {
             'type',
         ]);
         $rule = [
-            'type' => ['require', '/^(all|quote|quoted|distribute|photo)$/'],
+            'type' => ['require', '/^(all|quote|quoted|distribute|photo|success)$/'],
         ];
         validateData($paramAll, $rule);
         $where = [];
         if ($paramAll['type'] != 'all') {
-            $where['status'] = $paramAll['type'];
+            if($paramAll['type'] == 'success'){
+                $where['status'] = ['in',['pay_success','comment']];
+            }else{
+                $where['status'] = $paramAll['type'];
+            }
         }
         $where['sp_id'] = $this->loginUser['id'];
         $pageParam = $this->getPagingParams();
