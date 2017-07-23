@@ -386,6 +386,278 @@ define({ "api": [
     ]
   },
   {
+    "type": "POST",
+    "url": "/goods/add",
+    "title": "提交货源信息done",
+    "name": "addGoods",
+    "group": "Goods",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization-token",
+            "description": "<p>token</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "type",
+            "defaultValue": "often",
+            "description": "<p>often-实时 urgent-加急 appoint-预约</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "appoint_at",
+            "description": "<p>预约时间</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "premium_amount",
+            "description": "<p>保费金额</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "org_address_maps",
+            "description": "<p>出发地地址的坐标 如116.480881,39.989410</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "org_city",
+            "description": "<p>出发地省市区</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "org_address_name",
+            "description": "<p>出发地名称</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "org_address_detail",
+            "description": "<p>出发地详情</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "org_send_name",
+            "description": "<p>发货人姓名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "org_phone",
+            "description": "<p>发货人手机</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "org_telphone",
+            "description": "<p>发货人电话</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "dest_receive_name",
+            "description": "<p>收货人姓名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "dest_address_maps",
+            "description": "<p>目的地址的坐标 如116.480881,39.989410</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "dest_city",
+            "description": "<p>到达城市</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "dest_address_name",
+            "description": "<p>目的地名称</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "dest_address_detail",
+            "description": "<p>目的地详情</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "dest_phone",
+            "description": "<p>收货人手机</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "dest_telphone",
+            "description": "<p>收货人电话</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "goods_name",
+            "description": "<p>货物名称</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "volume",
+            "description": "<p>总体积（立方米）</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "weight",
+            "description": "<p>总重量（吨）</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "car_style_type",
+            "description": "<p>车型名称-对应car_style里name</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "car_style_type_id",
+            "description": "<p>车型-对应car_style里id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "car_style_length",
+            "description": "<p>车长-对应car_style里name</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "car_style_length_id",
+            "description": "<p>车长-对应car_style里id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "effective_time",
+            "description": "<p>在途时效（分钟）</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "is_receipt",
+            "description": "<p>货物回单1-是-默认，2-否</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "mind_price",
+            "description": "<p>心理价位</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "system_price",
+            "description": "<p>系统价</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "remark",
+            "description": "<p>备注</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "tran_type",
+            "description": "<p>0=短途1=长途</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "kilometres",
+            "description": "<p>公里数</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "usecar_time",
+            "description": "<p>用车时间</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "order_id",
+            "description": "<p>订单ID</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "application/api/controller/Goods.php",
+    "groupTitle": "Goods",
+    "sampleRequest": [
+      {
+        "url": "http://wztx.shp.api.ruitukeji.com/goods/add"
+      }
+    ]
+  },
+  {
     "type": "GET",
     "url": "/apiCode",
     "title": "返回码说明done",
@@ -842,280 +1114,8 @@ define({ "api": [
   },
   {
     "type": "POST",
-    "url": "/order/add",
-    "title": "提交订单done",
-    "name": "addOrder",
-    "group": "Order",
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "authorization-token",
-            "description": "<p>token</p>"
-          }
-        ]
-      }
-    },
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "type",
-            "defaultValue": "often",
-            "description": "<p>often-实时 urgent-加急 appoint-预约</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": true,
-            "field": "appoint_at",
-            "description": "<p>预约时间</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": true,
-            "field": "premium_amount",
-            "description": "<p>保费金额</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "org_address_maps",
-            "description": "<p>出发地地址的坐标 如116.480881,39.989410</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "org_city",
-            "description": "<p>出发地省市区</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "org_address_name",
-            "description": "<p>出发地名称</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": true,
-            "field": "org_address_detail",
-            "description": "<p>出发地详情</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "org_send_name",
-            "description": "<p>发货人姓名</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "org_phone",
-            "description": "<p>发货人手机</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": true,
-            "field": "org_telphone",
-            "description": "<p>发货人电话</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "dest_receive_name",
-            "description": "<p>收货人姓名</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "dest_address_maps",
-            "description": "<p>目的地址的坐标 如116.480881,39.989410</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "dest_city",
-            "description": "<p>到达城市</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "dest_address_name",
-            "description": "<p>目的地名称</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "dest_address_detail",
-            "description": "<p>目的地详情</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "dest_phone",
-            "description": "<p>收货人手机</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": true,
-            "field": "dest_telphone",
-            "description": "<p>收货人电话</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "goods_name",
-            "description": "<p>货物名称</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "volume",
-            "description": "<p>总体积（立方米）</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "weight",
-            "description": "<p>总重量（吨）</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "car_style_type",
-            "description": "<p>车型名称-对应car_style里name</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "car_style_type_id",
-            "description": "<p>车型-对应car_style里id</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "car_style_length",
-            "description": "<p>车长-对应car_style里name</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "car_style_length_id",
-            "description": "<p>车长-对应car_style里id</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": true,
-            "field": "effective_time",
-            "description": "<p>在途时效（分钟）</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "is_receipt",
-            "description": "<p>货物回单1-是-默认，2-否</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": true,
-            "field": "mind_price",
-            "description": "<p>心理价位</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "system_price",
-            "description": "<p>系统价</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "remark",
-            "description": "<p>备注</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "tran_type",
-            "description": "<p>0=短途1=长途</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "kilometres",
-            "description": "<p>公里数</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": true,
-            "field": "usecar_time",
-            "description": "<p>用车时间</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "order_id",
-            "description": "<p>订单ID</p>"
-          }
-        ]
-      }
-    },
-    "version": "0.0.0",
-    "filename": "application/api/controller/Order.php",
-    "groupTitle": "Order",
-    "sampleRequest": [
-      {
-        "url": "http://wztx.shp.api.ruitukeji.com/order/add"
-      }
-    ]
-  },
-  {
-    "type": "POST",
     "url": "/order/showCerPic",
-    "title": "查看凭证",
+    "title": "查看收货凭证done",
     "name": "showCerPic",
     "group": "Order",
     "header": {
@@ -1338,6 +1338,20 @@ define({ "api": [
             "group": "Success 200",
             "type": "String",
             "optional": false,
+            "field": "avatar",
+            "description": "<p>车主头像</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "card_number",
+            "description": "<p>司机车牌号</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
             "field": "policy_code",
             "description": "<p>保单编号</p>"
           },
@@ -1500,7 +1514,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "list.status",
-            "description": "<p>init 初始状态（未分发订单前）quote报价中（分发订单后）quoted已报价-未配送（装货中）distribute配送中（在配送-未拍照）发货中 photo 拍照完毕（订单已完成）pay_failed（支付失败）/pay_success（支付成功）comment（已评论）</p>"
+            "description": "<p>init 初始状态（未分发订单前）quote报价中（分发订单后）quoted已报价-未配送（装货中）distribute配送中（在配送-未拍照）发货中 photo 拍照完毕（订单已完成） sucess(完成后的所有状态)pay_failed（支付失败）/pay_success（支付成功）comment（已评论）</p>"
           },
           {
             "group": "Success 200",
@@ -1606,7 +1620,7 @@ define({ "api": [
   {
     "type": "GET",
     "url": "/pay",
-    "title": "我的钱包",
+    "title": "我的钱包done",
     "name": "index",
     "group": "Pay",
     "header": {
@@ -1749,27 +1763,6 @@ define({ "api": [
             "field": "pageSize",
             "defaultValue": "20",
             "description": "<p>每页数据量.</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Array",
-            "optional": false,
-            "field": "list",
-            "description": "<p>充值记录列表</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "list.real_amount",
-            "description": "<p>充值金额</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Int",
-            "optional": false,
-            "field": "list.pay_way",
-            "description": "<p>支付方式 1=支付宝，2=微信</p>"
           }
         ]
       }
@@ -1777,6 +1770,34 @@ define({ "api": [
     "success": {
       "fields": {
         "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "list",
+            "description": "<p>充值记录列表</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.real_amount",
+            "description": "<p>充值金额</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Int",
+            "optional": false,
+            "field": "list.pay_way",
+            "description": "<p>支付方式 1=支付宝，2=微信</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.pay_time",
+            "description": "<p>支付时间</p>"
+          },
           {
             "group": "Success 200",
             "type": "Int",

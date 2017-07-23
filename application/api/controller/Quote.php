@@ -100,7 +100,7 @@ class Quote extends BaseController{
             $info['org_address_detail'] = $orderInfo['org_address_detail'];
             $info['dest_address_detail'] = $orderInfo['dest_address_detail'];
             //dump($info);
-            $quoteId = $quoteLogic->saveQuoteInfo($info);
+            //$quoteId = $quoteLogic->saveQuoteInfo($info);不生成询价单
             //发送系统消息给司机
             sendMsg($info['dr_id'],self::TITLE,self::CONTENT,1);
             //发送推送消息
