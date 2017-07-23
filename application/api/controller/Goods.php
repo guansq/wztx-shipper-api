@@ -50,7 +50,7 @@ class Goods extends BaseController{
      * @apiParam  {String}  tran_type                     0=短途1=长途
      * @apiParam  {String}  kilometres                    公里数
      * @apiParam  {String}  [usecar_time]                 用车时间
-     * @apiSuccess {String} order_id                      订单ID
+     * @apiSuccess {String} goods_id                      货源ID
      */
     public function addGoods() {
         $paramAll = $this->getReqParams([
@@ -170,6 +170,12 @@ class Goods extends BaseController{
         $paramAll['real_name'] = $baseUserInfo['real_name'];
         $paramAll['company_name'] = getCompanyName($this->loginUser);
         $paramAll['customer_type'] = $baseUserInfo['type'];
+        $address = explode(',',$paramAll['org_address_maps']);
+        $paramAll['org_longitude'] = $address[0];
+        $paramAll['org_latitude'] = $address[1];
+        $address = explode(',',$paramAll['dest_address_maps']);
+        $paramAll['dest_longitude'] = $address[0];
+        $paramAll['dest_latitude'] = $address[1];
         //没有问题存入数据库
         $ret = model('Goods', 'logic')->saveGoodsInfo($paramAll);
         returnJson($ret);

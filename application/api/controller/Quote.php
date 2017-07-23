@@ -23,7 +23,7 @@ class Quote extends BaseController{
      * @apiName     showDriverQuoteList
      * @apiGroup    Quote
      * @apiHeader   {String}    authorization-token     token.
-     * @apiParam    {Int}    order_id        订单ID
+     * @apiParam    {Int}    goods_id        货源ID
      * @apiParam    {Number} [page=1]                  页码.
      * @apiParam    {Number} [pageSize=20]             每页数据量.
      * @apiSuccess  {Array}  list            报价列表
@@ -38,11 +38,11 @@ class Quote extends BaseController{
      */
     public function showDriverQuoteList(){
         $pageParam = $this->getPagingParams();
-        $paramAll = $this->getReqParams(['order_id']);
-        $rule = ['order_id'=>'require'];
+        $paramAll = $this->getReqParams(['goods_id']);
+        $rule = ['goods_id'=>'require'];
         validateData($paramAll,$rule);
         $where = [
-            'order_id' => $paramAll['order_id'],
+            'goods_id' => $paramAll['goods_id'],
             'sp_id' => $this->loginUser['id'],
             'status' => 'quote',//司机已报价
         ];
@@ -177,31 +177,27 @@ class Quote extends BaseController{
      * @apiName     confirmQuotePrice
      * @apiGroup    Quote
      * @apiHeader   {String}    authorization-token     token.
-     * @apiParam  {String} order_id        订单ID
      * @apiParam  {String} quote_id        报价ID
      */
     public function confirmQuotePrice(){
         //最终价格确定 final_price（不含保费） 司机确定 dr_id status quoted
         //查询订单信息是否合法 确定后更改报价状态订单状态，发送推送信息给司机让司机去执行订单
-        $paramAll = $this->getReqParams(['order_id','quote_id']);
-        $rule = ['order_id'=>'require','quote_id'=>'require'];
+        $paramAll = $this->getReqParams(['quote_id']);
+        $rule = ['quote_id'=>'require'];
         validateData($paramAll,$rule);
         $where = [
             'id' => $paramAll['quote_id'],
-            'status' => 'quote',
             'sp_id' => $this->loginUser['id'],
-            'is_receive' => 0,
-            'order_id' => $paramAll['order_id']
         ];
-        $count = model('Quote','logic')->getQuoteCount($where);
-        if($count == 0){
-            returnJson(4000,'抱歉该条信息已报价过了，或没有改报价信息');
-        }
-        model('Quote','logic')->changeQuote(['id'=>$paramAll['quote_id']],['is_receive'=>1]);//货主确认的价格,更改
-        $ret = model('Quote','logic')->getQuoteInfo(['id'=>$paramAll['quote_id']]);
+        $ret = model('Quote','logic')->getQuoteInfo($where);//得到报价信息
         if($ret['code'] == 4000){
             returnJson($ret);
         }
+        /*$count = model('Quote','logic')->getQuoteCount($where);
+        if($count == 0){
+            returnJson(4000,'抱歉该条信息已报价过了，或没有改报价信息');
+        }*/
+        model('Quote','logic')->changeQuote(['id'=>$paramAll['quote_id']],['is_receive'=>1]);//货主确认该报价
         $quoteInfo = $ret['result'];
         $final_price = $quoteInfo['dr_price'];
         //获得司机报价的价格
@@ -210,8 +206,11 @@ class Quote extends BaseController{
             'final_price' => $final_price,
             'dr_id' => $quoteInfo['dr_id'],
         ];
+        //保存订单
+
         //更改订单状态
-        $result = model('TransportOrder','logic')->updateTransport(['id'=>$paramAll['order_id'],'sp_id'=>$this->loginUser['id'],'status'=>'quote'],$data);
+        //$result = model('TransportOrder','logic')->updateTransport(['id'=>$paramAll['order_id'],'sp_id'=>$this->loginUser['id'],'status'=>'quote'],$data);
+        $result = saveOrderBygoodsInfo();
         if($result['code'] == 4000){
             returnJson($result);
         }
@@ -228,4 +227,64 @@ class Quote extends BaseController{
         returnJson(2000,'订单成功确定');
     }
 
+    /**
+     * Auther: guanshaoqiu <94600115@qq.com>
+     * Describe:根据货源信息保存订单
+     */
+    private function saveOrderBygoodsInfo($goods_id){
+        //根据$goods_id取出信息
+        $goodsInfo = model('Goods','logic')->getGoodsInfo(['id'=>$goods_id]);
+        //生成订单
+        $orderInfo['order_code'] = order_num();
+        $orderInfo['sp_id'] = $goodsInfo['sp_id'];
+        $orderInfo['type'] = $goodsInfo['type'];
+        $orderInfo['appoint_at'] = $goodsInfo['appoint_at'];
+        $orderInfo['insured_amount'] = $goodsInfo['insured_amount'];
+        $orderInfo['premium_amount'] = $goodsInfo['premium_amount'];
+        $orderInfo['org_send_name'] = $goodsInfo['org_send_name'];
+        $orderInfo['org_address_maps'] = $goodsInfo['org_address_maps'];
+        $orderInfo['org_city'] = $goodsInfo['org_city'];
+        $orderInfo['org_address_name'] = $goodsInfo['org_address_name'];
+        $orderInfo['org_address_detail'] = $goodsInfo['org_address_detail'];
+        $orderInfo['org_phone'] = $goodsInfo['org_phone'];
+        $orderInfo['org_telphone'] = $goodsInfo['org_telphone'];
+        $orderInfo['dest_receive_name'] = $goodsInfo['dest_receive_name'];
+        $orderInfo['dest_address_maps'] = $goodsInfo['dest_address_maps'];
+        $orderInfo['dest_city'] = $goodsInfo['dest_city'];
+        $orderInfo['dest_address_name'] = $goodsInfo['dest_address_name'];
+        $orderInfo['dest_address_detail'] = $goodsInfo['dest_address_detail'];
+        $orderInfo['dest_phone'] = $goodsInfo['dest_phone'];
+        $orderInfo['dest_telphone'] = $goodsInfo['dest_telphone'];
+        $orderInfo['goods_name'] = $goodsInfo['goods_name'];
+        $orderInfo['volume'] = $goodsInfo['volume'];
+        $orderInfo['weight'] = $goodsInfo['weight'];
+        $orderInfo['car_style_type'] = $goodsInfo['car_style_type'];
+        $orderInfo['car_style_type_id'] = $goodsInfo['car_style_type_id'];
+        $orderInfo['car_style_length'] = $goodsInfo['car_style_length'];
+        $orderInfo['car_style_length_id'] = $goodsInfo['car_style_length_id'];
+        $orderInfo['effective_time'] = $goodsInfo['effective_time'];
+        $orderInfo['mind_price'] = $goodsInfo['mind_price'];
+        $orderInfo['final_price'] = $goodsInfo['final_price'];
+        $orderInfo['system_price'] = $goodsInfo['system_price'];
+        $orderInfo['payway'] = $goodsInfo['payway'];
+        $orderInfo['is_pay'] = $goodsInfo['is_pay'];
+        $orderInfo['remark'] = $goodsInfo['remark'];
+        $orderInfo['tran_type'] = $goodsInfo['tran_type'];
+        $orderInfo['usecar_time'] = $goodsInfo['usecar_time'];
+        $orderInfo['kilometres'] = $goodsInfo['kilometres'];
+        $orderInfo['status'] = 'quoted';
+        //完善个人信息填写  sp_id
+        $baseUserInfo = getBaseSpUserInfo($goodsInfo['sp_id']);
+        $orderInfo['real_name'] = $baseUserInfo['real_name'];
+        $orderInfo['company_name'] = getCompanyName($baseUserInfo);
+        $orderInfo['customer_type'] = $baseUserInfo['type'];
+        $address = explode(',',$goodsInfo['org_address_maps']);
+        $orderInfo['org_longitude'] = $address[0];
+        $orderInfo['org_latitude'] = $address[1];
+        $address = explode(',',$goodsInfo['dest_address_maps']);
+        $orderInfo['dest_longitude'] = $address[0];
+        $orderInfo['dest_latitude'] = $address[1];
+        $result = model('TransportOrder','logic')->saveTransportOrder($orderInfo);
+        return $result;
+    }
 }

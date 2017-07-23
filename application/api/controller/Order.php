@@ -168,6 +168,12 @@ class Order extends BaseController {
         $paramAll['real_name'] = $baseUserInfo['real_name'];
         $paramAll['company_name'] = getCompanyName($this->loginUser);
         $paramAll['customer_type'] = $baseUserInfo['type'];
+        $address = explode(',',$paramAll['org_address_maps']);
+        $paramAll['org_longitude'] = $address[0];
+        $paramAll['org_latitude'] = $address[1];
+        $address = explode(',',$paramAll['dest_address_maps']);
+        $paramAll['dest_longitude'] = $address[0];
+        $paramAll['dest_latitude'] = $address[1];
         //没有问题存入数据库
         $ret = model('TransportOrder', 'logic')->saveTransportOrder($paramAll);
         returnJson($ret);
@@ -379,4 +385,6 @@ class Order extends BaseController {
         }
         returnJson('200', '成功', ['order_id' => $paramAll['order_id']]);
     }
+
+
 }

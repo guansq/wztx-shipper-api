@@ -642,8 +642,8 @@
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "order_id",
-            "description": "<p>订单ID</p>"
+            "field": "goods_id",
+            "description": "<p>货源ID</p>"
           }
         ]
       }
