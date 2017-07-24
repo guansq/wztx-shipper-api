@@ -1882,6 +1882,13 @@ define({ "api": [
             "field": "pageSize",
             "defaultValue": "20",
             "description": "<p>每页数据量.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Int",
+            "optional": false,
+            "field": "is_pay",
+            "description": "<p>是否支付1为已支付 0为未支付</p>"
           }
         ]
       }

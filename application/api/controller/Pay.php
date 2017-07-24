@@ -55,6 +55,7 @@ class Pay extends BaseController{
      * @apiHeader {String} authorization-token          token.
      * @apiParam {Number} [page=1]                      页码.
      * @apiParam {Number} [pageSize=20]                 每页数据量.
+     * @apiParam    {Int}    is_pay                     是否支付1为已支付 0为未支付
      * @apiSuccess {Array}   list                       账单列表
      * @apiSuccess {String}   list.order_id             订单ID
      * @apiSuccess {String}   list.org_send_name        发货人姓名
@@ -70,7 +71,16 @@ class Pay extends BaseController{
      * @apiSuccess {Number} pageTotal                   总页码数.
      */
     public function showPayRecord(){
+        $paramAll = $this->getReqParams([
+            'is_pay',
+        ]);
+        $rule = [
+            'is_pay' => ['require',  '/^(0|1)$/'],
+        ];
+
+        validateData($paramAll, $rule);
         $where['status'] = ['in',['photo','pay_failed','pay_success','comment']];
+        $where['is_pay'] = $paramAll['is_pay'];
         $where['sp_id'] = $this->loginUser['id'];
         $pageParam = $this->getPagingParams();
         $orderInfo = model('TransportOrder', 'logic')->getTransportOrderList($where, $pageParam);
