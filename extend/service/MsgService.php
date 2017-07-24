@@ -51,6 +51,7 @@ class MsgService{
             'opt' => $opt,
         ];
 
+
         $data['sign'] = createSign($data);
         $httpRet = HttpService::post(self::RT_MSG_HOME.'/SendSms/sendCaptcha', $data);
         if(empty($httpRet)){
@@ -61,7 +62,7 @@ class MsgService{
             return resultArray(6000,'',$httpRet);
         }
         if($ret['msg'] == '手机号码个数错'){
-            $ret['msg'] = '手机号码错误';
+            $ret['msg'] = '手机号未注册';
         }
         return resultArray($ret);
     }

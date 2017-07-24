@@ -37,6 +37,7 @@ class User extends BaseController{
             'captcha' => 'require|length:4,8',
         ];
         validateData($paramAll, $rule);
+        $userLogic = model('User','logic');
         //校验验证码
         $result = MsgService::verifyCaptcha($paramAll['user_name'],'reg',$paramAll['captcha']);
         if($result['code'] != 2000){
@@ -44,7 +45,6 @@ class User extends BaseController{
         }
 
         //进行注册
-        $userLogic = model('User','logic');
         $result = $userLogic->reg($paramAll);
         //$userLogic
         if($result === false){
@@ -77,10 +77,10 @@ class User extends BaseController{
             'back_pic' =>'require'
         ];
         validateData($paramAll, $rule);
-        //查看验证状态为init才可以进行验证
+        //查看验证状态为init,refuse才可以进行验证
         $spBaseInfoLogic = model('SpBaseInfo','logic');
         $authStatus = $spBaseInfoLogic->getAuthStatus($this->loginUser['id']);
-        if($authStatus != 'init'){
+        if(!in_array($authStatus,['init','refuse'])){
             $ret = [
                 'code' => '4022',
                 'msg' => '状态不合法',
@@ -164,10 +164,10 @@ class User extends BaseController{
             'buss_pic'=>'require',
         ];
         validateData($paramAll, $rule);
-        //查看验证状态为init才可以进行验证
+        //查看验证状态为init,refuse才可以进行验证
         $spBaseInfoLogic = model('SpBaseInfo','logic');
         $authStatus = $spBaseInfoLogic->getAuthStatus($this->loginUser['id']);
-        if($authStatus != 'init'){
+        if(!in_array($authStatus,['init','refuse']) ){
             $ret = [
                 'code' => '4022',
                 'msg' => '状态不合法',

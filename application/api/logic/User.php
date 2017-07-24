@@ -71,7 +71,7 @@ class User extends BaseLogic{
         $loginUser = $this->findByAccount($account);
 
         if(empty($loginUser)){
-            return resultArray(4014);
+            return resultArray(4000,'该用户不存在');
         }
         // 校验密码
         $ret = $this->checkPassword($loginUser, $password);
@@ -229,7 +229,7 @@ class User extends BaseLogic{
      * Describe:
      * @param $account
      */
-    private function findByAccount($account){
+    public function findByAccount($account){
         return $this->alias('a')->field('a.*,b.real_name')->join('sp_base_info b','a.user_name = b.phone','LEFT')->where(['a.user_name' => $account])->find();
     }
 
@@ -243,7 +243,16 @@ class User extends BaseLogic{
         $encryptPwd = self::encryptPwdSalt($encryptPwd, $loginUser->salt);
         return $loginUser->password === $encryptPwd;
     }
-
+    /**
+     * Author:
+     * Describe: 校验密码
+     * @param $loginUser
+     * @param $password
+     */
+    private function checkPasswordNew($loginUser,$encryptNewPwd){
+        $encryptNewPwd = self::encryptPwdSalt($encryptNewPwd, $loginUser->salt);
+        return $loginUser->password === $encryptNewPwd;
+    }
     /**
      * Author: WILL<314112362@qq.com>
      * Describe: 校验用户状态
@@ -331,13 +340,19 @@ class User extends BaseLogic{
         $loginUser = $this->findByAccount($account);
 
         if(empty($loginUser)){
-            return resultArray(4014);
+            return resultArray(4000,'该用户不存在');
         }
         if(is_array($userInfo)){//存在数组 是修改密码 不存在则是重置密码
             // 校验密码
             $ret = $this->checkPassword($loginUser, $params['old_password']);
             if(!$ret){
                 return resultArray(4014);
+            }
+        }else{
+            $ret = $this->checkPasswordNew($loginUser,$params['new_password']);
+            //重置密码时，设置的密码与原密码一样，无任何提示，依然设置成功
+            if($ret){
+                return resultArray(4000,'重置密码不能和原密码一致');
             }
         }
 

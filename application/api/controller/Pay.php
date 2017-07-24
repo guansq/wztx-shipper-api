@@ -5,9 +5,10 @@
  * Date: 2017/7/7
  * Time: 9:59
  */
+
 namespace app\api\controller;
 
-class Pay extends BaseController{
+class Pay extends BaseController {
     /**
      * @api {GET} /pay 我的钱包done
      * @apiName index
@@ -16,9 +17,9 @@ class Pay extends BaseController{
      * @apiSuccess {String} balance         账户余额
      * @apiSuccess {String} bonus         我的推荐奖励
      */
-    public function index(){
-       $spBaseInfo = model('SpBaseInfo', 'logic')->findInfoByUserId($this->loginUser['id']);
-        returnJson('2000', '成功', ['balance'=>wztxMoney($spBaseInfo['balance']),'bonus'=>wztxMoney($spBaseInfo['bonus'])]);
+    public function index() {
+        $spBaseInfo = model('SpBaseInfo', 'logic')->findInfoByUserId($this->loginUser['id']);
+        returnJson('2000', '成功', ['balance' => wztxMoney($spBaseInfo['balance']), 'bonus' => wztxMoney($spBaseInfo['bonus'])]);
     }
 
     /*
@@ -31,7 +32,7 @@ class Pay extends BaseController{
      * @apiSuccess {String}     account               收款账号
      * @apiSuccess {String}     real_name            开户名称
      */
-    public function payBond(){
+    public function payBond() {
 
     }
 
@@ -44,7 +45,7 @@ class Pay extends BaseController{
      * @apiParam  {Int}    pay_way                  支付方式 1=支付宝，2=微信
      * @apiSuccess {Array} pay_info                 支付返回信息
      */
-    public function recharge(){
+    public function recharge() {
 
     }
 
@@ -58,28 +59,29 @@ class Pay extends BaseController{
      * @apiParam    {Int}    is_pay                     是否支付1为已支付 0为未支付
      * @apiSuccess {Array}   list                       账单列表
      * @apiSuccess {String}   list.order_id             订单ID
-     * @apiSuccess {String}   list.org_send_name        发货人姓名
+     * @apiSuccess {String}   list.dr_name              司机姓名
      * @apiSuccess {String}   list.org_city             发货地址
      * @apiSuccess {String}   list.dest_city            收货地址
      * @apiSuccess {String}   list.final_price          运价
      * @apiSuccess {String}   list.pay_time             订单完成时间
+     * @apiSuccess {String}   list.usecar_time          用车时间
      * @apiSuccess  {Int}     list.is_pay               是否支付1为已支付 0为未支付
-     * @apiSuccess  {String}  list.status              hang 挂起 quoted已报价-未配送（装货中）distribute配送中（在配送-未拍照）发货中 photo 拍照完毕（订单已完成） sucess(完成后的所有状态)pay_failed（支付失败）/pay_success（支付成功）comment（已评论）
+     * @apiSuccess  {String}  list.status               photo 拍照完毕（订单已完成） sucess(完成后的所有状态)pay_failed（支付失败）/pay_success（支付成功）comment（已评论）
      * @apiSuccess {Number} page                        页码.
      * @apiSuccess {Number} pageSize                    每页数据量.
      * @apiSuccess {Number} dataTotal                   数据总数.
      * @apiSuccess {Number} pageTotal                   总页码数.
      */
-    public function showPayRecord(){
+    public function showPayRecord() {
         $paramAll = $this->getReqParams([
             'is_pay',
         ]);
         $rule = [
-            'is_pay' => ['require',  '/^(0|1)$/'],
+            'is_pay' => ['require', '/^(0|1)$/'],
         ];
 
         validateData($paramAll, $rule);
-        $where['status'] = ['in',['photo','pay_failed','pay_success','comment']];
+        $where['status'] = ['in', ['photo', 'pay_failed', 'pay_success', 'comment']];
         $where['is_pay'] = $paramAll['is_pay'];
         $where['sp_id'] = $this->loginUser['id'];
         $pageParam = $this->getPagingParams();
@@ -88,19 +90,27 @@ class Pay extends BaseController{
             returnJson('4004', '暂无订单信息');
         }
         $list = [];
-        foreach ($orderInfo['list'] as $k =>$v){
+        foreach ($orderInfo['list'] as $k => $v) {
             $list[$k]['order_id'] = $v['id'];
             $list[$k]['org_city'] = $v['org_city'];
             $list[$k]['dest_city'] = $v['dest_city'];
-            $list[$k]['org_send_name'] =$v['org_send_name'];
+            if (!empty($v['dr_id'])) {
+                $drBaseInfo = model('DrBaseInfo', 'logic')->findInfoByUserId($v['dr_id']);
+                $dr_real_name = $drBaseInfo['real_name'];
+            }else{
+                $dr_real_name = '';
+            }
+            $list[$k]['dr_name'] = $dr_real_name;
             $list[$k]['final_price'] = wztxMoney($v['final_price']);
             $list[$k]['pay_time'] = wztxDate($v['pay_time']);
+            $list[$k]['usecar_time'] = wztxDate($v['usecar_time']);
             $list[$k]['is_pay'] = $v['is_pay'];
             $list[$k]['status'] = $v['status'];
         }
         $orderInfo['list'] = $list;
         returnJson('2000', '成功', $orderInfo);
     }
+
     /**
      * @api {POST} /pay/rechargeRecord  充值记录done
      * @apiName rechargeRecord
@@ -118,7 +128,7 @@ class Pay extends BaseController{
      * @apiSuccess {Number} dataTotal           数据总数.
      * @apiSuccess {Number} pageTotal           总页码数.
      */
-    public function rechargeRecord(){
+    public function rechargeRecord() {
         $where['sp_id'] = $this->loginUser['id'];
         $where['type'] = $this->loginUser['type'];
         $pageParam = $this->getPagingParams();
@@ -128,10 +138,10 @@ class Pay extends BaseController{
         }
         $list = $recordInfo['list'];
 
-        foreach ($list as $k =>$v){
-            $list[$k]['real_amount'] =wztxMoney($v['real_amount']);
-            $list[$k]['balance'] =wztxMoney($v['balance']);
-            $list[$k]['pay_time'] =wztxDate($v['pay_time']);
+        foreach ($list as $k => $v) {
+            $list[$k]['real_amount'] = wztxMoney($v['real_amount']);
+            $list[$k]['balance'] = wztxMoney($v['balance']);
+            $list[$k]['pay_time'] = wztxDate($v['pay_time']);
         }
         $recordInfo['list'] = $list;
         returnJson('2000', '成功', $recordInfo);
