@@ -1514,7 +1514,7 @@
             "type": "String",
             "optional": false,
             "field": "list.status",
-            "description": "<p>init 初始状态（未分发订单前）quote报价中（分发订单后）quoted已报价-未配送（装货中）distribute配送中（在配送-未拍照）发货中 photo 拍照完毕（订单已完成） sucess(完成后的所有状态)pay_failed（支付失败）/pay_success（支付成功）comment（已评论）</p>"
+            "description": "<p>init            初始状态（未分发订单前）quote报价中（分发订单后）quoted已报价-未配送（装货中）distribute配送中（在配送-未拍照）发货中 photo 拍照完毕（订单已完成） sucess(完成后的所有状态)pay_failed（支付失败）/pay_success（支付成功）comment（已评论）</p>"
           },
           {
             "group": "Success 200",
@@ -1729,7 +1729,7 @@
   {
     "type": "POST",
     "url": "/pay/rechargeRecord",
-    "title": "充值记录",
+    "title": "充值记录done",
     "name": "rechargeRecord",
     "group": "Pay",
     "header": {
@@ -1848,7 +1848,7 @@
   {
     "type": "POST",
     "url": "/pay/showPayRecord",
-    "title": "查看账单",
+    "title": "查看账单done",
     "name": "showPayRecord",
     "group": "Pay",
     "header": {
@@ -1860,6 +1860,28 @@
             "optional": false,
             "field": "authorization-token",
             "description": "<p>token.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": true,
+            "field": "page",
+            "defaultValue": "1",
+            "description": "<p>页码.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": true,
+            "field": "pageSize",
+            "defaultValue": "20",
+            "description": "<p>每页数据量.</p>"
           }
         ]
       }
@@ -1878,15 +1900,29 @@
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "list.send_name",
+            "field": "list.order_id",
+            "description": "<p>订单ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.org_send_name",
             "description": "<p>发货人姓名</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "list.org_address_name",
+            "field": "list.org_city",
             "description": "<p>发货地址</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.dest_city",
+            "description": "<p>收货地址</p>"
           },
           {
             "group": "Success 200",
@@ -1908,6 +1944,41 @@
             "optional": false,
             "field": "list.is_pay",
             "description": "<p>是否支付1为已支付 0为未支付</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.status",
+            "description": "<p>hang 挂起 quoted已报价-未配送（装货中）distribute配送中（在配送-未拍照）发货中 photo 拍照完毕（订单已完成） sucess(完成后的所有状态)pay_failed（支付失败）/pay_success（支付成功）comment（已评论）</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "page",
+            "description": "<p>页码.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "pageSize",
+            "description": "<p>每页数据量.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "dataTotal",
+            "description": "<p>数据总数.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "pageTotal",
+            "description": "<p>总页码数.</p>"
           }
         ]
       }
@@ -1943,13 +2014,6 @@
     "parameter": {
       "fields": {
         "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "order_id",
-            "description": "<p>订单ID</p>"
-          },
           {
             "group": "Parameter",
             "type": "String",
@@ -2043,8 +2107,8 @@
             "group": "Parameter",
             "type": "Int",
             "optional": false,
-            "field": "order_id",
-            "description": "<p>订单ID</p>"
+            "field": "goods_id",
+            "description": "<p>货源ID</p>"
           },
           {
             "group": "Parameter",
