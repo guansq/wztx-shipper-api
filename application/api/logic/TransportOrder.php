@@ -56,10 +56,8 @@ class TransportOrder extends BaseLogic {
             return false;
         }
         $list = $this->where($where)->order('create_at desc')->page($pageParam['page'], $pageParam['pageSize'])
-            ->field('id order_id,org_city,dest_city,weight,goods_name,status,car_style_length,car_style_type')->select();
-        foreach ($list as $k =>$v){
-            $v['weight'] =strval($v['weight']);
-        }
+            ->field('*,id order_id')->select();
+
         $ret = [
             'list' => $list,
             'page' => $pageParam['page'],

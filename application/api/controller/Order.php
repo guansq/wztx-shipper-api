@@ -277,23 +277,23 @@ class Order extends BaseController {
      * @api {POST}  /order/showOrderList      显示订单列表done
      * @apiName     showOrderList
      * @apiGroup    Order
-     * @apiHeader {String}  authorization-token     token
-     * @apiParam   {String} type        订单状态（all全部状态，quote报价中，quoted已报价，待发货 distribute配送中（在配送-未拍照）发货中 photo 拍照完毕（订单已完成））
-     * @apiParam {Number} [page=1]                  页码.
-     * @apiParam {Number} [pageSize=20]             每页数据量.
-     * @apiSuccess {Array}  list        订单列表
-     * @apiSuccess {String} list.order_id        订单ID
+     * @apiHeader {String}  authorization-token         token
+     * @apiParam   {String} type                        订单状态（all全部状态，quote报价中，quoted已报价，待发货 distribute配送中（在配送-未拍照）发货中 photo 拍照完毕（订单已完成））
+     * @apiParam {Number} [page=1]                      页码.
+     * @apiParam {Number} [pageSize=20]                 每页数据量.
+     * @apiSuccess {Array}  list                        订单列表
+     * @apiSuccess {String} list.order_id               订单ID
      * @apiSuccess {String} list.org_city               出发地名称
      * @apiSuccess {String} list.dest_city              目的地名称
      * @apiSuccess {String} list.weight                 货物重量
      * @apiSuccess {String} list.goods_name             货物名称
-     * @apiSuccess {String} list.car_style_length        车长
-     * @apiSuccess {String} list.car_style_type          车型
-     * @apiSuccess {String} list.status init 初始状态（未分发订单前）quote报价中（分发订单后）quoted已报价-未配送（装货中）distribute配送中（在配送-未拍照）发货中 photo 拍照完毕（订单已完成） sucess(完成后的所有状态)pay_failed（支付失败）/pay_success（支付成功）comment（已评论）
-     * @apiSuccess {Number} page                页码.
-     * @apiSuccess {Number} pageSize            每页数据量.
-     * @apiSuccess {Number} dataTotal           数据总数.
-     * @apiSuccess {Number} pageTotal           总页码数.
+     * @apiSuccess {String} list.car_style_length       车长
+     * @apiSuccess {String} list.car_style_type         车型
+     * @apiSuccess {String} list.status init            初始状态（未分发订单前）quote报价中（分发订单后）quoted已报价-未配送（装货中）distribute配送中（在配送-未拍照）发货中 photo 拍照完毕（订单已完成） sucess(完成后的所有状态)pay_failed（支付失败）/pay_success（支付成功）comment（已评论）
+     * @apiSuccess {Number} page                        页码.
+     * @apiSuccess {Number} pageSize                    每页数据量.
+     * @apiSuccess {Number} dataTotal                   数据总数.
+     * @apiSuccess {Number} pageTotal                   总页码数.
      * */
     public function showOrderList() {
         $paramAll = $this->getReqParams([
@@ -319,6 +319,18 @@ class Order extends BaseController {
         if (empty($orderInfo)) {
             returnJson('4004', '暂无订单信息');
         }
+        $list = [];
+        foreach ($orderInfo['list'] as $k =>$v){
+            $list[$k]['order_id'] = $v['id'];
+            $list[$k]['org_city'] = $v['org_city'];
+            $list[$k]['dest_city'] = $v['dest_city'];
+            $list[$k]['weight'] =strval($v['weight']);
+            $list[$k]['goods_name'] = $v['goods_name'];
+            $list[$k]['status'] = $v['status'];
+            $list[$k]['car_style_length'] = $v['car_style_length'];
+            $list[$k]['car_style_type'] =$v['car_style_type'];
+        }
+        $orderInfo['list'] = $list;
 
         returnJson('2000', '成功', $orderInfo);
     }
