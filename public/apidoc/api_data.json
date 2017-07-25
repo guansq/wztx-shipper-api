@@ -1629,6 +1629,26 @@
         ]
       }
     },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "order_id",
+            "description": "<p>订单ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "total_amount",
+            "description": "<p>支付金额</p>"
+          }
+        ]
+      }
+    },
     "version": "0.0.0",
     "filename": "application/api/controller/Pay.php",
     "groupTitle": "Pay",
@@ -2042,6 +2062,26 @@
             "optional": false,
             "field": "authorization-token",
             "description": "<p>token.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "order_id",
+            "description": "<p>订单ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "total_amount",
+            "description": "<p>支付金额</p>"
           }
         ]
       }

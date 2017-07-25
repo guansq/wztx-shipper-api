@@ -155,6 +155,8 @@ class Pay extends BaseController {
      * @apiName alipay
      * @apiGroup Pay
      * @apiHeader {String} authorization-token      token.
+     * @apiParam  {Number}  order_id                订单ID
+     * @apiParam  {Number}  total_amount            支付金额
      */
     public function alipay(){
             $biz_content=[
@@ -180,16 +182,10 @@ class Pay extends BaseController {
      * @apiName wxpay
      * @apiGroup Pay
      * @apiHeader {String} authorization-token      token.
+     * @apiParam  {Number}  order_id                订单ID
+     * @apiParam  {Number}  total_amount            支付金额
      */
     public function wxpay(){
-        $data=m();
-        $vali=$this->validate($data,'Order.order_pay_info');
-        if($vali !== true){
-            json_send([],$vali,0);
-        }else{
-            $model=model('common/Order');
-            $order_info=$model->order_info($data['order_id'],$this->uid);
-
             $options = [
                 // 前面的appid什么的也得保留哦
                 'app_id' => 'wx6470b69abdf65e06',
@@ -199,7 +195,7 @@ class Pay extends BaseController {
                     'key'                => '2D2C5B0CDFA135D8FAB37227B0F569E5',
                     'cert_path'          => '/wxpayment/apiclient_cert.pem', // XXX: 绝对路径！！！！
                     'key_path'           => '/wxpayment/apiclient_key.pem',      // XXX: 绝对路径！！！！
-                    'notify_url'         => 'http://api.lvjicut.com/callback/wxpay_callback',       // 你也可以在下单时单独设置来想覆盖它
+                    'notify_url'         => 'http://wztx.shp.api.ruitukeji.com/callback/wxpay_callback',       // 你也可以在下单时单独设置来想覆盖它
                 ],
             ];
             $app = new Application($options);
@@ -207,14 +203,15 @@ class Pay extends BaseController {
 
             $attributes = [
                 'trade_type'       => 'APP', // JSAPI，NATIVE，APP...
-                'body'             => $order_info['meal_name'],//标题
-                'detail'           => $order_info['meal_about'],//详细介绍
-                'out_trade_no'     => $order_info['order_num'],//商家订单号
+                'body'             => 'biaoti',//标题
+                'detail'           => 'xiangxijieshao',//详细介绍
+                'out_trade_no'     => '2017072310254561',//商家订单号
                 'total_fee'        => 1,
                 // 'total_fee'        => $order_info['meal_price'],
-                'notify_url'       => 'http://api.lvjicut.com/callback/wxpay_callback', // 支付结果通知网址，如果不设置则会使用配置里的默认地址
+                'notify_url'       => 'http://wztx.shp.api.ruitukeji.com/callback/wxpay_callback', // 支付结果通知网址，如果不设置则会使用配置里的默认地址
                 // ...
             ];
+
             $order = new Order($attributes);
 
             $result = $payment->prepare($order);
@@ -222,7 +219,7 @@ class Pay extends BaseController {
             if ($result->return_code == 'SUCCESS' && $result->result_code == 'SUCCESS'){
                 $prepayId = $result->prepay_id;
             }else{
-                json_send([],40000,0);
+                returnJson(4000,'调用支付失败');
             }
 
             $app_data['appid']=$options['app_id'];
@@ -234,9 +231,7 @@ class Pay extends BaseController {
 
             $params = array_filter($app_data);
             $params['sign'] = $this->generate_sign($params, $options['payment']['key'], 'md5');
-
-            json_send(['pay_info'=>$params]);
-        }
+            dump($params);
     }
 
     /**
