@@ -55,7 +55,7 @@ class Quote extends BaseController{
      * @apiName     sendOrder
      * @apiGroup    Quote
      * @apiHeader   {String}    authorization-token     token.
-     * @apiParam  {String} order_id        订单ID
+     * @apiParam  {String} goods_id        订单ID
      * @apiParam  {String} maps              坐标 如   '120.733833,31.253328'
      */
     public function sendOrder(){
@@ -64,14 +64,14 @@ class Quote extends BaseController{
         $maps = '120.733833,31.253328';//模拟的坐标
 
         //获取订单id
-        $paramAll = $this->getReqParams(['order_id','maps']);
+        $paramAll = $this->getReqParams(['goods_id','maps']);
         $rule = [
-            'order_id' => 'require',
+            'goods_id' => 'require',
             'maps' => 'require'
         ];
         validateData($paramAll,$rule);
         //获得订单信息
-        $orderInfo = model('TransportOrder','logic')->getTransportOrderInfo(['id'=>$paramAll['order_id'],'sp_id'=>$this->loginUser['id'],'status'=>'init']);
+        $orderInfo = model('TransportOrder','logic')->getTransportOrderInfo(['id'=>$paramAll['goods_id'],'sp_id'=>$this->loginUser['id'],'status'=>'init']);
         if(empty($orderInfo)){
            returnJson(4000,'获取订单信息失败');
         }
@@ -81,11 +81,11 @@ class Quote extends BaseController{
         //写入询价表
         $quoteLogic = model('Quote','logic');
         //更改订单为询价中
-        model('TransportOrder','logic')->updateTransport(['id'=>$paramAll['order_id']],['status'=>'quote']);//更改订单为询价中
+        model('Goods','logic')->updateGoodsInfo(['id'=>$paramAll['goods_id']],['status'=>'quote']);//更改订单为询价中
         foreach($list as $k => $v){
             $info['goods_name'] = $orderInfo['goods_name'];
             $info['weight'] = $orderInfo['weight'];
-            $info['order_id'] = $orderInfo['id'];
+            //$info['order_id'] = $orderInfo['id'];
             $info['dr_id'] = $v['id'];
             $info['sp_id'] = $this->loginUser['id'];
             $info['system_price'] = $orderInfo['system_price'];

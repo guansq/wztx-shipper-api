@@ -13,7 +13,7 @@ use DesUtils\DesUtils;
 
 class Goods extends BaseController{
     /**
-     * @api {POST}  /goods/add      提交货源信息done
+     * @api {POST}  /goods/addGoods      提交货源信息done
      * @apiName     addGoods
      * @apiGroup    Goods
      *

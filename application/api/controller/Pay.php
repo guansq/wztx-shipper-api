@@ -159,22 +159,33 @@ class Pay extends BaseController {
      * @apiParam  {Number}  total_amount            支付金额
      */
     public function alipay(){
-            $biz_content=[
-                'body'  =>  '详细介绍',//详细介绍
-                'subject'   =>  '标题',//标题
-                'out_trade_no'  =>  '2017072310254561',//商家订单号
-                //                'order_id'  =>  $order_info['id'],//订单id
-                //                'user_id'   =>  $order_info['user_id'],//用户id
-                //                'total_amount'  =>  $order_info['meal_price'],//金额
-                'total_amount'  =>  '0.01',//总金额
-                'product_code'  =>  'QUICK_MSECURITY_PAY',
-                //                'product_code'  =>  'QUICK_WAP_PAY',
-                'seller_id'=>   '2088421610505604',
-            ];
+        $ispass = ispassAuth($this->loginUser);
+        if(!$ispass){
+            returnJson(4000,'您未认证或未缴纳保证金');
+        }
+        $paramAll = $this->getReqParams(['order_id']);
+        $rule = [
+            'order_id' => 'require'
+        ];
+        validateData($paramAll,$rule);
+        $order_info = model('TransportOrder')->getTransportOrderInfo(['id'=>$paramAll['order_id'],'status'=>'quote']);
 
-            $pay=new alipay_mobile();
-            $return=$pay->create_pay($biz_content);
-            returnJson(2000,'成功',$return);
+        $biz_content=[
+            'body'  =>  '详细介绍',//详细介绍
+            'subject'   =>  '标题',//标题
+            'out_trade_no'  =>  '2017072310254561',//商家订单号
+            //                'order_id'  =>  $order_info['id'],//订单id
+            //                'user_id'   =>  $order_info['user_id'],//用户id
+            //                'total_amount'  =>  $order_info['meal_price'],//金额
+            'total_amount'  =>  '0.01',//总金额
+            'product_code'  =>  'QUICK_MSECURITY_PAY',
+            //                'product_code'  =>  'QUICK_WAP_PAY',
+            'seller_id'=>   '2088421610505604',
+        ];
+
+        $pay=new alipay_mobile();
+        $return=$pay->create_pay($biz_content);
+        returnJson(2000,'成功',$return);
     }
 
     /**
@@ -186,52 +197,61 @@ class Pay extends BaseController {
      * @apiParam  {Number}  total_amount            支付金额
      */
     public function wxpay(){
-            $options = [
-                // 前面的appid什么的也得保留哦
-                'app_id' => 'wx6470b69abdf65e06',
-                // payment
-                'payment' => [
-                    'merchant_id'        => '1383659202',
-                    'key'                => '2D2C5B0CDFA135D8FAB37227B0F569E5',
-                    'cert_path'          => '/wxpayment/apiclient_cert.pem', // XXX: 绝对路径！！！！
-                    'key_path'           => '/wxpayment/apiclient_key.pem',      // XXX: 绝对路径！！！！
-                    'notify_url'         => 'http://wztx.shp.api.ruitukeji.com/callback/wxpay_callback',       // 你也可以在下单时单独设置来想覆盖它
-                ],
-            ];
-            $app = new Application($options);
-            $payment = $app->payment;
+        $ispass = ispassAuth($this->loginUser);
+        if(!$ispass){
+            returnJson(4000,'您未认证或未缴纳保证金');
+        }
+        $paramAll = $this->getReqParams(['order_id']);
+        $rule = [
+            'order_id' => 'require'
+        ];
+        validateData($paramAll,$rule);
+        $options = [
+            // 前面的appid什么的也得保留哦
+            'app_id' => 'wx6470b69abdf65e06',
+            // payment
+            'payment' => [
+                'merchant_id'        => '1383659202',
+                'key'                => '2D2C5B0CDFA135D8FAB37227B0F569E5',
+                'cert_path'          => '/wxpayment/apiclient_cert.pem', // XXX: 绝对路径！！！！
+                'key_path'           => '/wxpayment/apiclient_key.pem',      // XXX: 绝对路径！！！！
+                'notify_url'         => 'http://wztx.shp.api.ruitukeji.com/callback/wxpay_callback',       // 你也可以在下单时单独设置来想覆盖它
+            ],
+        ];
+        $app = new Application($options);
+        $payment = $app->payment;
 
-            $attributes = [
-                'trade_type'       => 'APP', // JSAPI，NATIVE，APP...
-                'body'             => 'biaoti',//标题
-                'detail'           => 'xiangxijieshao',//详细介绍
-                'out_trade_no'     => '2017072310254561',//商家订单号
-                'total_fee'        => 1,
-                // 'total_fee'        => $order_info['meal_price'],
-                'notify_url'       => 'http://wztx.shp.api.ruitukeji.com/callback/wxpay_callback', // 支付结果通知网址，如果不设置则会使用配置里的默认地址
-                // ...
-            ];
+        $attributes = [
+            'trade_type'       => 'APP', // JSAPI，NATIVE，APP...
+            'body'             => 'biaoti',//标题
+            'detail'           => 'xiangxijieshao',//详细介绍
+            'out_trade_no'     => '2017072310254561',//商家订单号
+            'total_fee'        => 1,
+            // 'total_fee'        => $order_info['meal_price'],
+            'notify_url'       => 'http://wztx.shp.api.ruitukeji.com/callback/wxpay_callback', // 支付结果通知网址，如果不设置则会使用配置里的默认地址
+            // ...
+        ];
 
-            $order = new Order($attributes);
+        $order = new Order($attributes);
 
-            $result = $payment->prepare($order);
+        $result = $payment->prepare($order);
 
-            if ($result->return_code == 'SUCCESS' && $result->result_code == 'SUCCESS'){
-                $prepayId = $result->prepay_id;
-            }else{
-                returnJson(4000,'调用支付失败');
-            }
+        if ($result->return_code == 'SUCCESS' && $result->result_code == 'SUCCESS'){
+            $prepayId = $result->prepay_id;
+        }else{
+            returnJson(4000,'调用支付失败');
+        }
 
-            $app_data['appid']=$options['app_id'];
-            $app_data['partnerid']=$options['payment']['merchant_id'];
-            $app_data['prepayid']=$prepayId;
-            $app_data['package']='Sign=WXPay';
-            $app_data['noncestr']=uniqid();
-            $app_data['timestamp']=time();
+        $app_data['appid']=$options['app_id'];
+        $app_data['partnerid']=$options['payment']['merchant_id'];
+        $app_data['prepayid']=$prepayId;
+        $app_data['package']='Sign=WXPay';
+        $app_data['noncestr']=uniqid();
+        $app_data['timestamp']=time();
 
-            $params = array_filter($app_data);
-            $params['sign'] = $this->generate_sign($params, $options['payment']['key'], 'md5');
-            dump($params);
+        $params = array_filter($app_data);
+        $params['sign'] = $this->generate_sign($params, $options['payment']['key'], 'md5');
+        returnJson(2000,'成功',$params);
     }
 
     /**

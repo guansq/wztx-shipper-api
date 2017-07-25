@@ -25,5 +25,18 @@ class Goods extends BaseLogic {
         return resultArray(4000, '保存订单失败');
     }
 
+    /**
+     * Auther: guanshaoqiu <94600115@qq.com>
+     * Describe: * @param $where
+     * @param $data
+     * 更改订单信息
+     */
+    public function updateGoodsInfo($where, $data) {
+        $ret = $this->where($where)->update($data);
+        if ($ret === false) {
+            return resultArray(4000, '更改货源状态失败');
+        }
+        return resultArray(2000, '更改货源状态成功');
+    }
 
 }

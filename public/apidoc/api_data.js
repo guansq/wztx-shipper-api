@@ -387,7 +387,7 @@ define({ "api": [
   },
   {
     "type": "POST",
-    "url": "/goods/add",
+    "url": "/goods/addGoods",
     "title": "提交货源信息done",
     "name": "addGoods",
     "group": "Goods",
@@ -653,7 +653,7 @@ define({ "api": [
     "groupTitle": "Goods",
     "sampleRequest": [
       {
-        "url": "http://wztx.shp.api.ruitukeji.com/goods/add"
+        "url": "http://wztx.shp.api.ruitukeji.com/goods/addGoods"
       }
     ]
   },
@@ -2162,7 +2162,7 @@ define({ "api": [
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "order_id",
+            "field": "goods_id",
             "description": "<p>订单ID</p>"
           },
           {

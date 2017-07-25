@@ -486,7 +486,24 @@ function getDrPhone($id){
     return Db::name('dr_base_info')->where("id",$id)->value('phone');
 }
 
-
+/*
+ * 得到用户基本信息
+ */
 function getBaseSpUserInfo($sp_id){
     return Db::name('sp_base_info')->where("id",$sp_id)->find();
+}
+
+/*
+ * 判断用户是否通过认证并缴纳了保证金 通过返回true不通过返回false;
+ */
+
+function ispassAuth($loginUser){
+    //验证是否缴纳保证金
+    $baseUserInfo = model('SpBaseInfo', 'logic')->getBaseUserInfo($loginUser);
+    //保证金状态(init=未缴纳，checked=已缴纳,frozen=冻结) bond_status
+    //认证状态（init=未认证，check=认证中，pass=认证通过，refuse=认证失败，delete=后台删除） auth_status
+    if ($baseUserInfo['bond_status'] != 'checked' || $baseUserInfo['auth_status'] != 'pass') {
+        return false;
+    }
+    return true;
 }
