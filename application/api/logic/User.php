@@ -187,11 +187,13 @@ class User extends BaseLogic{
         if(empty($ossRet) || $ossRet['code'] != 2000){
             return resultArray($ossRet);
         }
+        //echo $ossRet['result']['file']['url'];die;
         $dbRet = $this->where('id', $loginUser['id'])->update(['avatar' => $ossRet['result']['file']['url']]);
         Db::name('sp_base_info')->where('id', $loginUser['id'])->update(['avatar' => $ossRet['result']['file']['url']]);
-        if(!$dbRet){
+        //dump($dbRet);die;
+        /*if($dbRet === false){
             return resultArray(5000);
-        }
+        }*/
         return resultArray($ossRet);
 
     }
