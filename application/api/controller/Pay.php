@@ -172,7 +172,7 @@ class Pay extends BaseController {
 
             $pay=new alipay_mobile();
             $return=$pay->create_pay($biz_content);
-            dump($return);die;
+            returnJson(2000,'成功',$return);
     }
 
     /**

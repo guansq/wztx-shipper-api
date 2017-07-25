@@ -56,7 +56,7 @@ class Callback extends Controller
                 'key'                => '2D2C5B0CDFA135D8FAB37227B0F569E5',
                 'cert_path'          => '/wxpayment/apiclient_cert.pem', // XXX: 绝对路径！！！！
                 'key_path'           => '/wxpayment/apiclient_key.pem',      // XXX: 绝对路径！！！！
-                'notify_url'         => 'http://api.lvjicut.com/callback/wxpay_callback',       // 你也可以在下单时单独设置来想覆盖它
+                'notify_url'         => 'http://wztx.shp.api.ruitukeji.com/callback/wxpay_callback',       // 你也可以在下单时单独设置来想覆盖它
             ],
         ];
         $app = new Application($options);

@@ -1611,6 +1611,34 @@
     ]
   },
   {
+    "type": "POST",
+    "url": "/pay/alipay",
+    "title": "支付宝支付",
+    "name": "alipay",
+    "group": "Pay",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization-token",
+            "description": "<p>token.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "application/api/controller/Pay.php",
+    "groupTitle": "Pay",
+    "sampleRequest": [
+      {
+        "url": "http://wztx.shp.api.ruitukeji.com/pay/alipay"
+      }
+    ]
+  },
+  {
     "type": "GET",
     "url": "/pay",
     "title": "我的钱包done",
@@ -1996,6 +2024,34 @@
     "sampleRequest": [
       {
         "url": "http://wztx.shp.api.ruitukeji.com/pay/showPayRecord"
+      }
+    ]
+  },
+  {
+    "type": "POST",
+    "url": "/pay/wxpay",
+    "title": "微信支付",
+    "name": "wxpay",
+    "group": "Pay",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization-token",
+            "description": "<p>token.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "application/api/controller/Pay.php",
+    "groupTitle": "Pay",
+    "sampleRequest": [
+      {
+        "url": "http://wztx.shp.api.ruitukeji.com/pay/wxpay"
       }
     ]
   },
