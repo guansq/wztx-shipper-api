@@ -711,7 +711,7 @@ define({ "api": [
   {
     "type": "GET",
     "url": "/index/home",
-    "title": "首页(ok)",
+    "title": "首页轮播图 done",
     "name": "home",
     "group": "Index",
     "header": {
@@ -720,7 +720,7 @@ define({ "api": [
           {
             "group": "Header",
             "type": "String",
-            "optional": false,
+            "optional": true,
             "field": "authorization-token",
             "description": "<p>token.</p>"
           }
@@ -734,43 +734,36 @@ define({ "api": [
             "group": "Success 200",
             "type": "Array",
             "optional": false,
-            "field": "banners",
+            "field": "list",
             "description": "<p>轮播图.</p>"
           },
           {
             "group": "Success 200",
             "type": "Number",
             "optional": false,
-            "field": "banners.id",
+            "field": "list.id",
             "description": "<p>id.</p>"
           },
           {
             "group": "Success 200",
             "type": "Number",
             "optional": false,
-            "field": "banners.seqNo",
+            "field": "list.position",
             "description": "<p>序号.</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "banners.link",
+            "field": "list.url",
             "description": "<p>跳转链接.</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "banners.img",
+            "field": "list.src",
             "description": "<p>图片.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": true,
-            "field": "banners.title",
-            "description": "<p>标题.</p>"
           },
           {
             "group": "Success 200",
@@ -1914,8 +1907,8 @@ define({ "api": [
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "list.org_send_name",
-            "description": "<p>发货人姓名</p>"
+            "field": "list.dr_name",
+            "description": "<p>司机姓名</p>"
           },
           {
             "group": "Success 200",
@@ -1947,6 +1940,13 @@ define({ "api": [
           },
           {
             "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.usecar_time",
+            "description": "<p>用车时间</p>"
+          },
+          {
+            "group": "Success 200",
             "type": "Int",
             "optional": false,
             "field": "list.is_pay",
@@ -1957,7 +1957,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "list.status",
-            "description": "<p>hang 挂起 quoted已报价-未配送（装货中）distribute配送中（在配送-未拍照）发货中 photo 拍照完毕（订单已完成） sucess(完成后的所有状态)pay_failed（支付失败）/pay_success（支付成功）comment（已评论）</p>"
+            "description": "<p>photo 拍照完毕（订单已完成） sucess(完成后的所有状态)pay_failed（支付失败）/pay_success（支付成功）comment（已评论）</p>"
           },
           {
             "group": "Success 200",

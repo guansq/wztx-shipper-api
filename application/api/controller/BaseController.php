@@ -44,18 +44,22 @@ class BaseController extends Controller{
         if(!array_key_exists($this->controller, $except_controller) || !in_array($this->action, $except_controller[$this->controller])){
             $token = request()->header('authorization-token', '');
             if(empty($token)){
-                returnJson(4011);
+                if($this->controller == 'Index' && $this->action == 'home'){
+                    $this->loginUser = '';
+                }else{
+                    returnJson(4011);
+                }
+            }else{
+                $this->loginUser = JwtHelper::checkToken($token);
+                $spBaseInfo = model('SpBaseInfo', 'logic')->findInfoByUserId($this->loginUser['id']);
+                if(empty($spBaseInfo)){
+                    returnJson(4011);
+                }
+                $this->loginUser['type'] = $spBaseInfo['type'];
+                //$this->loginUser['sup_code'] = $supplierInfo['code'];
+                //$this->loginUser['sup_name'] = $supplierInfo['name'];
             }
-            $this->loginUser = JwtHelper::checkToken($token);
-            $spBaseInfo = model('SpBaseInfo', 'logic')->findInfoByUserId($this->loginUser['id']);
-            if(empty($spBaseInfo)){
-                returnJson(4011);
-            }
-            $this->loginUser['type'] = $spBaseInfo['type'];
-            //$this->loginUser['sup_code'] = $supplierInfo['code'];
-            //$this->loginUser['sup_name'] = $supplierInfo['name'];
         }
-
     }
 
     /**

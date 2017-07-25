@@ -54,34 +54,31 @@ class Index extends BaseController{
         $ret= model('SystemConfig','logic')->getLastApk();
         returnJson( $ret);
     }
-
     /**
-     * @api      {GET} /index/home 首页(ok)
+     * @api      {GET} /index/home 首页轮播图 done
      * @apiName  home
      * @apiGroup Index
-     * @apiHeader {String} authorization-token           token.
+     * @apiHeader {String} [authorization-token]           token.
      *
-     * @apiSuccess {Array} banners        轮播图.
-     * @apiSuccess {Number} banners.id      id.
-     * @apiSuccess {Number} banners.seqNo   序号.
-     * @apiSuccess {String} banners.link    跳转链接.
-     * @apiSuccess {String} banners.img     图片.
-     * @apiSuccess {String} [banners.title] 标题.
-     * @apiSuccess {Object} unreadMsg        未读消息.
+     * @apiSuccess {Array} list             轮播图.
+     * @apiSuccess {Number} list.id         id.
+     * @apiSuccess {Number} list.position   序号.
+     * @apiSuccess {String} list.url        跳转链接.
+     * @apiSuccess {String} list.src        图片.
+     * @apiSuccess {Object} unreadMsg       未读消息.
      */
     public function home(){
-        $banners = model('SystemBanner', 'logic')->getBannerList();
-        $unreadIoCnt = model('IO', 'logic')->countUnreadMsg($this->loginUser);
-        $unreadPoCnt = model('PO', 'logic')->countUnreadMsg($this->loginUser);
-        $unreadMsgCnt = model('Message', 'logic')->countUnreadMsg($this->loginUser);
-        $unreadAskCnt = model('Ask', 'logic')->countUnreadMsg($this->loginUser);
+        $ads = model('Advertisement', 'logic')->getAdInfo();
+
+        if(empty($this->loginUser['id'])){
+            $unreadMsgCnt = 0;
+        }else{
+            $unreadMsgCnt = model('Message', 'logic')->countUnreadMsg($this->loginUser);
+        }
         $ret = [
-            'banners' => $banners,
+            'list' => $ads,
             'unreadMsg' => [
-                'io' => $unreadIoCnt,
-                'po' => $unreadPoCnt,
                 'msg' => $unreadMsgCnt,
-                'ask' => $unreadAskCnt,
             ]
         ];
         returnJson(2000, '', $ret);
