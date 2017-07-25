@@ -485,3 +485,8 @@ function getDrPrice($id){
 function getDrPhone($id){
     return Db::name('dr_base_info')->where("id",$id)->value('phone');
 }
+
+
+function getBaseSpUserInfo($sp_id){
+    return Db::name('sp_base_info')->where("id",$sp_id)->find();
+}

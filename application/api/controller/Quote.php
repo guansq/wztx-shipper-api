@@ -210,7 +210,7 @@ class Quote extends BaseController{
 
         //更改订单状态
         //$result = model('TransportOrder','logic')->updateTransport(['id'=>$paramAll['order_id'],'sp_id'=>$this->loginUser['id'],'status'=>'quote'],$data);
-        $result = saveOrderBygoodsInfo();
+        $result = saveOrderBygoodsInfo($quoteInfo['goods_id']);
         if($result['code'] == 4000){
             returnJson($result);
         }
