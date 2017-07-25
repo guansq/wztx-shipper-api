@@ -33,7 +33,8 @@
         "topthink/think-worker": "^1.0",
         "topthink/think-queue": "^1.0",
         "topthink/think-testing": "^1.0",
-        "firebase/php-jwt": "v4.*.*"
+        "firebase/php-jwt": "v4.*.*",
+        "overtrue/wechat": "^3.3"
     },
     "extra": {
         "think-path": "thinkphp"

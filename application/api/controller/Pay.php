@@ -8,6 +8,9 @@
 
 namespace app\api\controller;
 
+use pay\alipay_mobile;
+use EasyWeChat\Foundation\Application;
+use EasyWeChat\Payment\Order;
 class Pay extends BaseController {
     /**
      * @api {GET} /pay 我的钱包done
@@ -145,6 +148,111 @@ class Pay extends BaseController {
         }
         $recordInfo['list'] = $list;
         returnJson('2000', '成功', $recordInfo);
+    }
+
+    /**
+     * @api {POST} /pay/alipay  支付宝支付
+     * @apiName alipay
+     * @apiGroup Pay
+     * @apiHeader {String} authorization-token      token.
+     */
+    public function alipay(){
+            $biz_content=[
+                'body'  =>  '详细介绍',//详细介绍
+                'subject'   =>  '标题',//标题
+                'out_trade_no'  =>  '2017072310254561',//商家订单号
+                //                'order_id'  =>  $order_info['id'],//订单id
+                //                'user_id'   =>  $order_info['user_id'],//用户id
+                //                'total_amount'  =>  $order_info['meal_price'],//金额
+                'total_amount'  =>  '0.01',//总金额
+                'product_code'  =>  'QUICK_MSECURITY_PAY',
+                //                'product_code'  =>  'QUICK_WAP_PAY',
+                'seller_id'=>   '2088421610505604',
+            ];
+
+            $pay=new alipay_mobile();
+            $return=$pay->create_pay($biz_content);
+            dump($return);die;
+    }
+
+    /**
+     * @api {POST} /pay/wxpay  微信支付
+     * @apiName wxpay
+     * @apiGroup Pay
+     * @apiHeader {String} authorization-token      token.
+     */
+    public function wxpay(){
+        $data=m();
+        $vali=$this->validate($data,'Order.order_pay_info');
+        if($vali !== true){
+            json_send([],$vali,0);
+        }else{
+            $model=model('common/Order');
+            $order_info=$model->order_info($data['order_id'],$this->uid);
+
+            $options = [
+                // 前面的appid什么的也得保留哦
+                'app_id' => 'wx6470b69abdf65e06',
+                // payment
+                'payment' => [
+                    'merchant_id'        => '1383659202',
+                    'key'                => '2D2C5B0CDFA135D8FAB37227B0F569E5',
+                    'cert_path'          => '/wxpayment/apiclient_cert.pem', // XXX: 绝对路径！！！！
+                    'key_path'           => '/wxpayment/apiclient_key.pem',      // XXX: 绝对路径！！！！
+                    'notify_url'         => 'http://api.lvjicut.com/callback/wxpay_callback',       // 你也可以在下单时单独设置来想覆盖它
+                ],
+            ];
+            $app = new Application($options);
+            $payment = $app->payment;
+
+            $attributes = [
+                'trade_type'       => 'APP', // JSAPI，NATIVE，APP...
+                'body'             => $order_info['meal_name'],//标题
+                'detail'           => $order_info['meal_about'],//详细介绍
+                'out_trade_no'     => $order_info['order_num'],//商家订单号
+                'total_fee'        => 1,
+                // 'total_fee'        => $order_info['meal_price'],
+                'notify_url'       => 'http://api.lvjicut.com/callback/wxpay_callback', // 支付结果通知网址，如果不设置则会使用配置里的默认地址
+                // ...
+            ];
+            $order = new Order($attributes);
+
+            $result = $payment->prepare($order);
+
+            if ($result->return_code == 'SUCCESS' && $result->result_code == 'SUCCESS'){
+                $prepayId = $result->prepay_id;
+            }else{
+                json_send([],40000,0);
+            }
+
+            $app_data['appid']=$options['app_id'];
+            $app_data['partnerid']=$options['payment']['merchant_id'];
+            $app_data['prepayid']=$prepayId;
+            $app_data['package']='Sign=WXPay';
+            $app_data['noncestr']=uniqid();
+            $app_data['timestamp']=time();
+
+            $params = array_filter($app_data);
+            $params['sign'] = $this->generate_sign($params, $options['payment']['key'], 'md5');
+
+            json_send(['pay_info'=>$params]);
+        }
+    }
+
+    /**
+     * 生成微信sign
+     * @param array $attributes
+     * @param $key
+     * @param string $encryptMethod
+     * @return string
+     */
+    public function generate_sign(array $attributes, $key, $encryptMethod = 'md5')
+    {
+        ksort($attributes);
+
+        $attributes['key'] = $key;
+
+        return strtoupper(call_user_func_array($encryptMethod, [urldecode(http_build_query($attributes))]));
     }
 
 }
