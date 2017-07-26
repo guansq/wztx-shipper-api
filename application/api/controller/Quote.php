@@ -210,7 +210,7 @@ class Quote extends BaseController{
 
         //更改订单状态
         //$result = model('TransportOrder','logic')->updateTransport(['id'=>$paramAll['order_id'],'sp_id'=>$this->loginUser['id'],'status'=>'quote'],$data);
-        $result = saveOrderBygoodsInfo($quoteInfo['goods_id']);
+        $result = saveOrderBygoodsInfo($quoteInfo['goods_id'],$quoteInfo);
         if($result['code'] == 4000){
             returnJson($result);
         }
@@ -231,12 +231,14 @@ class Quote extends BaseController{
      * Auther: guanshaoqiu <94600115@qq.com>
      * Describe:根据货源信息保存订单
      */
-    private function saveOrderBygoodsInfo($goods_id){
+    private function saveOrderBygoodsInfo($goods_id,$quoteInfo){
         //根据$goods_id取出信息
         $goodsInfo = model('Goods','logic')->getGoodsInfo(['id'=>$goods_id]);
         //生成订单
         $orderInfo['order_code'] = order_num();
         $orderInfo['sp_id'] = $goodsInfo['sp_id'];
+        //寻找司机ID
+        $orderInfo['dr_id'] = $quoteInfo['dr_id'];
         $orderInfo['type'] = $goodsInfo['type'];
         $orderInfo['appoint_at'] = $goodsInfo['appoint_at'];
         $orderInfo['insured_amount'] = $goodsInfo['insured_amount'];
@@ -264,7 +266,7 @@ class Quote extends BaseController{
         $orderInfo['car_style_length_id'] = $goodsInfo['car_style_length_id'];
         $orderInfo['effective_time'] = $goodsInfo['effective_time'];
         $orderInfo['mind_price'] = $goodsInfo['mind_price'];
-        $orderInfo['final_price'] = $goodsInfo['final_price'];
+        $orderInfo['final_price'] = $quoteInfo['dr_price'];//最终价格是司机的报价
         $orderInfo['system_price'] = $goodsInfo['system_price'];
         $orderInfo['payway'] = $goodsInfo['payway'];
         $orderInfo['is_pay'] = $goodsInfo['is_pay'];
