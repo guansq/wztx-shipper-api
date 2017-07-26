@@ -71,7 +71,12 @@ class Quote extends BaseController{
         ];
         validateData($paramAll,$rule);
         //获得订单信息
-        $goodsInfo = model('Goods','logic')->getGoodsInfo(['id'=>$paramAll['goods_id'],'sp_id'=>$this->loginUser['id'],'status'=>'quote']);
+        $where = [
+            'id'=>$paramAll['goods_id'],
+            'sp_id'=>$this->loginUser['id'],
+            'status'=>'quote'
+        ];
+        $goodsInfo = model('Goods','logic')->getGoodsInfo($where);
         if(empty($goodsInfo)){
            returnJson(4000,'获取货源信息失败');
         }

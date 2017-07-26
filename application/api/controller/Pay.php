@@ -168,13 +168,15 @@ class Pay extends BaseController {
             'order_id' => 'require'
         ];
         validateData($paramAll,$rule);
-        $order_info = model('TransportOrder','logic')->getTransportOrderInfo(['id'=>$paramAll['order_id'],'status'=>'quote']);
-
+        $order_info = model('TransportOrder','logic')->getTransportOrderInfo(['id'=>$paramAll['order_id'],'sp_id'=>$this->loginUser['id'],'status'=>'photo']);//需要拍照后的状态
+        if(empty($order_info)){
+            returnJson(4000,'暂无待付款订单信息');
+        }
         $biz_content=[
-            'body'  =>  '详细介绍',//详细介绍
-            'subject'   =>  '标题',//标题
-            'out_trade_no'  =>  '2017072310254561',//商家订单号
-            //                'order_id'  =>  $order_info['id'],//订单id
+            'body'  =>  'order_id'.$order_info['id'].'发货人：'.$order_info['org_send_name'].'发货人手机'.$order_info['org_phone'],//详细介绍
+            'subject'   =>  '发货订单',//标题
+            'out_trade_no'  =>  $order_info['order_code'],//商家订单号
+            'order_id'  =>  $order_info['id'],//订单id
             //                'user_id'   =>  $order_info['user_id'],//用户id
             //                'total_amount'  =>  $order_info['meal_price'],//金额
             'total_amount'  =>  '0.01',//总金额
@@ -186,6 +188,7 @@ class Pay extends BaseController {
 
         $pay=new alipay_mobile();
         $return=$pay->create_pay($biz_content);
+        trace($return);
         returnJson(2000,'成功',$return);
     }
 
