@@ -13,13 +13,15 @@ class alipay_mobile extends alipay_common
     private $transport='https';
     private $__https_verify_url = 'https://mapi.alipay.com/gateway.do?service=notify_verify&';
     private $__http_verify_url = 'http://notify.alipay.com/trade/notify_query.do?';
-    private $key='cudh56ifrikibb2fyhjk8cmgftml9h42';
+    //private $key='cudh56ifrikibb2fyhjk8cmgftml9h42';
+    private $key='jgc2ke9ev5rogrcnnltjbaxnkj4iee0i';
     private $sign_type='RSA';
     private $private_key_path='../extend/pay/payment/rsa_private_key.pem';//私钥路径
     private $public_key_path='../extend/pay/payment/alipay_public_key.pem';//支付宝公钥路径
     private $config=[
         'timestamp'     =>      "",
-        'app_id'        =>      "2016082901818372",
+        //'app_id'        =>      "2016082901818372",
+        'app_id'        =>      "2017061607503256",
         'method'        =>      "alipay.trade.app.pay",
 //        'method'        =>      "alipay.trade.create",
         'charset'       =>      "utf-8",

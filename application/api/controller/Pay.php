@@ -168,7 +168,7 @@ class Pay extends BaseController {
             'order_id' => 'require'
         ];
         validateData($paramAll,$rule);
-        $order_info = model('TransportOrder')->getTransportOrderInfo(['id'=>$paramAll['order_id'],'status'=>'quote']);
+        $order_info = model('TransportOrder','logic')->getTransportOrderInfo(['id'=>$paramAll['order_id'],'status'=>'quote']);
 
         $biz_content=[
             'body'  =>  '详细介绍',//详细介绍
@@ -180,7 +180,8 @@ class Pay extends BaseController {
             'total_amount'  =>  '0.01',//总金额
             'product_code'  =>  'QUICK_MSECURITY_PAY',
             //                'product_code'  =>  'QUICK_WAP_PAY',
-            'seller_id'=>   '2088421610505604',
+            //'seller_id'=>   '2088421610505604',
+            'seller_id'=>   '2088621197716899',
         ];
 
         $pay=new alipay_mobile();
@@ -208,11 +209,14 @@ class Pay extends BaseController {
         validateData($paramAll,$rule);
         $options = [
             // 前面的appid什么的也得保留哦
-            'app_id' => 'wx6470b69abdf65e06',
+            //'app_id' => 'wx6470b69abdf65e06',
+            'app_id' => 'wxc50f5bf05f014dee',
             // payment
             'payment' => [
-                'merchant_id'        => '1383659202',
-                'key'                => '2D2C5B0CDFA135D8FAB37227B0F569E5',
+                //'merchant_id'        => '1383659202',
+                'merchant_id'        => '1483170282',
+                //'key'                => '2D2C5B0CDFA135D8FAB37227B0F569E5',
+                'key'                => 'd39be96f2e538480fc567ea12d54c59e',//RUITU111111KEJImd5
                 'cert_path'          => '/wxpayment/apiclient_cert.pem', // XXX: 绝对路径！！！！
                 'key_path'           => '/wxpayment/apiclient_key.pem',      // XXX: 绝对路径！！！！
                 'notify_url'         => 'http://wztx.shp.api.ruitukeji.com/callback/wxpay_callback',       // 你也可以在下单时单独设置来想覆盖它
@@ -235,7 +239,7 @@ class Pay extends BaseController {
         $order = new Order($attributes);
 
         $result = $payment->prepare($order);
-
+        //dump($result);
         if ($result->return_code == 'SUCCESS' && $result->result_code == 'SUCCESS'){
             $prepayId = $result->prepay_id;
         }else{
