@@ -71,9 +71,9 @@ class Quote extends BaseController{
         ];
         validateData($paramAll,$rule);
         //获得订单信息
-        $orderInfo = model('TransportOrder','logic')->getTransportOrderInfo(['id'=>$paramAll['goods_id'],'sp_id'=>$this->loginUser['id'],'status'=>'init']);
-        if(empty($orderInfo)){
-           returnJson(4000,'获取订单信息失败');
+        $goodsInfo = model('Goods','logic')->getGoodsInfo(['id'=>$paramAll['goods_id'],'sp_id'=>$this->loginUser['id'],'status'=>'quote']);
+        if(empty($goodsInfo)){
+           returnJson(4000,'获取货源信息失败');
         }
         //取出合适的司机列表
         $list = $this->getDriverList($paramAll['maps']);
@@ -83,22 +83,22 @@ class Quote extends BaseController{
         //更改订单为询价中
         model('Goods','logic')->updateGoodsInfo(['id'=>$paramAll['goods_id']],['status'=>'quote']);//更改订单为询价中
         foreach($list as $k => $v){
-            $info['goods_name'] = $orderInfo['goods_name'];
-            $info['weight'] = $orderInfo['weight'];
+            $info['goods_name'] = $goodsInfo['goods_name'];
+            $info['weight'] = $goodsInfo['weight'];
             //$info['order_id'] = $orderInfo['id'];
             $info['dr_id'] = $v['id'];
             $info['sp_id'] = $this->loginUser['id'];
-            $info['system_price'] = $orderInfo['system_price'];
-            $info['sp_price'] = $orderInfo['mind_price'];
-            $info['usecar_time'] = $orderInfo['usecar_time'];
-            $info['car_style_length'] = $orderInfo['car_style_length'];
-            $info['car_style_type'] = $orderInfo['car_style_type'];
-            $info['org_city'] = $orderInfo['org_city'];
-            $info['dest_city'] = $orderInfo['dest_city'];
-            $info['org_address_name'] = $orderInfo['org_address_name'];
-            $info['dest_address_name'] = $orderInfo['dest_address_name'];
-            $info['org_address_detail'] = $orderInfo['org_address_detail'];
-            $info['dest_address_detail'] = $orderInfo['dest_address_detail'];
+            $info['system_price'] = $goodsInfo['system_price'];
+            $info['sp_price'] = $goodsInfo['mind_price'];
+            $info['usecar_time'] = $goodsInfo['usecar_time'];
+            $info['car_style_length'] = $goodsInfo['car_style_length'];
+            $info['car_style_type'] = $goodsInfo['car_style_type'];
+            $info['org_city'] = $goodsInfo['org_city'];
+            $info['dest_city'] = $goodsInfo['dest_city'];
+            $info['org_address_name'] = $goodsInfo['org_address_name'];
+            $info['dest_address_name'] = $goodsInfo['dest_address_name'];
+            $info['org_address_detail'] = $goodsInfo['org_address_detail'];
+            $info['dest_address_detail'] = $goodsInfo['dest_address_detail'];
             //dump($info);
             //$quoteId = $quoteLogic->saveQuoteInfo($info);不生成询价单
             //发送系统消息给司机

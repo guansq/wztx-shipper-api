@@ -39,4 +39,14 @@ class Goods extends BaseLogic {
         return resultArray(2000, '更改货源状态成功');
     }
 
+    /**
+     * Auther: guanshaoqiu <94600115@qq.com>
+     * Describe: * @param $where
+     * 得到单个订单信息
+     */
+    public function getGoodsInfo($where) {
+        $ret = $this->where($where)->find();
+        return $ret;
+    }
+
 }
