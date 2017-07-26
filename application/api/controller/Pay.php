@@ -151,7 +151,7 @@ class Pay extends BaseController {
     }
 
     /**
-     * @api {POST} /pay/alipay  支付宝支付
+     * @api {POST} /pay/alipay  支付宝支付done
      * @apiName alipay
      * @apiGroup Pay
      * @apiHeader {String} authorization-token      token.
@@ -193,7 +193,7 @@ class Pay extends BaseController {
     }
 
     /**
-     * @api {POST} /pay/wxpay  微信支付
+     * @api {POST} /pay/wxpay  微信支付done
      * @apiName wxpay
      * @apiGroup Pay
      * @apiHeader {String} authorization-token      token.
