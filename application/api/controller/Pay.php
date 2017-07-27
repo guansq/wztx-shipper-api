@@ -36,7 +36,10 @@ class Pay extends BaseController {
      * @apiSuccess {String}     real_name            开户名称
      */
     public function payBond() {
-
+        $ispass = ispassAuth($this->loginUser);
+        if(!$ispass){
+            returnJson(4000,'您未认证或未缴纳保证金');
+        }
     }
 
     /**

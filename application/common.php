@@ -507,3 +507,10 @@ function ispassAuth($loginUser){
     }
     return true;
 }
+
+/*
+ * 判断用户是否缴纳了保证金
+ */
+function isPaymentbond(){
+
+}
