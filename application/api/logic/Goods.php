@@ -49,4 +49,5 @@ class Goods extends BaseLogic {
         return $ret;
     }
 
+
 }

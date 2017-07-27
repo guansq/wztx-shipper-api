@@ -1613,7 +1613,7 @@
   {
     "type": "POST",
     "url": "/pay/alipay",
-    "title": "支付宝支付",
+    "title": "支付宝支付done",
     "name": "alipay",
     "group": "Pay",
     "header": {
@@ -2050,7 +2050,7 @@
   {
     "type": "POST",
     "url": "/pay/wxpay",
-    "title": "微信支付",
+    "title": "微信支付done",
     "name": "wxpay",
     "group": "Pay",
     "header": {
@@ -2354,7 +2354,7 @@
   {
     "type": "GET",
     "url": "recommend/showMyRecommList",
-    "title": "显示我的推荐列表",
+    "title": "显示我的推荐列表done",
     "name": "showMyRecommList",
     "group": "Recommend",
     "header": {

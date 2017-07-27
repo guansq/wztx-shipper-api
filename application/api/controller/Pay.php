@@ -151,7 +151,7 @@ class Pay extends BaseController {
     }
 
     /**
-     * @api {POST} /pay/alipay  支付宝支付
+     * @api {POST} /pay/alipay  支付宝支付done
      * @apiName alipay
      * @apiGroup Pay
      * @apiHeader {String} authorization-token      token.
@@ -168,28 +168,32 @@ class Pay extends BaseController {
             'order_id' => 'require'
         ];
         validateData($paramAll,$rule);
-        $order_info = model('TransportOrder')->getTransportOrderInfo(['id'=>$paramAll['order_id'],'status'=>'quote']);
-
+        $order_info = model('TransportOrder','logic')->getTransportOrderInfo(['id'=>$paramAll['order_id'],'sp_id'=>$this->loginUser['id'],'status'=>'photo']);//需要拍照后的状态
+        if(empty($order_info)){
+            returnJson(4000,'暂无待付款订单信息');
+        }
         $biz_content=[
-            'body'  =>  '详细介绍',//详细介绍
-            'subject'   =>  '标题',//标题
-            'out_trade_no'  =>  '2017072310254561',//商家订单号
-            //                'order_id'  =>  $order_info['id'],//订单id
+            'body'  =>  'order_id'.$order_info['id'].'发货人：'.$order_info['org_send_name'].'发货人手机'.$order_info['org_phone'],//详细介绍
+            'subject'   =>  '发货订单',//标题
+            'out_trade_no'  =>  $order_info['order_code'],//商家订单号
+            'order_id'  =>  $order_info['id'],//订单id
             //                'user_id'   =>  $order_info['user_id'],//用户id
             //                'total_amount'  =>  $order_info['meal_price'],//金额
             'total_amount'  =>  '0.01',//总金额
             'product_code'  =>  'QUICK_MSECURITY_PAY',
             //                'product_code'  =>  'QUICK_WAP_PAY',
-            'seller_id'=>   '2088421610505604',
+            //'seller_id'=>   '2088421610505604',
+            'seller_id'=>   '2088621197716899',
         ];
 
         $pay=new alipay_mobile();
         $return=$pay->create_pay($biz_content);
+        trace($return);
         returnJson(2000,'成功',$return);
     }
 
     /**
-     * @api {POST} /pay/wxpay  微信支付
+     * @api {POST} /pay/wxpay  微信支付done
      * @apiName wxpay
      * @apiGroup Pay
      * @apiHeader {String} authorization-token      token.
@@ -208,11 +212,14 @@ class Pay extends BaseController {
         validateData($paramAll,$rule);
         $options = [
             // 前面的appid什么的也得保留哦
-            'app_id' => 'wx6470b69abdf65e06',
+            //'app_id' => 'wx6470b69abdf65e06',
+            'app_id' => 'wxc50f5bf05f014dee',
             // payment
             'payment' => [
-                'merchant_id'        => '1383659202',
-                'key'                => '2D2C5B0CDFA135D8FAB37227B0F569E5',
+                //'merchant_id'        => '1383659202',
+                'merchant_id'        => '1483170282',
+                //'key'                => '2D2C5B0CDFA135D8FAB37227B0F569E5',
+                'key'                => 'd39be96f2e538480fc567ea12d54c59e',//RUITU111111KEJImd5
                 'cert_path'          => '/wxpayment/apiclient_cert.pem', // XXX: 绝对路径！！！！
                 'key_path'           => '/wxpayment/apiclient_key.pem',      // XXX: 绝对路径！！！！
                 'notify_url'         => 'http://wztx.shp.api.ruitukeji.com/callback/wxpay_callback',       // 你也可以在下单时单独设置来想覆盖它
@@ -235,7 +242,7 @@ class Pay extends BaseController {
         $order = new Order($attributes);
 
         $result = $payment->prepare($order);
-
+        //dump($result);
         if ($result->return_code == 'SUCCESS' && $result->result_code == 'SUCCESS'){
             $prepayId = $result->prepay_id;
         }else{
