@@ -511,6 +511,6 @@ function ispassAuth($loginUser){
 /*
  * 判断用户是否缴纳了保证金
  */
-function isPaymentbond(){
-
+function bondStatus($sp_id){
+    return Db::name('sp_base_info')->where('id',$sp_id)->value('bond_status');
 }

@@ -30,13 +30,23 @@ class Pay extends BaseController {
      * @apiName payBond
      * @apiGroup Pay
      * @apiHeader {String} authorization-token      token.
-     * @apiParam  {String}      amount                     提现金额
+     * @apiParam  {String}      amount                     保证金金额
      * @apiParam  {Int}         deposit_name                  银行名称
      * @apiSuccess {String}     account               收款账号
      * @apiSuccess {String}     real_name            开户名称
      */
     public function payBond() {
-        $ispass = ispassAuth($this->loginUser);
+        //判断是否缴纳保证金->是否个人用户得到保证金金额 对比-》缴纳保证金
+        $status = bondStatus($this->loginUser['id']);
+        if($status == 'checked'){
+            returnJson(4000,'您已缴纳过保证金');
+        }
+        if($this->loginUser['type'] == 'person'){
+            $amount = getSysconf('bond_person_amount');
+        }elseif($this->loginUser['type'] == 'company'){
+            $amount = getSysconf('bond_company_amount');
+        }
+        echo $amount;die;
         if(!$ispass){
             returnJson(4000,'您未认证或未缴纳保证金');
         }
@@ -162,6 +172,9 @@ class Pay extends BaseController {
      * @apiParam  {Number}  total_amount            支付金额
      */
     public function alipay(){
+//        $str        = chunk_split('', 64, "\n");
+//        $private_key = "-----BEGIN RSA PRIVATE KEY-----\n$str-----END RSA PRIVATE KEY-----\n";
+//        echo $private_key;die;
         $ispass = ispassAuth($this->loginUser);
         if(!$ispass){
             returnJson(4000,'您未认证或未缴纳保证金');
@@ -176,8 +189,9 @@ class Pay extends BaseController {
             returnJson(4000,'暂无待付款订单信息');
         }
         $biz_content=[
-            'body'  =>  'order_id'.$order_info['id'].'发货人：'.$order_info['org_send_name'].'发货人手机'.$order_info['org_phone'],//详细介绍
-            'subject'   =>  '发货订单',//标题
+            //'body'  =>  'order_id'.$order_info['id'].'发货人：'.$order_info['org_send_name'].'发货人手机'.$order_info['org_phone'],//详细介绍
+            'body'  =>  $order_info['id'],//详细介绍
+            'subject'   =>  '货源订单',//标题
             'out_trade_no'  =>  $order_info['order_code'],//商家订单号
             'order_id'  =>  $order_info['id'],//订单id
             //                'user_id'   =>  $order_info['user_id'],//用户id
@@ -191,7 +205,7 @@ class Pay extends BaseController {
 
         $pay=new alipay_mobile();
         $return=$pay->create_pay($biz_content);
-        trace($return);
+        //echo $return;die;
         returnJson(2000,'成功',$return);
     }
 

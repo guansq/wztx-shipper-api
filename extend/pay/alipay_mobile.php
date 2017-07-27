@@ -36,6 +36,7 @@ class alipay_mobile extends alipay_common
         $this->config['biz_content']=json_encode($biz_content,JSON_UNESCAPED_UNICODE);
         //生成完整数组
         $data_array=$this->buildRequestPara($this->config);
+        dump($data_array);die;
         //生成urldecode链接
         $last_url=$this->urlencode_array($data_array);
         return $last_url;

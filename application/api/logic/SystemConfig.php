@@ -35,6 +35,7 @@ class SystemConfig extends BaseLogic{
             'premium_rate' => getSysconf('premium_rate'),
             'bond_person_amount' => getSysconf('bond_person_amount'),
             'bond_company_amount' => getSysconf('bond_company_amount'),
+            //'' => getSysconf(''),
             'withdraw_begintime' => getSysconf('withdraw_begintime'),
             'withdraw_endtime' => getSysconf('withdraw_endtime'),
             'custom_phone' => getSysconf('custom_phone'),
