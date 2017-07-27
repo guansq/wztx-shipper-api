@@ -12,14 +12,14 @@ use jwt\JwtHelper;
 use service\ToolsService;
 use think\Controller;
 
-class BaseController extends Controller{
+class BaseController extends Controller {
 
     protected $getParams;
     protected $controller;
     protected $action;
     protected $loginUser;
 
-    public function _initialize(){
+    public function _initialize() {
 
         parent::_initialize();
         // CORS 跨域 Options 检测响应 允许跨域
@@ -32,27 +32,35 @@ class BaseController extends Controller{
     /**
      * token检测
      */
-    public function tokenGrantCheck(){
+    public function tokenGrantCheck() {
 
         //不需要token验证的控制器方法
         $except_controller = [
-            "User" => ["login", "reg", "forget",'computeQlfScore'],
+            "User" => ["login", "reg", "forget", 'computeQlfScore'],
             "Index" => ["apiCode", 'lastApk', 'appConfig', 'sendCaptcha'],
             "Car" => ['getallcarstyle'],
         ];
 
-        if(!array_key_exists($this->controller, $except_controller) || !in_array($this->action, $except_controller[$this->controller])){
+        if (!array_key_exists($this->controller, $except_controller) || !in_array($this->action, $except_controller[$this->controller])) {
             $token = request()->header('authorization-token', '');
-            if(empty($token)){
-                if($this->controller == 'Index' && $this->action == 'home'){
+            if ($this->controller == 'Index' && $this->action == 'home') {
+                if(empty($token)){
                     $this->loginUser = '';
                 }else{
-                    returnJson(4011);
+                    $ret= JwtHelper::checkHomeToken($token);
+                    if(empty($ret)){
+                        $this->loginUser = '';
+                    }else{
+                        $this->loginUser = $ret;
+                    }
                 }
             }else{
+                if (empty($token)) {
+                    returnJson(4011);
+                }
                 $this->loginUser = JwtHelper::checkToken($token);
                 $spBaseInfo = model('SpBaseInfo', 'logic')->findInfoByUserId($this->loginUser['id']);
-                if(empty($spBaseInfo)){
+                if (empty($spBaseInfo)) {
                     returnJson(4011);
                 }
                 $this->loginUser['type'] = $spBaseInfo['type'];
@@ -61,14 +69,13 @@ class BaseController extends Controller{
             }
         }
     }
-
     /**
      * 获得get参数方法
      */
-    protected function getRequestInfo(){
+    protected function getRequestInfo() {
         $this->controller = request()->controller();
         $this->action = request()->action();
-        $this->getParams = array_filter(input("param."), function($v){
+        $this->getParams = array_filter(input("param."), function ($v) {
             return $v != "";
         });
 
@@ -77,18 +84,18 @@ class BaseController extends Controller{
     /**
      * 获得请求参参数
      */
-    protected function getReqParams($keys = []){
+    protected function getReqParams($keys = []) {
         $params = input("param.");
         $ret = [];
         //        if(empty($params)){
         //            return [];
         //        }
-        if(empty($keys)){
+        if (empty($keys)) {
             return $params;
         }
 
-        foreach($keys as $k => $v){
-            if(is_numeric($k)){ // 一维数组
+        foreach ($keys as $k => $v) {
+            if (is_numeric($k)) { // 一维数组
                 $ret[$v] = array_key_exists($v, $params) ? $params[$v] : '';
                 continue;
             }
@@ -101,7 +108,7 @@ class BaseController extends Controller{
     /**
      * 获得分页参参数
      */
-    protected function getPagingParams(){
+    protected function getPagingParams() {
 
         $DEFAULT_PAGING_PARAMS = config('config_app.DEFAULT_PAGING_PARAMS');
         $pageParams = [
@@ -111,18 +118,18 @@ class BaseController extends Controller{
         return $pageParams;
     }
 
-    protected function checkLogin($encodeData){
+    protected function checkLogin($encodeData) {
         //$this->getParams["lal"];
         return JwtHelper::checkToken($encodeData);
     }
 
 
-    protected function flexClass(){
+    protected function flexClass() {
         $class = new \ReflectionClass($this);
         $flex_methods = (array)$class->getMethods(\ReflectionMethod::IS_PUBLIC);
-        array_walk($flex_methods, function($v) use (&$methods){
+        array_walk($flex_methods, function ($v) use (&$methods) {
             $current = (array)$v;
-            if(trim($current["class"]) != __CLASS__ && trim($current["class"]) != "think\Controller"){
+            if (trim($current["class"]) != __CLASS__ && trim($current["class"]) != "think\Controller") {
                 //                $methods[basename($current["class"])] = $current;
                 $methods[basename($current["class"])][] = $current["name"];
             }
@@ -133,10 +140,10 @@ class BaseController extends Controller{
     /**
      * 参数效验
      */
-    protected function paramCheck($guards){
-        if(array_key_exists($this->action, $guards)){
+    protected function paramCheck($guards) {
+        if (array_key_exists($this->action, $guards)) {
             $paramDiff = implode(",", array_diff($guards[$this->action], array_keys($this->getParams)));
-            if($paramDiff){
+            if ($paramDiff) {
                 returnJson(4011);
             }
         }
