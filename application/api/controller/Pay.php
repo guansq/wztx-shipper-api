@@ -221,9 +221,9 @@ class Pay extends BaseController{
         $response = $aop->sdkExecute($request);
         //returnJson(2000,'成功',$response);die;
         //htmlspecialchars是为了输出到页面时防止被浏览器将关键参数html转义，实际打印到日志以及http传输不会有这个问题
-        $orderString = htmlspecialchars($response);//就是orderString 可以直接给客户端请求，无需再做处理。
+        //$orderString = htmlspecialchars($response);//就是orderString 可以直接给客户端请求，无需再做处理。
 
-        returnJson(2000, '成功', $orderString);
+        returnJson(2000, '成功', ['orderString'=>$response,'isUseSandbox' =>getenv('ALIPAY_IS_USE_SANDBOX')]);
 
         die;
         /*$aliConfig = require_once APP_PATH.'aliconfig.php';
