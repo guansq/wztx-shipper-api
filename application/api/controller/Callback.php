@@ -15,6 +15,10 @@ use EasyWeChat\Foundation\Application;
 class Callback extends Controller
 {
     public function alipay_callback(){
+        include(APP_PATH.'/alipay/AopSdk.php');
+        $aop = new \AopClient();
+        $aop->alipayrsaPublicKey = 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAx57k5O9rmVm3WyYXuL5JVQ9PhyGe7ih3AJL/FySC9fas6InkoBtoo+kXsZWTn9rxhOFkMl0mmL7TSDZCWZLX6KNs5cmZh+6yTm++LhPaFsYZnwOsaZlmD6P57g9rJhvfY0LPKZ4I5qdMUQ9uYsaNp4vf7rg9VS1d1KS9I9Qpen0WYsp3zPM/B+ivQk6GpLaR3Q+60dusLc/P7STiIUl8GlfK9efE5h0Ajs5NVES+MmY2Ez1ouoTbnjiZ5ls110zBHLSubeEEB6IIAbsJJdG5L6EiimNsXrTm73QJO0ij31kkb7BsNisb8SuXcdlbdYklfVdY9qT7PshfS8FglxbC5wIDAQAB';
+        $flag = $aop->rsaCheckV2($_POST, NULL, "RSA");die;
         $data=input('param.');
         if(empty($data)){
             returnJson(4000,'支付失败');

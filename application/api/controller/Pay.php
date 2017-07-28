@@ -11,7 +11,12 @@ namespace app\api\controller;
 use pay\alipay_mobile;
 use EasyWeChat\Foundation\Application;
 use EasyWeChat\Payment\Order;
+
+use Payment\Common\PayException;
+use Payment\Client\Charge;
+use Payment\Config;
 class Pay extends BaseController {
+
     /**
      * @api {GET} /pay 我的钱包done
      * @apiName index
@@ -30,13 +35,23 @@ class Pay extends BaseController {
      * @apiName payBond
      * @apiGroup Pay
      * @apiHeader {String} authorization-token      token.
-     * @apiParam  {String}      amount                     提现金额
+     * @apiParam  {String}      amount                     保证金金额
      * @apiParam  {Int}         deposit_name                  银行名称
      * @apiSuccess {String}     account               收款账号
      * @apiSuccess {String}     real_name            开户名称
      */
     public function payBond() {
-        $ispass = ispassAuth($this->loginUser);
+        //判断是否缴纳保证金->是否个人用户得到保证金金额 对比-》缴纳保证金
+        $status = bondStatus($this->loginUser['id']);
+        if($status == 'checked'){
+            returnJson(4000,'您已缴纳过保证金');
+        }
+        if($this->loginUser['type'] == 'person'){
+            $amount = getSysconf('bond_person_amount');
+        }elseif($this->loginUser['type'] == 'company'){
+            $amount = getSysconf('bond_company_amount');
+        }
+        echo $amount;die;
         if(!$ispass){
             returnJson(4000,'您未认证或未缴纳保证金');
         }
@@ -162,6 +177,57 @@ class Pay extends BaseController {
      * @apiParam  {Number}  total_amount            支付金额
      */
     public function alipay(){
+        //require_once APP_PATH.'/alipay/AopSdk.php';
+        include(APP_PATH.'/alipay/AopSdk.php');
+        $aop = new \AopClient();
+        $aop->gatewayUrl = "https://openapi.alipay.com/gateway.do";
+        $aop->appId = "2017061607503256";
+        $aop->rsaPrivateKey = 'MIIEpAIBAAKCAQEA8vg4xtApZfufZ/rSXaRE6PdZehfcTH4/ks5dR+FberJ6/62BvlHSlubGruPA7jLc7GdAd2nnbAXU7sGqRXilvbkjAdYnTxbwXjY+sazKGTSgEzNgR5Vpek5fMpMudMjOjiTTuasIOH8r9pBXSh5Fg4ear1esKa/em82TmxnkP7Lf2nJZKS6OIfs5Ory5KKRJE5oh+HFvgLDq6JWXhejUFWlLJ/snBetJdMFolP7OJ47PlIBvvAPXhrXhuh/3PIjwZu5gCqeTbJ7wBbxEhRrCqLEGjLKc15e0YNSuljkjCNQ0ErQG2DjdNLCkaJq76fJXoF72fdg04TP0eTNyVZpGHQIDAQABAoIBAF8nOwURjMT10C3mmvA1Xw9ln1MjeREz+C3ER9/Yr/zTXTw4dTFV1gVnB7SCWZJvtPmYTjT18r3pYsTGb6qZXz93++/CMM7Wivg6gj8PDm7knzQl0LT4HMDbZIjn/y+ZXNtqLMjv5F5L36nGSYkrZcnnF3tH+JKy35lg30fE0hDndz7WlGxu1OXBZ7vVVmRQX2ia3bmG2LuiV9ryt98hdPmlhkDUVB8jMsxOoQwWhSR4CdATum+SLZOHSHVY21l1mmUuRnEmK+H77CqylkFeUPzxUCKANZvlT6pb4csF0WEa51OP4YjJZK7DF2B1v3ewkbYtJ/ZuazIvT+fHqGvPtDkCgYEA/9QknJdprf+yREjYBs+sKogajNi/rpilvoKuL2hCyzq1FYEAmlgxEeJcDYcmnux6yMM6LxTF1IWCv53JLNl3tFzhrrwGOsRa7byP2yE5CMQYuGpU7INC30xW1ohGQnvgRFULIULtHrzeG+7hY5yNyhQBAmO4OX3Ssv2lB75KPHcCgYEA8yHf08ylC1YwKnRdwyXQPrE352188nQxCnj9Lq91mTDvxuoKPVQa8sYwKMbKvzCS0SJ9WGtFTS0oZqrrFM/beX40Eyke7qYnLoaMNxSPfpz6AKfl9NTuPcDkQibjabpLDC7Q4fxcYuwqKnFBLOt3AuX3osu5JpxZE3NNTV8n+wsCgYEAq2TynmKmr6cmRK9U48NQgjIrL3+rdArayDb/Ac3lKgkL9vs1bzJ0tZmkuH96dXDTlhuNqKtPGuHTxhKtDDoqA5FSteFMfyS8EpiI/HNWpbPTKAI9ITOTosyfRR2JjNM3XjBnw4H2IOjCGY7CPB1PtToPrw0mCIZumfJrFTP8wmMCgYEA7E1wDZpIjswl5B1VQ+XskAIOI4/2cG8deuA8srM1yL4XTW0KprCnwG1/QSJ0y32aNEkhKl6X7HqHWcGk2YVr+pj+Y+EDf09dpYp/nMkO7jADi7+jcGHDa6GeN+0z+f5mEmEuA3YTFNIT6UxJ3C6+bMK1/DOksDIlIRJff2OMqCECgYBm6IYTNYBsjmJO2M41o/PbPkjIlepLN3JZrLn9Nx7x1JdUuHjfUm3lJYNBXbS8wrg2Oi8Mp4nxh+l+A9pFYKDnbQ862F18ZUYdGklBV8fkSKJ/pvlxIheKVEt1iYrvYo0m5R7TgDeefDzXjzhHtiS6fegbbcEX4avRMrT27fukEg==' ;
+        $aop->format = "json";
+        $aop->charset = "UTF-8";
+        $aop->signType = "RSA2";
+        $aop->debugInfo = true;
+        $aop->alipayrsaPublicKey = 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAx57k5O9rmVm3WyYXuL5JVQ9PhyGe7ih3AJL/FySC9fas6InkoBtoo+kXsZWTn9rxhOFkMl0mmL7TSDZCWZLX6KNs5cmZh+6yTm++LhPaFsYZnwOsaZlmD6P57g9rJhvfY0LPKZ4I5qdMUQ9uYsaNp4vf7rg9VS1d1KS9I9Qpen0WYsp3zPM/B+ivQk6GpLaR3Q+60dusLc/P7STiIUl8GlfK9efE5h0Ajs5NVES+MmY2Ez1ouoTbnjiZ5ls110zBHLSubeEEB6IIAbsJJdG5L6EiimNsXrTm73QJO0ij31kkb7BsNisb8SuXcdlbdYklfVdY9qT7PshfS8FglxbC5wIDAQAB';
+        //实例化具体API对应的request类,类名称和接口名称对应,当前调用接口名称：alipay.trade.app.pay
+        $request = new \AlipayTradeAppPayRequest();
+        //SDK已经封装掉了公共参数，这里只需要传入业务参数
+        $bizcontent = "{'body':'我是测试数据','subject': 'App支付测试','out_trade_no': '20170125test01','timeout_express': '30m','total_amount': '0.01','product_code':'QUICK_MSECURITY_PAY'}";
+        $request->setNotifyUrl("http://wztx.shp.api.ruitukeji.com/Callback/alipay_callback");
+        $request->setBizContent($bizcontent);
+        //这里和普通的接口调用不同，使用的是sdkExecute
+        $response = $aop->sdkExecute($request);
+        //returnJson(2000,'成功',$response);die;
+        //htmlspecialchars是为了输出到页面时防止被浏览器将关键参数html转义，实际打印到日志以及http传输不会有这个问题
+
+        $str =  htmlspecialchars($response);//就是orderString 可以直接给客户端请求，无需再做处理。
+        returnJson(2000,'成功',$str);
+        die;
+        /*$aliConfig = require_once APP_PATH.'aliconfig.php';
+
+        $orderNo = time() . rand(1000, 9999);
+        $payData = [
+            'body'    => 'ali qr pay',
+            'subject'    => '测试支付宝扫码支付',
+            'order_no'    => $orderNo,
+            'timeout_express' => time() + 600,// 表示必须 600s 内付款
+            'amount'    => '0.01',// 单位为元 ,最小为0.01
+            'return_param' => '123123',
+            'client_ip' => isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1',// 客户地址
+            'goods_type' => '1',
+            'store_id' => '',
+        ];
+
+        try {
+            $str = Charge::run(Config::ALI_CHANNEL_APP, $aliConfig, $payData);
+        } catch (PayException $e) {
+            echo $e->errorMessage();
+            exit;
+        }
+        returnJson(2000,'成功',$str);
+        echo $str;die;
+//        $str        = chunk_split('', 64, "\n");
+//        $private_key = "-----BEGIN RSA PRIVATE KEY-----\n$str-----END RSA PRIVATE KEY-----\n";
+//        echo $private_key;die;
         $ispass = ispassAuth($this->loginUser);
         if(!$ispass){
             returnJson(4000,'您未认证或未缴纳保证金');
@@ -175,9 +241,13 @@ class Pay extends BaseController {
         if(empty($order_info)){
             returnJson(4000,'暂无待付款订单信息');
         }
+        echo APP_PATH.'aliconfig.php';die;
+        //$config = \think\Config::load();
+        dump($config);die;
         $biz_content=[
-            'body'  =>  'order_id'.$order_info['id'].'发货人：'.$order_info['org_send_name'].'发货人手机'.$order_info['org_phone'],//详细介绍
-            'subject'   =>  '发货订单',//标题
+            //'body'  =>  'order_id'.$order_info['id'].'发货人：'.$order_info['org_send_name'].'发货人手机'.$order_info['org_phone'],//详细介绍
+            'body'  =>  $order_info['id'],//详细介绍
+            'subject'   =>  '货源订单',//标题
             'out_trade_no'  =>  $order_info['order_code'],//商家订单号
             'order_id'  =>  $order_info['id'],//订单id
             //                'user_id'   =>  $order_info['user_id'],//用户id
@@ -191,8 +261,8 @@ class Pay extends BaseController {
 
         $pay=new alipay_mobile();
         $return=$pay->create_pay($biz_content);
-        trace($return);
-        returnJson(2000,'成功',$return);
+        //echo $return;die;
+        returnJson(2000,'成功',$return);*/
     }
 
     /**
@@ -204,6 +274,30 @@ class Pay extends BaseController {
      * @apiParam  {Number}  total_amount            支付金额
      */
     public function wxpay(){
+        $wxConfig = require_once APP_PATH.'wxconfig.php';
+        $orderNo = time() . rand(1000, 9999);
+        // 订单信息
+        $payData = [
+            'body'    => 'test body',
+            'subject'    => 'test subject',
+            'order_no'    => $orderNo,
+            'timeout_express' => time() + 600,// 表示必须 600s 内付款
+            'amount'    => '3.01',// 微信沙箱模式，需要金额固定为3.01
+            'return_param' => '123',
+            'client_ip' => isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1',// 客户地址
+        ];
+
+        try {
+            $ret = Charge::run(Config::WX_CHANNEL_APP, $wxConfig, $payData);
+        } catch (PayException $e) {
+            echo $e->errorMessage();
+            exit;
+        }
+
+        //$str = json_encode($ret, JSON_UNESCAPED_UNICODE);
+        returnJson(2000,'成功',$ret);
+        die;
+
         $ispass = ispassAuth($this->loginUser);
         if(!$ispass){
             returnJson(4000,'您未认证或未缴纳保证金');

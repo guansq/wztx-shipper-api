@@ -576,14 +576,18 @@ function saveOrderShare($order_id = ''){
 
 
 // 保存推荐信息
- function saveRecomm($where){
-    if(empty($where['share_id']) || empty($where['share_id']) || !in_array($where['type'],['0','1'])){
-        return false;
-    }
-    $whereExist = ['share_id'=>$where['share_id'],'invite_id'=>$where['invite_id'],'type'=>$where['type']];
-    $isExist =  Db::name('ShareList')->where($whereExist)->find();
-    if(!empty($isExist)){
-        return false;
-    }
-    return Db::name('ShareList')->insert($where);
+ function saveRecomm($where) {
+     if (empty($where['share_id']) || empty($where['share_id']) || !in_array($where['type'], ['0', '1'])) {
+         return false;
+     }
+     $whereExist = ['share_id' => $where['share_id'], 'invite_id' => $where['invite_id'], 'type' => $where['type']];
+     $isExist = Db::name('ShareList')->where($whereExist)->find();
+     if (!empty($isExist)) {
+         return false;
+     }
+     return Db::name('ShareList')->insert($where);
+ }
+
+function bondStatus($sp_id){
+    return Db::name('sp_base_info')->where('id',$sp_id)->value('bond_status');
 }
