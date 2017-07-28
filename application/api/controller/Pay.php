@@ -181,22 +181,26 @@ class Pay extends BaseController {
         include(APP_PATH.'/alipay/AopSdk.php');
         $aop = new \AopClient();
         $aop->gatewayUrl = "https://openapi.alipay.com/gateway.do";
-        $aop->appId = "app_id";
+        $aop->appId = "2017061607503256";
         $aop->rsaPrivateKey = 'MIIEpAIBAAKCAQEA8vg4xtApZfufZ/rSXaRE6PdZehfcTH4/ks5dR+FberJ6/62BvlHSlubGruPA7jLc7GdAd2nnbAXU7sGqRXilvbkjAdYnTxbwXjY+sazKGTSgEzNgR5Vpek5fMpMudMjOjiTTuasIOH8r9pBXSh5Fg4ear1esKa/em82TmxnkP7Lf2nJZKS6OIfs5Ory5KKRJE5oh+HFvgLDq6JWXhejUFWlLJ/snBetJdMFolP7OJ47PlIBvvAPXhrXhuh/3PIjwZu5gCqeTbJ7wBbxEhRrCqLEGjLKc15e0YNSuljkjCNQ0ErQG2DjdNLCkaJq76fJXoF72fdg04TP0eTNyVZpGHQIDAQABAoIBAF8nOwURjMT10C3mmvA1Xw9ln1MjeREz+C3ER9/Yr/zTXTw4dTFV1gVnB7SCWZJvtPmYTjT18r3pYsTGb6qZXz93++/CMM7Wivg6gj8PDm7knzQl0LT4HMDbZIjn/y+ZXNtqLMjv5F5L36nGSYkrZcnnF3tH+JKy35lg30fE0hDndz7WlGxu1OXBZ7vVVmRQX2ia3bmG2LuiV9ryt98hdPmlhkDUVB8jMsxOoQwWhSR4CdATum+SLZOHSHVY21l1mmUuRnEmK+H77CqylkFeUPzxUCKANZvlT6pb4csF0WEa51OP4YjJZK7DF2B1v3ewkbYtJ/ZuazIvT+fHqGvPtDkCgYEA/9QknJdprf+yREjYBs+sKogajNi/rpilvoKuL2hCyzq1FYEAmlgxEeJcDYcmnux6yMM6LxTF1IWCv53JLNl3tFzhrrwGOsRa7byP2yE5CMQYuGpU7INC30xW1ohGQnvgRFULIULtHrzeG+7hY5yNyhQBAmO4OX3Ssv2lB75KPHcCgYEA8yHf08ylC1YwKnRdwyXQPrE352188nQxCnj9Lq91mTDvxuoKPVQa8sYwKMbKvzCS0SJ9WGtFTS0oZqrrFM/beX40Eyke7qYnLoaMNxSPfpz6AKfl9NTuPcDkQibjabpLDC7Q4fxcYuwqKnFBLOt3AuX3osu5JpxZE3NNTV8n+wsCgYEAq2TynmKmr6cmRK9U48NQgjIrL3+rdArayDb/Ac3lKgkL9vs1bzJ0tZmkuH96dXDTlhuNqKtPGuHTxhKtDDoqA5FSteFMfyS8EpiI/HNWpbPTKAI9ITOTosyfRR2JjNM3XjBnw4H2IOjCGY7CPB1PtToPrw0mCIZumfJrFTP8wmMCgYEA7E1wDZpIjswl5B1VQ+XskAIOI4/2cG8deuA8srM1yL4XTW0KprCnwG1/QSJ0y32aNEkhKl6X7HqHWcGk2YVr+pj+Y+EDf09dpYp/nMkO7jADi7+jcGHDa6GeN+0z+f5mEmEuA3YTFNIT6UxJ3C6+bMK1/DOksDIlIRJff2OMqCECgYBm6IYTNYBsjmJO2M41o/PbPkjIlepLN3JZrLn9Nx7x1JdUuHjfUm3lJYNBXbS8wrg2Oi8Mp4nxh+l+A9pFYKDnbQ862F18ZUYdGklBV8fkSKJ/pvlxIheKVEt1iYrvYo0m5R7TgDeefDzXjzhHtiS6fegbbcEX4avRMrT27fukEg==' ;
         $aop->format = "json";
         $aop->charset = "UTF-8";
         $aop->signType = "RSA2";
+        $aop->debugInfo = true;
         $aop->alipayrsaPublicKey = 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAx57k5O9rmVm3WyYXuL5JVQ9PhyGe7ih3AJL/FySC9fas6InkoBtoo+kXsZWTn9rxhOFkMl0mmL7TSDZCWZLX6KNs5cmZh+6yTm++LhPaFsYZnwOsaZlmD6P57g9rJhvfY0LPKZ4I5qdMUQ9uYsaNp4vf7rg9VS1d1KS9I9Qpen0WYsp3zPM/B+ivQk6GpLaR3Q+60dusLc/P7STiIUl8GlfK9efE5h0Ajs5NVES+MmY2Ez1ouoTbnjiZ5ls110zBHLSubeEEB6IIAbsJJdG5L6EiimNsXrTm73QJO0ij31kkb7BsNisb8SuXcdlbdYklfVdY9qT7PshfS8FglxbC5wIDAQAB';
         //实例化具体API对应的request类,类名称和接口名称对应,当前调用接口名称：alipay.trade.app.pay
         $request = new \AlipayTradeAppPayRequest();
         //SDK已经封装掉了公共参数，这里只需要传入业务参数
         $bizcontent = "{'body':'我是测试数据','subject': 'App支付测试','out_trade_no': '20170125test01','timeout_express': '30m','total_amount': '0.01','product_code':'QUICK_MSECURITY_PAY'}";
-        $request->setNotifyUrl("http://wztx.shp.api.ruitukeji.com");
+        $request->setNotifyUrl("http://wztx.shp.api.ruitukeji.com/Callback/alipay_callback");
         $request->setBizContent($bizcontent);
         //这里和普通的接口调用不同，使用的是sdkExecute
         $response = $aop->sdkExecute($request);
+        //returnJson(2000,'成功',$response);die;
         //htmlspecialchars是为了输出到页面时防止被浏览器将关键参数html转义，实际打印到日志以及http传输不会有这个问题
-        echo htmlspecialchars($response);//就是orderString 可以直接给客户端请求，无需再做处理。
+
+        $str =  htmlspecialchars($response);//就是orderString 可以直接给客户端请求，无需再做处理。
+        returnJson(2000,'成功',$str);
         die;
         /*$aliConfig = require_once APP_PATH.'aliconfig.php';
 
