@@ -195,7 +195,7 @@ class Pay extends BaseController{
         //require_once APP_PATH.'/alipay/AopSdk.php';
         include(APP_PATH.'/alipay/AopSdk.php');
         $aop = new \AopClient();
-        $aop->gatewayUrl = "https://openapi.alipay.com/gateway.do";
+        $aop->gatewayUrl =  getenv('ALIPAY_IS_USE_SANDBOX')?'https://openapi.alipaydev.com/gateway.do':'https://openapi.alipay.com/gateway.do';
         $aop->appId = $appId;
         $aop->rsaPrivateKey = $partner_private_key;
         $aop->format = "json";
@@ -214,7 +214,6 @@ class Pay extends BaseController{
             "total_amount"=>"1",
             "product_code"=>"QUICK_MSECURITY_PAY",
         ];
-
         $bizcontent = json_encode($bizData);
         $request->setNotifyUrl("http://wztx.shp.api.ruitukeji.com/Callback/alipay_callback");
         $request->setBizContent($bizcontent);
