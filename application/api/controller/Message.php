@@ -12,14 +12,11 @@ namespace app\api\controller;
 use think\Request;
 
 class Message extends BaseController{
-
-
-
     /**
      * @api      {GET} /message 我的消息-列表done
      * @apiName  index
      * @apiGroup Message
-     * @apiHeader {String} authorization-token   token.
+     * @apiHeader {String} [authorization-token]   token.
      *
      * @apiParam {String} [push_type=private]           消息类型. system=系统消息 private=私人消息
      * @apiParam {Number} [page=1]                  页码.
@@ -80,7 +77,45 @@ class Message extends BaseController{
         $ret = model('Message','logic')->getMyMsgDetail($paramAll['id'],$this->loginUser);
         returnJson($ret);
     }
-
+    /**
+     * @api {GET} /message/getUnRead     未读消息数量done
+     * @apiName getUnRead
+     * @apiGroup Message
+     * @apiHeader {String} [authorization-token]   token.
+     * @apiSuccess {Array} list                 列表.
+     * @apiSuccess {String} list.name              名称.
+     * @apiSuccess {Number} list.unread            未读数量.
+     * @apiSuccess {String} list.icon_url           图标链接.
+     * @apiSuccess {String} list.push_type         推送类型.
+     * @apiSuccess {String} list.msg                列表文案.
+     */
+    public function getUnRead(){
+        if(empty($this->loginUser)){
+            $privatetotal = 0;
+        }else{
+            $privatetotal =  model('Message','logic')->countUnreadMsg($this->loginUser);
+            $privatemsg =  model('Message','logic')->getUnreadMsg($this->loginUser,$privatetotal);
+        }
+        $systemtotal =  model('Message','logic')->countSystemUnreadMsg($this->loginUser);
+        $privatemsg =  model('Message','logic')->getUnreadMsg($this->loginUser,$privatetotal);
+        $list = [
+            [
+                'name'=>'系统消息',
+                'unread'=>$systemtotal,
+                'icon_url'=>'',
+                'push_type'=>'system',
+                'privatemsg'=>$privatemsg
+            ],
+            [
+                'name'=>'私人消息',
+                'unread'=>$privatetotal,
+                'icon_url'=>'',
+                'push_type'=>'private',
+                'systemmsg'=>$systemmsg
+            ],
+        ];
+        returnJson(2000,'成功获取', ['list'=>$list]);
+    }
     /*
      * @api {GET} /message/onlineService      在线客服
      * @apiName onlineService
