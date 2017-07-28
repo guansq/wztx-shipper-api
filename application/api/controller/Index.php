@@ -121,6 +121,9 @@ class Index extends BaseController{
         returnJson(2000, '显示创建资源表单页');
     }
 
+    public function test () {
+        saveOrderShare(1);
+    }
 
 
 }

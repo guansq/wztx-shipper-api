@@ -21,13 +21,13 @@ class Message extends BaseController{
      * @apiGroup Message
      * @apiHeader {String} authorization-token   token.
      *
-     * @apiParam {String} [type=private]           消息类型. all=全部  system=系统消息 private=私人消息
+     * @apiParam {String} [push_type=private]           消息类型. system=系统消息 private=私人消息
      * @apiParam {Number} [page=1]                  页码.
      * @apiParam {Number} [pageSize=20]             每页数据量.
      *
      * @apiSuccess {Array} list                 列表.
      * @apiSuccess {Number} list.id              消息ID.
-     * @apiSuccess {String} list.type            类型.
+     * @apiSuccess {String} list.type            客户端类型 0货主端 1司机端.
      * @apiSuccess {String} list.title           标题.
      * @apiSuccess {String} list.summary         摘要.
      * @apiSuccess {Number} list.isRead          是否阅读
@@ -36,17 +36,28 @@ class Message extends BaseController{
      * @apiSuccess {Number} pageSize            每页数据量.
      * @apiSuccess {Number} dataTotal           数据总数.
      * @apiSuccess {Number} pageTotal           总页码数.
+     * @apiSuccess {Number} unreadnum           未读消息.
      */
     public function index(){
+        $paramAll = $this->getReqParams([
+            'push_type',
+        ]);
+        $rule = [
+            'push_type' => ['require', '/^(system|private)$/'],
+        ];
+        validateData($paramAll, $rule);
+        $where = [];
+        $where['push_type'] = $paramAll['push_type'];
+        $where['id'] = empty($this->loginUser['id'])?'':$this->loginUser['id'];
         $pageParam = $this->getPagingParams();
-        $ret =  model('Message','logic')->getMyMessage($this->loginUser,$pageParam);
+        $ret =  model('Message','logic')->getMyMessage($where,$pageParam);
         returnJson($ret);
     }
 
 
     /**
-     * @api {GET} /message/:id      我的消息-详情done
-     * @apiName read
+     * @api {GET} /message/detail      我的消息-详情done
+     * @apiName detail
      * @apiGroup Message
      * @apiHeader {String} authorization-token   token.
      * @apiParam {Number} id          id.
@@ -57,8 +68,16 @@ class Message extends BaseController{
      * @apiSuccess {Number} isRead          是否阅读
      * @apiSuccess {String} pushTime        推送时间.
      */
-    public function read($id){
-        $ret = model('Message','logic')->getMyMsgDetail($id,$this->loginUser);
+    public function detail(){
+        $paramAll = $this->getReqParams([
+            'id',
+        ]);
+        $rule = [
+            'id' => ['require', 'regex' => '^[0-9]*$'],
+        ];
+
+        validateData($paramAll, $rule);
+        $ret = model('Message','logic')->getMyMsgDetail($paramAll['id'],$this->loginUser);
         returnJson($ret);
     }
 
