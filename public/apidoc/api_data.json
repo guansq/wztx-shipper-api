@@ -1910,67 +1910,6 @@
   },
   {
     "type": "POST",
-    "url": "/pay/recharge",
-    "title": "充值",
-    "name": "recharge",
-    "group": "Pay",
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "authorization-token",
-            "description": "<p>token.</p>"
-          }
-        ]
-      }
-    },
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "real_amount",
-            "description": "<p>充值金额</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Int",
-            "optional": false,
-            "field": "pay_way",
-            "description": "<p>支付方式 1=支付宝，2=微信</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "Array",
-            "optional": false,
-            "field": "pay_info",
-            "description": "<p>支付返回信息</p>"
-          }
-        ]
-      }
-    },
-    "version": "0.0.0",
-    "filename": "application/api/controller/Pay.php",
-    "groupTitle": "Pay",
-    "sampleRequest": [
-      {
-        "url": "http://wztx.shp.api.ruitukeji.com/pay/recharge"
-      }
-    ]
-  },
-  {
-    "type": "POST",
     "url": "/pay/rechargeByAlipay",
     "title": "充值余额通过支付宝充值done",
     "name": "rechargeByAlipay",
@@ -2173,7 +2112,7 @@
   {
     "type": "POST",
     "url": "/pay/scorePay",
-    "title": "通过余额支付（订单）",
+    "title": "通过余额支付（订单）done",
     "name": "scorePay",
     "group": "Pay",
     "header": {
@@ -2375,7 +2314,7 @@
   {
     "type": "POST",
     "url": "/pay/wxpay",
-    "title": "微信支付done",
+    "title": "微信支付",
     "name": "wxpay",
     "group": "Pay",
     "header": {

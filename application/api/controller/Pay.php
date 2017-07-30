@@ -33,18 +33,6 @@ class Pay extends BaseController{
     }
 
 
-    /**
-     * @api      {POST} /pay/recharge  充值
-     * @apiName  recharge
-     * @apiGroup Pay
-     * @apiHeader {String} authorization-token      token.
-     * @apiParam  {String}  real_amount              充值金额
-     * @apiParam  {Int}    pay_way                  支付方式 1=支付宝，2=微信
-     * @apiSuccess {Array} pay_info                 支付返回信息
-     */
-    public function recharge(){
-
-    }
 
     /**
      * @api      {POST}  /pay/showPayRecord 查看账单done
@@ -280,7 +268,7 @@ class Pay extends BaseController{
 
 
     /**
-     * @api      {POST} /pay/wxpay  微信支付done
+     * @api      {POST} /pay/wxpay  微信支付
      * @apiName  wxpay
      * @apiGroup Pay
      * @apiHeader {String} authorization-token      token.
@@ -388,7 +376,7 @@ class Pay extends BaseController{
     }
 
     /**
-     * @api      {POST} /pay/scorePay  通过余额支付（订单）
+     * @api      {POST} /pay/scorePay  通过余额支付（订单）done
      * @apiName  scorePay
      * @apiGroup Pay
      * @apiHeader {String} authorization-token      token.
@@ -418,8 +406,35 @@ class Pay extends BaseController{
         $newBalance = $baseInfo['balance'] - $order_info['final_price'];
         model('SpBaseInfo','logic')->updateUserBalance(['id'=>$this->loginUser['id']],['balance'=>$newBalance]);//更新账户信息
         //更新订单信息
+        $transportLogic = model('TransportOrder','logic');
+        $where = ['id'=>$order_info['id']];
+        $statusdata = [
+            'status' => 'pay_success',
+            'payway' => 1,//0=未支付，1=余额，2=微信，3=支付宝，4-凭证通过
+            'is_pay' =>1,
+            'pay_time'=>time()
+        ];
+        saveOrderShare($order_info['id']);//存入推荐列表
 
-        //dump($order_info['final_price']);
+        $transportLogic->updateTransport($where,$statusdata);
+        $pay_type_order = 'transport';
+        //需要进行存入sp_pay_order表里
+        $data = [
+            'sp_id' =>$order_info['sp_id'],
+            'order_id' => $order_info['order_code'],
+            'trade_no' =>'',//第三方交易号
+            'total_amount' =>$order_info['final_price'],
+            'real_amount' =>$order_info['final_price'],
+            'out_trade_no' =>'',//当前的订单code
+            //'pay_orderid' =>$data['trade_no'],
+            'pay_type_order' =>$pay_type_order,
+            'pay_time' =>time(),
+            'pay_way' =>1,//1=支付宝，2=微信
+            'pay_status' =>1,
+        ];
+        //trace($data);
+        $ret = model('SpPayOrder','logic')->savePayOrder($data);
+        returnJson($ret);
     }
 
     /**
@@ -496,11 +511,5 @@ class Pay extends BaseController{
 
     }
 
-    /**
-     * 支付成功的回调
-     */
-    public function payCallBack(){
-
-    }
 
 }
