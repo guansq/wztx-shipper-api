@@ -215,9 +215,9 @@ class Pay extends BaseController{
      */
     public function alipayCash(){
         $ispass = ispassAuth($this->loginUser);
-        /*if($ispass){
+        if($ispass){
             returnJson('您已认证过，无需重复缴纳保证金');
-        }*/
+        }
         if($this->loginUser['type'] == 'person'){
             $amount = getSysconf('bond_person_amount');
         }elseif($this->loginUser['type'] == 'company'){
