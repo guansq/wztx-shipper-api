@@ -25,6 +25,9 @@ class Message extends BaseLogic {
      * @param $user
      */
     public function countUnreadMsg($user) {
+        if(empty($user)){
+            return 0;
+        }
         $where = [
             'read_at' => 'NULL',
             'type' => 0
@@ -32,6 +35,51 @@ class Message extends BaseLogic {
         return Db::table('rt_message_sendee')->where($where)->where('sendee_id', $user['id'])->count();
     }
 
+    public function getUnreadMsg($user,$count=0) {
+        $where = [
+            'ms.sendee_id' => $user['id'],
+            'ms.type' => 0,
+            'm.push_type' => ['not in', ['all']]
+        ];
+
+        if(empty($count)){
+            $where2 = [];
+        }else{
+            $where2=[
+                'read_at' => 'NULL',
+            ];
+        }
+        $item = $this->alias('m')
+            ->join('MessageSendee ms', 'm.id = ms.msg_id')
+            ->where($where)->where($where2)->order('m.publish_time desc')
+            ->find();
+        return empty($item['content'])?'': mb_substr($item['content'], 1, 20) . '...';
+    }
+    /**
+     * Describe: 查询未读单数量 这只是系统消息的统计方式
+     * @param $user
+     */
+    public function countSystemUnreadMsg($user) {
+        $where = [
+            'ms.type' => 0,
+            'ms.push_type' => 'all'
+        ];
+        $dataTotal = $this->alias('ms')->where($where)->count();
+        if(empty($user)){
+            return $dataTotal;
+        }else{
+            $redmsg = $this->alias('ms')->join('rt_message_sendee m','ms.id = m.msg_id','left')->where($where)->where('sendee_id', $user['id'])->count();
+            return $dataTotal-$redmsg;
+        }
+    }
+    public function getSystemUnreadMsg($user, $count = 0) {
+        $where = [
+            'ms.type' => 0,
+            'ms.push_type' => 'all'
+        ];
+        $item = $this->alias('ms')->where($where)->order('ms.publish_time desc')->find();
+        return empty($item['content'])?'': mb_substr($item['content'], 1, 20) . '...';
+    }
     /**
      * Author: WILL<314112362@qq.com>
      * Describe: 查询我的消息列表
