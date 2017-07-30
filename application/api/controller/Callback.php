@@ -14,11 +14,6 @@ use pay\alipay_mobile;
 use EasyWeChat\Foundation\Application;
 class Callback extends Controller
 {
-    const PAYMARK = [
-        'transport',//下单
-        'recharge',//充值
-        'paybond',//缴纳保证金
-    ];
     public function alipay_callback(){
         include(APP_PATH.'/alipay/AopSdk.php');
         $aop = new \AopClient();
@@ -49,14 +44,45 @@ class Callback extends Controller
                     $order_info = $transportLogic->getTransportOrderInfo($where);//得到订单信息
                     //trace($order_info);
                     saveOrderShare($order_info['id']);//存入推荐列表
-                    $this->payRecord(1,$order_info,$data);//1支付成功->保存支付记录
+                    $pay_type_order = 'transport';
+                    $this->payRecord(1,$order_info,$data,$pay_type_order);//1支付成功->保存支付记录
                 }else if($data['passback_params'] == 'bond'){
+
+                    $pay_type_order = 'bond';
+                    $order_num=$data['out_trade_no'];//自家的订单CODE
+                    $where = ['order_code'=>$order_num];
+                    $statusdata = [
+                        'trade_no' => $data['trade_no'],//第三方交易流水号
+                        'pay_time'=>time(),
+                        'payway' => 1,//0=未支付，1=支付宝，2=微信
+                        'pay_status' => 1,
+                    ];
+                    model('SpMarginOrder','logic')->updateOrder($where,$statusdata);
+                    $order_info = model('SpMarginOrder','logic')->getOrderInfo($where);
+                    $this->payRecord(1,$order_info,$data,$pay_type_order);//1支付成功->保存支付记录
                     trace("进行保证金支付操作");
-                }else if($data['passback_params'] == ''){
+                }else if($data['passback_params'] == 'recharge'){
+
+                    $pay_type_order = 'recharge';
+                    $order_num=$data['out_trade_no'];//自家的订单CODE
+                    $where = ['order_code'=>$order_num];
+                    $statusdata = [
+                        'trade_no' => $data['trade_no'],//第三方交易流水号
+                        'pay_time'=>time(),
+                        'payway' => 1,//0=未支付，1=支付宝，2=微信
+                        'pay_status' => 1,
+                    ];
+
+                    model('SpRechargeOrder','logic')->updateOrder($where,$statusdata);
+                    $order_info = model('SpRechargeOrder','logic')->getOrderInfo($where);
+                    //更新充值金额
+                    $baseInfo = getBaseSpUserInfo($order_info['sp_id']);
+                    $balance = $baseInfo['balance'] + $data['total_amount'];//充值金额
+                    model('SpBaseInfo','logic')->updateUserBalance(['id'=>order_info['sp_id']],['balance'=>$balance]);//更新账户信息
+                    $this->payRecord(1,$order_info,$data,$pay_type_order);//1支付成功->保存支付记录
                     trace("进行充值操作记录");
                 }
             }
-
         }else{
             //$this->payRecord(1,$order_info,$data);//0支付失败
         }
@@ -136,23 +162,22 @@ class Callback extends Controller
     /*
      * 进行存入sp_pay_order表里 付款记录
      */
-    public function payRecord($status,$order_info,$data){
-        trace($order_info['sp_id']);
-        trace($order_info['id']);
+    public function payRecord($status,$order_info,$data,$pay_type_order){
         //需要进行存入sp_pay_order表里
         $data = [
             'sp_id' =>$order_info['sp_id'],
-            'order_id' => $order_info['id'],
-            'trade_no' =>$data['trade_no'],//支付宝交易号
+            'order_id' => $order_info['order_code'],
+            'trade_no' =>$data['trade_no'],//第三方交易号
             'total_amount' =>$data['total_amount'],
             'real_amount' =>$data['receipt_amount'],
             'out_trade_no' =>$data['out_trade_no'],//当前的订单code
             //'pay_orderid' =>$data['trade_no'],
+            'pay_type_order' =>$pay_type_order,
             'pay_time' =>time(),
             'pay_way' =>1,//1=支付宝，2=微信
             'pay_status' =>$status,
         ];
-        trace($data);
+        //trace($data);
         //进行保存
         model('SpPayOrder','logic')->savePayOrder($data);
     }

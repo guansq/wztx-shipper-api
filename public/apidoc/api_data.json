@@ -1971,6 +1971,88 @@
   },
   {
     "type": "POST",
+    "url": "/pay/rechargeByAlipay",
+    "title": "充值余额通过支付宝充值done",
+    "name": "rechargeByAlipay",
+    "group": "Pay",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization-token",
+            "description": "<p>token.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "money",
+            "description": "<p>充值金额</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "application/api/controller/Pay.php",
+    "groupTitle": "Pay",
+    "sampleRequest": [
+      {
+        "url": "http://wztx.shp.api.ruitukeji.com/pay/rechargeByAlipay"
+      }
+    ]
+  },
+  {
+    "type": "POST",
+    "url": "/pay/rechargeByWexin",
+    "title": "充值余额通过微信充值",
+    "name": "rechargeByWexin",
+    "group": "Pay",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization-token",
+            "description": "<p>token.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "money",
+            "description": "<p>充值金额</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "application/api/controller/Pay.php",
+    "groupTitle": "Pay",
+    "sampleRequest": [
+      {
+        "url": "http://wztx.shp.api.ruitukeji.com/pay/rechargeByWexin"
+      }
+    ]
+  },
+  {
+    "type": "POST",
     "url": "/pay/rechargeRecord",
     "title": "充值记录done",
     "name": "rechargeRecord",
@@ -2085,6 +2167,47 @@
     "sampleRequest": [
       {
         "url": "http://wztx.shp.api.ruitukeji.com/pay/rechargeRecord"
+      }
+    ]
+  },
+  {
+    "type": "POST",
+    "url": "/pay/scorePay",
+    "title": "通过余额支付（订单）",
+    "name": "scorePay",
+    "group": "Pay",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization-token",
+            "description": "<p>token.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "order_id",
+            "description": "<p>订单ID</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "application/api/controller/Pay.php",
+    "groupTitle": "Pay",
+    "sampleRequest": [
+      {
+        "url": "http://wztx.shp.api.ruitukeji.com/pay/scorePay"
       }
     ]
   },

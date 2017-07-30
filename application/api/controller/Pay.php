@@ -216,7 +216,7 @@ class Pay extends BaseController{
     public function alipayCash(){
         $ispass = ispassAuth($this->loginUser);
         if($ispass){
-            returnJson('您已认证过，无需重复缴纳保证金');
+            returnJson(4000,'您已认证过，无需重复缴纳保证金');
         }
         if($this->loginUser['type'] == 'person'){
             $amount = getSysconf('bond_person_amount');
@@ -245,8 +245,11 @@ class Pay extends BaseController{
         $order_code = order_num();
         $marginData = [
             'sp_id' => $this->loginUser['id'],
+            'type' => $this->loginUser['type'],
+            'name' => $this->loginUser['real_name'],
+            'phone' => $this->loginUser['phone'],
             'total_amount' => $amount,
-            'pay_orderid' => $order_code,
+            'order_code' => $order_code,
             'pay_time' => time(),
             'pay_way' => 1,//支付宝
             'pay_status' => 0,//未支付
@@ -384,12 +387,120 @@ class Pay extends BaseController{
         return strtoupper(call_user_func_array($encryptMethod, [urldecode(http_build_query($attributes))]));
     }
 
-    /*
-     * 生成支付宝请求
+    /**
+     * @api      {POST} /pay/scorePay  通过余额支付（订单）
+     * @apiName  scorePay
+     * @apiGroup Pay
+     * @apiHeader {String} authorization-token      token.
+     * @apiParam  {String} order_id 订单ID
+     *
      */
-    public function getAliRequest(){
+    public function scorePay(){
+        $ispass = ispassAuth($this->loginUser);
+        if(!$ispass){
+            returnJson(4000,'您未认证或未缴纳保证金');
+        }
+        $paramAll = $this->getReqParams(['order_id']);
+        $rule = [
+            'order_id' => 'require'
+        ];
+        validateData($paramAll,$rule);
+        $order_info = model('TransportOrder','logic')->getTransportOrderInfo(['id'=>$paramAll['order_id'],'sp_id'=>$this->loginUser['id'],'status'=>'photo']);//需要拍照后的状态
+        if(empty($order_info)){
+            returnJson(4000,'暂无待付款订单信息');
+        }
+        //得到我的余额
+        $baseInfo = getBaseSpUserInfo($this->loginUser['id']);
+        if($baseInfo['balance'] < $order_info['final_price']){
+            returnJson(4000,'抱歉，您的余额不足');
+        }
+        //更新个人余额信息
+        $newBalance = $baseInfo['balance'] - $order_info['final_price'];
+        model('SpBaseInfo','logic')->updateUserBalance(['id'=>$this->loginUser['id']],['balance'=>$newBalance]);//更新账户信息
+        //更新订单信息
+
+        //dump($order_info['final_price']);
+    }
+
+    /**
+     * @api      {POST} /pay/rechargeByAlipay  充值余额通过支付宝充值done
+     * @apiName  rechargeByAlipay
+     * @apiGroup Pay
+     * @apiHeader {String} authorization-token      token.
+     * @apiParam  {String} money 充值金额
+     */
+    public function rechargeByAlipay(){
+        $paramAll = $this->getReqParams(['money']);
+        $rule = [
+            'money' => 'require'
+        ];
+        validateData($paramAll,$rule);
+
+        $partner_public_key = getenv('ALIPAY_PARTNER_PUBLIC_KEY');
+        $alipay_public_key = getenv('ALIPAY_ALI_PUBLIC_KEY');
+        //公用变量
+        $appId = getenv("ALIPAY_APPID");
+        $partner_private_key = getenv('ALIPAY_PARTNER_PRIVATE_KEY');
+
+        include(APP_PATH.'/alipay/AopSdk.php');
+        $aop = new \AopClient();
+        $aop->gatewayUrl =  getenv('ALIPAY_IS_USE_SANDBOX')?'https://openapi.alipaydev.com/gateway.do':'https://openapi.alipay.com/gateway.do';
+        $aop->appId = $appId;
+        $aop->rsaPrivateKey = $partner_private_key;
+        $aop->format = "json";
+        $aop->charset = "utf-8";
+        $aop->signType = "RSA2";
+        $aop->debugInfo = true;
+        $aop->alipayrsaPublicKey = $alipay_public_key;
+        //实例化具体API对应的request类,类名称和接口名称对应,当前调用接口名称：alipay.trade.app.pay
+        $request = new \AlipayTradeAppPayRequest();
+        //SDK已经封装掉了公共参数，这里只需要传入业务参数 sp_margin_order
+        $order_code = order_num();
+        $marginData = [
+            'sp_id' => $this->loginUser['id'],
+            'total_amount' => wztxMoney($paramAll['money']),
+            'pay_orderid' => $order_code,
+            'pay_time' => time(),
+            'pay_way' => 1,//支付宝
+            'pay_status' => 0,//未支付
+        ];
+        model('SpRechargeOrder','logic')->saveRechargeOrder($marginData);
+        $bizData =[
+            'body'=>$this->loginUser['user_name'].'支付保证金',
+            "subject"=>"保证金支付",
+            "out_trade_no"=>$order_code,
+            "timeout_express"=>"90m",
+            "total_amount"=>wztxMoney($paramAll['money']),//保证金金额
+            "product_code"=>"QUICK_MSECURITY_PAY",
+            "passback_params" => "recharge"//传入额外的参数充值
+        ];
+        $bizcontent = json_encode($bizData);
+        $request->setNotifyUrl("http://wztx.shp.api.ruitukeji.com/Callback/alipay_callback");
+        $request->setBizContent($bizcontent);
+        //这里和普通的接口调用不同，使用的是sdkExecute
+        $response = $aop->sdkExecute($request);
+        //returnJson(2000,'成功',$response);die;
+        //htmlspecialchars是为了输出到页面时防止被浏览器将关键参数html转义，实际打印到日志以及http传输不会有这个问题
+        //$orderString = htmlspecialchars($response);//就是orderString 可以直接给客户端请求，无需再做处理。
+        returnJson(2000, '成功', ['orderString'=>$response,'isUseSandbox' =>getenv('ALIPAY_IS_USE_SANDBOX')]);
+    }
+
+    /**
+     * @api      {POST} /pay/rechargeByWexin  充值余额通过微信充值
+     * @apiName  rechargeByWexin
+     * @apiGroup Pay
+     * @apiHeader {String} authorization-token      token.
+     * @apiParam  {String} money    充值金额
+     */
+    public function rechargeByWexin(){
 
     }
 
+    /**
+     * 支付成功的回调
+     */
+    public function payCallBack(){
+
+    }
 
 }
