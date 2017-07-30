@@ -777,6 +777,13 @@
             "group": "Success 200",
             "type": "String",
             "optional": false,
+            "field": "tran_account",
+            "description": "<p>转账银行账号</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
             "field": "xx",
             "description": "<p>其他参数</p>"
           }
@@ -1050,6 +1057,82 @@
   },
   {
     "type": "GET",
+    "url": "/message/getUnRead",
+    "title": "未读消息数量done",
+    "name": "getUnRead",
+    "group": "Message",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": true,
+            "field": "authorization-token",
+            "description": "<p>token.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "list",
+            "description": "<p>列表.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.name",
+            "description": "<p>名称.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.unread",
+            "description": "<p>未读数量.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.icon_url",
+            "description": "<p>图标链接.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.push_type",
+            "description": "<p>推送类型.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.msg",
+            "description": "<p>列表文案.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "application/api/controller/Message.php",
+    "groupTitle": "Message",
+    "sampleRequest": [
+      {
+        "url": "http://wztx.shp.api.ruitukeji.com/message/getUnRead"
+      }
+    ]
+  },
+  {
+    "type": "GET",
     "url": "/message",
     "title": "我的消息-列表done",
     "name": "index",
@@ -1060,7 +1143,7 @@
           {
             "group": "Header",
             "type": "String",
-            "optional": false,
+            "optional": true,
             "field": "authorization-token",
             "description": "<p>token.</p>"
           }
@@ -1703,8 +1786,36 @@
   },
   {
     "type": "POST",
+    "url": "/pay/alipayCash",
+    "title": "支付宝保证金支付done",
+    "name": "alipay",
+    "group": "Pay",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization-token",
+            "description": "<p>token.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "application/api/controller/Pay.php",
+    "groupTitle": "Pay",
+    "sampleRequest": [
+      {
+        "url": "http://wztx.shp.api.ruitukeji.com/pay/alipayCash"
+      }
+    ]
+  },
+  {
+    "type": "POST",
     "url": "/pay/alipay",
-    "title": "支付宝支付done",
+    "title": "支付宝订单支付done",
     "name": "alipay",
     "group": "Pay",
     "header": {

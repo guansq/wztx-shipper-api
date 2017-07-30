@@ -47,6 +47,7 @@ class Index extends BaseController{
      * @apiSuccess {String} complain_phone    投诉电话
      * @apiSuccess {String} weixin_limit    微信限额
      * @apiSuccess {String} alipay_limit    支付宝限额
+     * @apiSuccess {String} tran_account    转账银行账号
      * @apiSuccess {String} xx    其他参数
      */
     public function appConfig(){

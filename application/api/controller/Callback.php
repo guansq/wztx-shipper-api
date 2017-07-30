@@ -35,23 +35,26 @@ class Callback extends Controller
         $transportLogic = model('TransportOrder','logic');
         if($flag){
             if($data['trade_status'] == 'TRADE_SUCCESS'){
-                /*if($data['tips'] == 'transport'){
-
-                }*/
-                trace('进行订单状态更改');
-                $order_num=$data['out_trade_no'];//自家的订单CODE
-                $where = ['order_code'=>$order_num];
-                $statusdata = [
-                    'status' => 'pay_success',
-                    'payway' => 3,//0=未支付，1=余额，2=微信，3=支付宝，4-凭证通过
-                    'is_pay' =>1,
-                    'pay_time'=>time()
-                ];
-                $transportLogic->updateTransport($where,$statusdata);
-                $order_info = $transportLogic->getTransportOrderInfo($where);//得到订单信息
-                //trace($order_info);
-                saveOrderShare($order_info['id']);//存入推荐列表
-                $this->payRecord(1,$order_info,$data);//1支付成功->保存支付记录
+                if($data['passback_params'] == 'transport'){
+                    trace('进行订单状态更改');
+                    $order_num=$data['out_trade_no'];//自家的订单CODE
+                    $where = ['order_code'=>$order_num];
+                    $statusdata = [
+                        'status' => 'pay_success',
+                        'payway' => 3,//0=未支付，1=余额，2=微信，3=支付宝，4-凭证通过
+                        'is_pay' =>1,
+                        'pay_time'=>time()
+                    ];
+                    $transportLogic->updateTransport($where,$statusdata);
+                    $order_info = $transportLogic->getTransportOrderInfo($where);//得到订单信息
+                    //trace($order_info);
+                    saveOrderShare($order_info['id']);//存入推荐列表
+                    $this->payRecord(1,$order_info,$data);//1支付成功->保存支付记录
+                }else if($data['passback_params'] == 'bond'){
+                    trace("进行保证金支付操作");
+                }else if($data['passback_params'] == ''){
+                    trace("进行充值操作记录");
+                }
             }
 
         }else{
