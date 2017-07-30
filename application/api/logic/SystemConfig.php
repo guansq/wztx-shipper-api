@@ -41,6 +41,9 @@ class SystemConfig extends BaseLogic{
             'custom_phone' => getSysconf('custom_phone'),
             'custom_email' => getSysconf('custom_email'),
             'complain_phone' => getSysconf('complain_phone'),
+            'weixin_limit' => getSysconf('weixin_limit'),
+            'alipay_limit' => getSysconf('alipay_limit'),
+            'tran_account' => getSysconf('tran_account'),
             'xx' => '其他参数',
         ];
 

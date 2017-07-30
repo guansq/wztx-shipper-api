@@ -180,6 +180,20 @@ class Pay extends BaseController{
      * @apiParam  {Number}  total_amount            支付金额
      */
     public function alipay(){
+        $ispass = ispassAuth($this->loginUser);
+        if(!$ispass){
+            returnJson(4000,'您未认证或未缴纳保证金');
+        }
+        $paramAll = $this->getReqParams(['order_id']);
+        $rule = [
+            'order_id' => 'require'
+        ];
+        validateData($paramAll,$rule);
+        $order_info = model('TransportOrder','logic')->getTransportOrderInfo(['id'=>$paramAll['order_id'],'sp_id'=>$this->loginUser['id'],'status'=>'photo']);//需要拍照后的状态
+        if(empty($order_info)){
+            returnJson(4000,'暂无待付款订单信息');
+        }
+
         //	public $partner_public_key  = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCitD16CypwZILTpdJL8nPV9rVFHYf5UWa/URNX6469mbQLpWfjKM/VSWRXsNVGSM3itOO/KG2Pw4x5g9xjH6iaE4LlaidjBIPpifISSlnpbyi4HxQTZYgMPv/TuiWofUN5kcwg/KQAQxB2OwTOeFu2i3LhqSCDmv6koTvHW15/hQIDAQAB";
         $partner_public_key = getenv('ALIPAY_PARTNER_PUBLIC_KEY');
         //	public $alipay_public_key   = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDIgHnOn7LLILlKETd6BFRJ0GqgS2Y3mn1wMQmyh9zEyWlz5p1zrahRahbXAfCfSqshSNfqOmAQzSHRVjCqjsAw1jyqrXaPdKBmr90DIpIxmIyKXv4GGAkPyJ/6FTFY99uhpiq0qadD/uSzQsefWo0aTvP/65zi3eof7TcZ32oWpwIDAQAB";
@@ -207,12 +221,14 @@ class Pay extends BaseController{
         $request = new \AlipayTradeAppPayRequest();
         //SDK已经封装掉了公共参数，这里只需要传入业务参数
         $bizData =[
-            'body'=>'我是测试数据',
-            "subject"=>"App支付测试",
-            "out_trade_no"=>"20170125test01",
-            "timeout_express"=>"30m",
+            'body'=>$order_info['id'],
+            "subject"=>"订单支付",
+            "out_trade_no"=>$order_info['order_code'],
+            "timeout_express"=>"90m",
             "total_amount"=>"1",
             "product_code"=>"QUICK_MSECURITY_PAY",
+            "tips"=>"测试一笔支付",
+            "app_type"=>"33344444"
         ];
         $bizcontent = json_encode($bizData);
         $request->setNotifyUrl("http://wztx.shp.api.ruitukeji.com/Callback/alipay_callback");
@@ -225,68 +241,6 @@ class Pay extends BaseController{
 
         returnJson(2000, '成功', ['orderString'=>$response,'isUseSandbox' =>getenv('ALIPAY_IS_USE_SANDBOX')]);
 
-        die;
-        /*$aliConfig = require_once APP_PATH.'aliconfig.php';
-
-        $orderNo = time() . rand(1000, 9999);
-        $payData = [
-            'body'    => 'ali qr pay',
-            'subject'    => '测试支付宝扫码支付',
-            'order_no'    => $orderNo,
-            'timeout_express' => time() + 600,// 表示必须 600s 内付款
-            'amount'    => '0.01',// 单位为元 ,最小为0.01
-            'return_param' => '123123',
-            'client_ip' => isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1',// 客户地址
-            'goods_type' => '1',
-            'store_id' => '',
-        ];
-
-        try {
-            $str = Charge::run(Config::ALI_CHANNEL_APP, $aliConfig, $payData);
-        } catch (PayException $e) {
-            echo $e->errorMessage();
-            exit;
-        }
-        returnJson(2000,'成功',$str);
-        echo $str;die;
-//        $str        = chunk_split('', 64, "\n");
-//        $private_key = "-----BEGIN RSA PRIVATE KEY-----\n$str-----END RSA PRIVATE KEY-----\n";
-//        echo $private_key;die;
-        $ispass = ispassAuth($this->loginUser);
-        if(!$ispass){
-            returnJson(4000,'您未认证或未缴纳保证金');
-        }
-        $paramAll = $this->getReqParams(['order_id']);
-        $rule = [
-            'order_id' => 'require'
-        ];
-        validateData($paramAll,$rule);
-        $order_info = model('TransportOrder','logic')->getTransportOrderInfo(['id'=>$paramAll['order_id'],'sp_id'=>$this->loginUser['id'],'status'=>'photo']);//需要拍照后的状态
-        if(empty($order_info)){
-            returnJson(4000,'暂无待付款订单信息');
-        }
-        echo APP_PATH.'aliconfig.php';die;
-        //$config = \think\Config::load();
-        dump($config);die;
-        $biz_content=[
-            //'body'  =>  'order_id'.$order_info['id'].'发货人：'.$order_info['org_send_name'].'发货人手机'.$order_info['org_phone'],//详细介绍
-            'body'  =>  $order_info['id'],//详细介绍
-            'subject'   =>  '货源订单',//标题
-            'out_trade_no'  =>  $order_info['order_code'],//商家订单号
-            'order_id'  =>  $order_info['id'],//订单id
-            //                'user_id'   =>  $order_info['user_id'],//用户id
-            //                'total_amount'  =>  $order_info['meal_price'],//金额
-            'total_amount'  =>  '0.01',//总金额
-            'product_code'  =>  'QUICK_MSECURITY_PAY',
-            //                'product_code'  =>  'QUICK_WAP_PAY',
-            //'seller_id'=>   '2088421610505604',
-            'seller_id'=>   '2088621197716899',
-        ];
-
-        $pay=new alipay_mobile();
-        $return=$pay->create_pay($biz_content);
-        //echo $return;die;
-        returnJson(2000,'成功',$return);*/
     }
 
     /**
