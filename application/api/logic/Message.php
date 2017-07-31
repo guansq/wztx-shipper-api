@@ -36,6 +36,9 @@ class Message extends BaseLogic {
     }
 
     public function getUnreadMsg($user,$count=0) {
+        if(empty($user['id'])){
+            return '';
+        }
         $where = [
             'ms.sendee_id' => $user['id'],
             'ms.type' => 0,

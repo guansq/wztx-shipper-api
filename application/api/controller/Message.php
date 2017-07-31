@@ -11,7 +11,7 @@ namespace app\api\controller;
 
 use think\Request;
 
-class Message extends BaseController{
+class Message extends BaseController {
     /**
      * @api      {GET} /message 我的消息-列表done
      * @apiName  index
@@ -35,7 +35,7 @@ class Message extends BaseController{
      * @apiSuccess {Number} pageTotal           总页码数.
      * @apiSuccess {Number} unreadnum           未读消息.
      */
-    public function index(){
+    public function index() {
         $paramAll = $this->getReqParams([
             'push_type',
         ]);
@@ -45,9 +45,9 @@ class Message extends BaseController{
         validateData($paramAll, $rule);
         $where = [];
         $where['push_type'] = $paramAll['push_type'];
-        $where['id'] = empty($this->loginUser['id'])?'':$this->loginUser['id'];
+        $where['id'] = empty($this->loginUser['id']) ? '' : $this->loginUser['id'];
         $pageParam = $this->getPagingParams();
-        $ret =  model('Message','logic')->getMyMessage($where,$pageParam);
+        $ret = model('Message', 'logic')->getMyMessage($where, $pageParam);
         returnJson($ret);
     }
 
@@ -65,7 +65,7 @@ class Message extends BaseController{
      * @apiSuccess {Number} isRead          是否阅读
      * @apiSuccess {String} pushTime        推送时间.
      */
-    public function detail(){
+    public function detail() {
         $paramAll = $this->getReqParams([
             'id',
         ]);
@@ -74,9 +74,10 @@ class Message extends BaseController{
         ];
 
         validateData($paramAll, $rule);
-        $ret = model('Message','logic')->getMyMsgDetail($paramAll['id'],$this->loginUser);
+        $ret = model('Message', 'logic')->getMyMsgDetail($paramAll['id'], $this->loginUser);
         returnJson($ret);
     }
+
     /**
      * @api {GET} /message/getUnRead     未读消息数量done
      * @apiName getUnRead
@@ -89,33 +90,35 @@ class Message extends BaseController{
      * @apiSuccess {String} list.push_type         推送类型.
      * @apiSuccess {String} list.msg                列表文案.
      */
-    public function getUnRead(){
-        if(empty($this->loginUser)){
+    public function getUnRead() {
+        if (empty($this->loginUser)) {
             $privatetotal = 0;
-        }else{
-            $privatetotal =  model('Message','logic')->countUnreadMsg($this->loginUser);
-            $privatemsg =  model('Message','logic')->getUnreadMsg($this->loginUser,$privatetotal);
+            $privatemsg = '';
+        } else {
+            $privatetotal = model('Message', 'logic')->countUnreadMsg($this->loginUser);
+            $privatemsg = model('Message', 'logic')->getUnreadMsg($this->loginUser, $privatetotal);
         }
-        $systemtotal =  model('Message','logic')->countSystemUnreadMsg($this->loginUser);
-        $privatemsg =  model('Message','logic')->getUnreadMsg($this->loginUser,$privatetotal);
+        $systemtotal = model('Message', 'logic')->countSystemUnreadMsg($this->loginUser);
+        $systemmsg = model('Message', 'logic')->getSystemUnreadMsg($this->loginUser, $systemtotal);
         $list = [
             [
-                'name'=>'系统消息',
-                'unread'=>$systemtotal,
-                'icon_url'=>'',
-                'push_type'=>'system',
-                'privatemsg'=>$privatemsg
+                'name' => '系统消息',
+                'unread' => $systemtotal,
+                'icon_url' => '',
+                'push_type' => 'system',
+                'systemmsg' => $systemmsg
             ],
             [
-                'name'=>'私人消息',
-                'unread'=>$privatetotal,
-                'icon_url'=>'',
-                'push_type'=>'private',
-                'systemmsg'=>$systemmsg
+                'name' => '私人消息',
+                'unread' => $privatetotal,
+                'icon_url' => '',
+                'push_type' => 'private',
+                'privatemsg' => $privatemsg
             ],
         ];
-        returnJson(2000,'成功获取', ['list'=>$list]);
+        returnJson(2000, '成功获取', ['list' => $list]);
     }
+
     /*
      * @api {GET} /message/onlineService      在线客服
      * @apiName onlineService
@@ -125,7 +128,7 @@ class Message extends BaseController{
      * @apiSuccess {String} complain_phone           投诉电话.
      * @apiSuccess {String} custom_email            我们的邮件地址.
      */
-    public function onlineService(){
+    public function onlineService() {
 
     }
 
