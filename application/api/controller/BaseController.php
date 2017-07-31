@@ -68,6 +68,7 @@ class BaseController extends Controller {
                     returnJson(4011);
                 }
                 $this->loginUser['type'] = $spBaseInfo['type'];
+                $this->loginUser['real_name'] = $spBaseInfo['real_name'];
                 //$this->loginUser['sup_code'] = $supplierInfo['code'];
                 //$this->loginUser['sup_name'] = $supplierInfo['name'];
             }

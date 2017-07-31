@@ -34,8 +34,21 @@ class Index extends BaseController{
      * @api      {GET} /appConfig   应用配置参数done
      * @apiName  appConfig
      * @apiGroup Index
-     * @apiSuccess {Array} payWays             付款方式 一维数组
-     * @apiSuccess {String} xxx                其他参数
+     * @apiSuccess {String} defaultAvatar      默认头像
+     * @apiSuccess {String} share_percent      分享佣金比例
+     * @apiSuccess {String} grab_range         通知附近司机接单范围
+     * @apiSuccess {String} premium_rate       保险费率
+     * @apiSuccess {String} bond_person_amount      个人保证金金额
+     * @apiSuccess {String} bond_company_amount      公司保证金金额
+     * @apiSuccess {String} withdraw_begintime      提现开始日期
+     * @apiSuccess {String} withdraw_endtime      提现结束日期
+     * @apiSuccess {String} custom_phone      客服电话
+     * @apiSuccess {String} custom_email      客服邮件
+     * @apiSuccess {String} complain_phone    投诉电话
+     * @apiSuccess {String} weixin_limit    微信限额
+     * @apiSuccess {String} alipay_limit    支付宝限额
+     * @apiSuccess {String} tran_account    转账银行账号
+     * @apiSuccess {String} xx    其他参数
      */
     public function appConfig(){
         $ret= model('SystemConfig','logic')->getAppConfig();

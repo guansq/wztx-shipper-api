@@ -684,16 +684,107 @@ define({ "api": [
         "Success 200": [
           {
             "group": "Success 200",
-            "type": "Array",
+            "type": "String",
             "optional": false,
-            "field": "payWays",
-            "description": "<p>付款方式 一维数组</p>"
+            "field": "defaultAvatar",
+            "description": "<p>默认头像</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "xxx",
+            "field": "share_percent",
+            "description": "<p>分享佣金比例</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "grab_range",
+            "description": "<p>通知附近司机接单范围</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "premium_rate",
+            "description": "<p>保险费率</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "bond_person_amount",
+            "description": "<p>个人保证金金额</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "bond_company_amount",
+            "description": "<p>公司保证金金额</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "withdraw_begintime",
+            "description": "<p>提现开始日期</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "withdraw_endtime",
+            "description": "<p>提现结束日期</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "custom_phone",
+            "description": "<p>客服电话</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "custom_email",
+            "description": "<p>客服邮件</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "complain_phone",
+            "description": "<p>投诉电话</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "weixin_limit",
+            "description": "<p>微信限额</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "alipay_limit",
+            "description": "<p>支付宝限额</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "tran_account",
+            "description": "<p>转账银行账号</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "xx",
             "description": "<p>其他参数</p>"
           }
         ]
@@ -877,150 +968,9 @@ define({ "api": [
   },
   {
     "type": "GET",
-    "url": "/message",
-    "title": "我的消息-列表done",
-    "name": "index",
-    "group": "Message",
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "authorization-token",
-            "description": "<p>token.</p>"
-          }
-        ]
-      }
-    },
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": true,
-            "field": "type",
-            "defaultValue": "private",
-            "description": "<p>消息类型. all=全部  system=系统消息 private=私人消息</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": true,
-            "field": "page",
-            "defaultValue": "1",
-            "description": "<p>页码.</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": true,
-            "field": "pageSize",
-            "defaultValue": "20",
-            "description": "<p>每页数据量.</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "Array",
-            "optional": false,
-            "field": "list",
-            "description": "<p>列表.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "list.id",
-            "description": "<p>消息ID.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "list.type",
-            "description": "<p>类型.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "list.title",
-            "description": "<p>标题.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "list.summary",
-            "description": "<p>摘要.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "list.isRead",
-            "description": "<p>是否阅读</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "list.pushTime",
-            "description": "<p>推送时间.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "page",
-            "description": "<p>页码.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "pageSize",
-            "description": "<p>每页数据量.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "dataTotal",
-            "description": "<p>数据总数.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "pageTotal",
-            "description": "<p>总页码数.</p>"
-          }
-        ]
-      }
-    },
-    "version": "0.0.0",
-    "filename": "application/api/controller/Message.php",
-    "groupTitle": "Message",
-    "sampleRequest": [
-      {
-        "url": "http://wztx.shp.api.ruitukeji.com/message"
-      }
-    ]
-  },
-  {
-    "type": "GET",
-    "url": "/message/:id",
+    "url": "/message/detail",
     "title": "我的消息-详情done",
-    "name": "read",
+    "name": "detail",
     "group": "Message",
     "header": {
       "fields": {
@@ -1101,7 +1051,231 @@ define({ "api": [
     "groupTitle": "Message",
     "sampleRequest": [
       {
-        "url": "http://wztx.shp.api.ruitukeji.com/message/:id"
+        "url": "http://wztx.shp.api.ruitukeji.com/message/detail"
+      }
+    ]
+  },
+  {
+    "type": "GET",
+    "url": "/message/getUnRead",
+    "title": "未读消息数量done",
+    "name": "getUnRead",
+    "group": "Message",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": true,
+            "field": "authorization-token",
+            "description": "<p>token.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "list",
+            "description": "<p>列表.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.name",
+            "description": "<p>名称.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.unread",
+            "description": "<p>未读数量.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.icon_url",
+            "description": "<p>图标链接.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.push_type",
+            "description": "<p>推送类型.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.msg",
+            "description": "<p>列表文案.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "application/api/controller/Message.php",
+    "groupTitle": "Message",
+    "sampleRequest": [
+      {
+        "url": "http://wztx.shp.api.ruitukeji.com/message/getUnRead"
+      }
+    ]
+  },
+  {
+    "type": "GET",
+    "url": "/message",
+    "title": "我的消息-列表done",
+    "name": "index",
+    "group": "Message",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": true,
+            "field": "authorization-token",
+            "description": "<p>token.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "push_type",
+            "defaultValue": "private",
+            "description": "<p>消息类型. system=系统消息 private=私人消息</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": true,
+            "field": "page",
+            "defaultValue": "1",
+            "description": "<p>页码.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": true,
+            "field": "pageSize",
+            "defaultValue": "20",
+            "description": "<p>每页数据量.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "list",
+            "description": "<p>列表.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.id",
+            "description": "<p>消息ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.type",
+            "description": "<p>客户端类型 0货主端 1司机端.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.title",
+            "description": "<p>标题.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.summary",
+            "description": "<p>摘要.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.isRead",
+            "description": "<p>是否阅读</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.pushTime",
+            "description": "<p>推送时间.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "page",
+            "description": "<p>页码.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "pageSize",
+            "description": "<p>每页数据量.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "dataTotal",
+            "description": "<p>数据总数.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "pageTotal",
+            "description": "<p>总页码数.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "unreadnum",
+            "description": "<p>未读消息.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "application/api/controller/Message.php",
+    "groupTitle": "Message",
+    "sampleRequest": [
+      {
+        "url": "http://wztx.shp.api.ruitukeji.com/message"
       }
     ]
   },
@@ -1612,8 +1786,36 @@ define({ "api": [
   },
   {
     "type": "POST",
+    "url": "/pay/alipayCash",
+    "title": "支付宝保证金支付done",
+    "name": "alipay",
+    "group": "Pay",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization-token",
+            "description": "<p>token.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "application/api/controller/Pay.php",
+    "groupTitle": "Pay",
+    "sampleRequest": [
+      {
+        "url": "http://wztx.shp.api.ruitukeji.com/pay/alipayCash"
+      }
+    ]
+  },
+  {
+    "type": "POST",
     "url": "/pay/alipay",
-    "title": "支付宝支付done",
+    "title": "支付宝订单支付done",
     "name": "alipay",
     "group": "Pay",
     "header": {
@@ -1708,9 +1910,9 @@ define({ "api": [
   },
   {
     "type": "POST",
-    "url": "/pay/recharge",
-    "title": "充值",
-    "name": "recharge",
+    "url": "/pay/rechargeByAlipay",
+    "title": "充值余额通过支付宝充值done",
+    "name": "rechargeByAlipay",
     "group": "Pay",
     "header": {
       "fields": {
@@ -1732,28 +1934,8 @@ define({ "api": [
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "real_amount",
+            "field": "money",
             "description": "<p>充值金额</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Int",
-            "optional": false,
-            "field": "pay_way",
-            "description": "<p>支付方式 1=支付宝，2=微信</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "Array",
-            "optional": false,
-            "field": "pay_info",
-            "description": "<p>支付返回信息</p>"
           }
         ]
       }
@@ -1763,7 +1945,48 @@ define({ "api": [
     "groupTitle": "Pay",
     "sampleRequest": [
       {
-        "url": "http://wztx.shp.api.ruitukeji.com/pay/recharge"
+        "url": "http://wztx.shp.api.ruitukeji.com/pay/rechargeByAlipay"
+      }
+    ]
+  },
+  {
+    "type": "POST",
+    "url": "/pay/rechargeByWexin",
+    "title": "充值余额通过微信充值",
+    "name": "rechargeByWexin",
+    "group": "Pay",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization-token",
+            "description": "<p>token.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "money",
+            "description": "<p>充值金额</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "application/api/controller/Pay.php",
+    "groupTitle": "Pay",
+    "sampleRequest": [
+      {
+        "url": "http://wztx.shp.api.ruitukeji.com/pay/rechargeByWexin"
       }
     ]
   },
@@ -1883,6 +2106,47 @@ define({ "api": [
     "sampleRequest": [
       {
         "url": "http://wztx.shp.api.ruitukeji.com/pay/rechargeRecord"
+      }
+    ]
+  },
+  {
+    "type": "POST",
+    "url": "/pay/scorePay",
+    "title": "通过余额支付（订单）done",
+    "name": "scorePay",
+    "group": "Pay",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization-token",
+            "description": "<p>token.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "order_id",
+            "description": "<p>订单ID</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "application/api/controller/Pay.php",
+    "groupTitle": "Pay",
+    "sampleRequest": [
+      {
+        "url": "http://wztx.shp.api.ruitukeji.com/pay/scorePay"
       }
     ]
   },
@@ -2050,7 +2314,7 @@ define({ "api": [
   {
     "type": "POST",
     "url": "/pay/wxpay",
-    "title": "微信支付done",
+    "title": "微信支付",
     "name": "wxpay",
     "group": "Pay",
     "header": {

@@ -163,4 +163,16 @@ class SpBaseInfo extends BaseLogic{
         }
         return $ret;
     }
+
+    /**
+     * 更新信息，并下单
+     */
+    public function updateUserBalance($where,$data){
+        $ret = $this->where($where)->update($data);
+       if($ret !== false){
+           return resultArray(2000,'成功');
+       }else{
+           return resultArray(4000,'失败');
+       }
+    }
 }
