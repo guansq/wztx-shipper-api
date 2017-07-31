@@ -58,13 +58,16 @@ class Quote extends BaseController{
      * @apiParam  {String} goods_id        订单ID
      * @apiParam  {String} maps              坐标 如   '120.733833,31.253328'
      */
-    public function sendOrder(){
+    public function sendOrder($goods_id,$maps){
 //        $paramAll = $this->getReqParams(['order_id','maps']);
 //        $rule = ['order_id'=>'require','maps'=>'require'];
-        $maps = '120.733833,31.253328';//模拟的坐标
-
+        //$maps = '120.733833,31.253328';//模拟的坐标
         //获取订单id
-        $paramAll = $this->getReqParams(['goods_id','maps']);
+        //$paramAll = $this->getReqParams(['goods_id','maps']);
+        $paramAll = [
+            'goods_id' => $goods_id,
+            'maps' => $maps,
+        ];
         $rule = [
             'goods_id' => 'require',
             'maps' => 'require'

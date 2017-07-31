@@ -178,7 +178,10 @@ class Goods extends BaseController{
         $paramAll['dest_latitude'] = $address[1];
         //没有问题存入数据库
         $ret = model('Goods', 'logic')->saveGoodsInfo($paramAll);
-        returnJson($ret);
-        //存入数据库进行发送司机报价信息
+        if($ret['code'] == 4000){
+            returnJson($ret);
+        }
+        //进行派单
+        action('Quote/sendOrder',[$ret['result']['goods_id'],$paramAll['org_address_maps']]);
     }
 }

@@ -76,6 +76,7 @@ class Callback extends Controller
                         'trade_no' => $data['trade_no'],//第三方交易流水号
                         'pay_time'=>time(),
                         'payway' => 1,//0=未支付，1=支付宝，2=微信
+                        'real_amount' => $data['receipt_amount'],
                         'pay_status' => 1,
                     ];
 
