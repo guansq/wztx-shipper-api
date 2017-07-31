@@ -215,6 +215,8 @@ class Order extends BaseController {
      * @apiSuccess  {String} mind_price         货主出价
      * @apiSuccess  {String} final_price        总运费
      * @apiSuccess  {String} org_address_maps        出发地地址的坐标 如116.480881,39.989410
+     * @apiSuccess  {String} dest_address_maps       目的地地址的坐标 如116.480881,39.989410
+     * @apiSuccess  {String} map_code       该订单司机的高德云图ID
      */
     public function showOrderInfo() {
         $paramAll = $this->getReqParams([
@@ -241,6 +243,7 @@ class Order extends BaseController {
             $dr_avatar = '';
             $dr_card_number = '';
         }
+
         $detail = [
             'order_id' => $orderInfo['id'],
             'status' => $orderInfo['status'],
@@ -271,6 +274,8 @@ class Order extends BaseController {
             'mind_price' => wztxMoney($orderInfo['mind_price']),
             'final_price' => wztxMoney($orderInfo['final_price']),
             'org_address_maps' =>$orderInfo['org_address_maps'],
+            'dest_address_maps' =>$orderInfo['dest_address_maps'],
+            'map_code' => $drBaseInfo['map_code']
         ];
         returnJson('2000', '成功', $detail);
     }
