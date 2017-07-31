@@ -78,7 +78,26 @@
 </body>
 <script src="//cdn.bootcss.com/jquery/3.2.0/jquery.min.js"></script>
 <script src="lib/jquery.md5.js"></script>
-<script src="js/reg_shipper.js.js"></script>
+<script src="js/reg_shipper.js"></script>
+<script>
+  $(function(){
+      function GetQueryString(name)
+      {
+          var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+          var r = window.location.search.substr(1).match(reg);
+          if(r!=null)return  unescape(r[2]); return null;
+      }
+      var code = GetQueryString("code");
+      if(code !=null){
+          console.log(code);
+          $("#referral").val(code);
+          $("#referral").attr('disabled',true);
+      }
+      // 调用方法
+  });
+
+  //  alert(GetQueryString("code"));
+</script>
 </html>
 
 
