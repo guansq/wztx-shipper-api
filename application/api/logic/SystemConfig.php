@@ -45,7 +45,8 @@ class SystemConfig extends BaseLogic{
             'alipay_limit' => getSysconf('alipay_limit'),
             'tran_account' => getSysconf('tran_account'),
             'share_shipper' => getSysconf('share_shipper'),
-            'share_driver' => getSysconf('share_driver'),
+            'share_shipper_title' => getSysconf('share_shipper_title'),
+            'share_shipper_description' => getSysconf('share_shipper_description'),
             'xx' => '其他参数',
         ];
 
