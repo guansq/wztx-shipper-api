@@ -214,6 +214,7 @@ class Order extends BaseController {
      * @apiSuccess  {String} system_price       系统出价
      * @apiSuccess  {String} mind_price         货主出价
      * @apiSuccess  {String} final_price        总运费
+     * @apiSuccess  {String} org_address_maps        出发地地址的坐标 如116.480881,39.989410
      */
     public function showOrderInfo() {
         $paramAll = $this->getReqParams([
@@ -269,6 +270,7 @@ class Order extends BaseController {
             'system_price' => wztxMoney($orderInfo['system_price']),
             'mind_price' => wztxMoney($orderInfo['mind_price']),
             'final_price' => wztxMoney($orderInfo['final_price']),
+            'org_address_maps' =>$orderInfo['org_address_maps'],
         ];
         returnJson('2000', '成功', $detail);
     }

@@ -231,11 +231,12 @@ class Pay extends BaseController{
         $request = new \AlipayTradeAppPayRequest();
         //SDK已经封装掉了公共参数，这里只需要传入业务参数 sp_margin_order
         $order_code = order_num();
+        //dump($this->loginUser);die;
         $marginData = [
             'sp_id' => $this->loginUser['id'],
             'type' => $this->loginUser['type'],
             'name' => $this->loginUser['real_name'],
-            'phone' => $this->loginUser['phone'],
+            'phone' => $this->loginUser['user_name'],
             'total_amount' => $amount,
             'order_code' => $order_code,
             'pay_time' => time(),
