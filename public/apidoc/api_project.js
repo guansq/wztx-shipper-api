@@ -3,8 +3,8 @@ define({
   "version": "0.0.0",
   "description": "返回数据格式说明：<br> <pre class=\"prettyprint language-json prettyprinted\" data-type=\"json\"><code class=\"sample-request-response-json\">{\n  \"code\": 2000, \t//状态码 \n  \"msg\": \"SUCCESS\", \t//返回信息\n  \"result\": {}\t\t//数据包 \n}</code></pre> \n 正式服地址：暂无 \n测试服地址：http://wztx.shp.api.ruitukeji.com",
   "title": "物载天下-货主端-接口文档 ",
-  "url": "http://wztx.shp.api.ruitukeji.com",
-  "sampleUrl": "http://wztx.shp.api.ruitukeji.com",
+  "url": "http://wztx.shp.api.zenmechi.cc",
+  "sampleUrl": "http://wztx.shp.zenmechi.cc",
   "header": {
     "title": "物载天下-货主端-接口文档",
     "filename": ""
@@ -26,7 +26,7 @@ define({
   "apidoc": "0.2.0",
   "generator": {
     "name": "apidoc",
-    "time": "2017-07-31T09:37:46.897Z",
+    "time": "2017-08-01T08:59:37.305Z",
     "url": "http://apidocjs.com",
     "version": "0.16.1"
   }

@@ -84,8 +84,9 @@ class Callback extends Controller
                     $order_info = model('SpRechargeOrder','logic')->getOrderInfo($where);
                     //更新充值金额
                     $baseInfo = getBaseSpUserInfo($order_info['sp_id']);
+                    trace($baseInfo);
                     $balance = $baseInfo['balance'] + $data['receipt_amount'];//充值金额
-                    model('SpBaseInfo','logic')->updateUserBalance(['id'=>order_info['sp_id']],['balance'=>$balance]);//更新账户信息
+                    model('SpBaseInfo','logic')->updateUserBalance(['id'=>$order_info['sp_id']],['balance'=>$balance]);//更新账户信息
                     $this->payRecord(1,$order_info,$data,$pay_type_order);//1支付成功->保存支付记录
                     trace("进行充值操作记录");
                 }
