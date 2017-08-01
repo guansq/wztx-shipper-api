@@ -76,7 +76,7 @@ class SpBaseInfo extends BaseLogic{
      * Describe:得到个人认证信息
      */
     public function getPersonAuthInfo($userInfo){
-        $info = $this->field('auth_status,auth_info,real_name,phone,identity,sex,front_pic,back_pic')->where("id",$userInfo['id'])->find();
+        $info = $this->field('auth_status,auth_info,real_name,phone,identity,sex,front_pic,back_pic,hold_pic')->where("id",$userInfo['id'])->find();
         if($info){
             return resultArray('2000','',$info);
         }
@@ -90,8 +90,8 @@ class SpBaseInfo extends BaseLogic{
     public function getBusinessAuthInfo($userInfo){
         $info = $this->alias('b')->field('b.auth_status,b.auth_info,c.com_name,
         c.com_short_name,c.com_buss_num,c.law_person,c.identity as law_identity,c.phone as com_phone,
-        c.address,b.identity,b.front_pic,b.back_pic,c.front_pic as law_front_pic,c.back_pic as law_back_pic,
-        c.hold_pic as law_hold_pic,c.buss_pic')->join('sp_company_auth c','b.company_id = c.id','LEFT')->where("b.id",$userInfo['id'])->find();
+        c.address,b.identity,b.front_pic,b.back_pic,b.hold_pic,c.front_pic as law_front_pic,c.back_pic as law_back_pic,
+        c.hold_pic as law_hold_pic,c.buss_pic,deposit_name,bank,account')->join('sp_company_auth c','b.company_id = c.id','LEFT')->where("b.id",$userInfo['id'])->find();
         if($info){
             return resultArray('2000','',$info);
         }

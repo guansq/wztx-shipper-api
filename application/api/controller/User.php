@@ -328,6 +328,7 @@ class User extends BaseController{
      * @apiSuccess {String} phone                       绑定手机号
      * @apiSuccess {String} identity                    身份证号
      * @apiSuccess {String} sex                         性别 1=男 2=女 0=未知
+     * @apiSuccess {String} hold_pic                    手持身份证
      * @apiSuccess {String} front_pic                   身份证正
      * @apiSuccess {String} back_pic                    身份证反
      *
@@ -350,6 +351,7 @@ class User extends BaseController{
      * @apiHeader {String}  authorization-token     token.
      * @apiSuccess {String} auth_status                 认证状态（init=未认证，pass=认证通过，refuse=认证失败，delete=后台删除）
      * @apiSuccess {String} auth_info                   认证失败原因
+     *
      * @apiSuccess {String} com_name                    企业全称
      * @apiSuccess {String} com_short_name              企业简称
      * @apiSuccess {String} com_buss_num                营业执照注册号
@@ -357,9 +359,15 @@ class User extends BaseController{
      * @apiSuccess {String} law_identity                法人身份证号
      * @apiSuccess {String} com_phone                   企业联系电话
      * @apiSuccess {String} address                     地址
+     *
+     * @apiParam {String} deposit_name         开户名称.
+     * @apiParam {String} bank                 开户行.
+     * @apiParam {String} account              结算账号.
+     *
      * @apiSuccess {String} identity                    操作人身份证号
      * @apiSuccess {String} front_pic                   操作人身份证正
-     * @apiSuccess {String} back_pic                   操作人身份证反
+     * @apiSuccess {String} back_pic                    操作人身份证反
+     * @apiParam {String}   hold_pic                    操作人手持身份证照.
      * @apiSuccess {String} law_front_pic               法人身份证正
      * @apiSuccess {String} law_back_pic                法人身份证反
      * @apiSuccess {String} law_hold_pic                法人手拿身份证
