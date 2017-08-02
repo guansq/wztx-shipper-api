@@ -185,7 +185,7 @@ class Pay extends BaseController{
             "passback_params" => "transport"//传入额外的参数
         ];
         $bizcontent = json_encode($bizData);
-        $request->setNotifyUrl(getenv("ALI_CALLBACK_URL"));
+        $request->setNotifyUrl(getenv("ALIPAY_CALLBACK_URL"));
         $request->setBizContent($bizcontent);
         //这里和普通的接口调用不同，使用的是sdkExecute
         $response = $aop->sdkExecute($request);
@@ -254,7 +254,7 @@ class Pay extends BaseController{
             "passback_params" => "bond"//传入额外的参数
         ];
         $bizcontent = json_encode($bizData);
-        $request->setNotifyUrl(getenv("ALI_CALLBACK_URL"));
+        $request->setNotifyUrl(getenv("ALIPAY_CALLBACK_URL"));
         $request->setBizContent($bizcontent);
         //这里和普通的接口调用不同，使用的是sdkExecute
         $response = $aop->sdkExecute($request);
@@ -491,7 +491,7 @@ class Pay extends BaseController{
             "passback_params" => "recharge"//传入额外的参数充值
         ];
         $bizcontent = json_encode($bizData);
-        $request->setNotifyUrl(getenv("ALI_CALLBACK_URL"));
+        $request->setNotifyUrl(getenv("ALIPAY_CALLBACK_URL_URL"));
         $request->setBizContent($bizcontent);
         //这里和普通的接口调用不同，使用的是sdkExecute
         $response = $aop->sdkExecute($request);

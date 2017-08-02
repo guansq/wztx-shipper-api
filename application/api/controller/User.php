@@ -43,12 +43,18 @@ class User extends BaseController{
         if($result['code'] != 2000){
             returnJson($result);
         }
-
+        //判断推荐码
+        if(isset($paramAll['recomm_code']) && !empty($paramAll['recomm_code'])){
+            $recomm_id = getBaseIdByRecommCode($paramAll['recomm_code']);//写入推荐人ID进数据库
+            if(!empty($recomm_id)){
+                returnJson(4000,'请填写正确的推荐码');
+            }
+        }
         //进行注册
         $result = $userLogic->reg($paramAll);
         //$userLogic
         if($result === false){
-            returnJson(['4020','注册失败',[]]);
+            returnJson(4000,'注册失败');
         }
         returnJson($result);
     }
@@ -409,6 +415,7 @@ class User extends BaseController{
             'new_password' => 'require|length:6,128',
             'repeat_password' => 'require|confirm:new_password',
         ];
+
 
         validateData($paramAll, $rule);
         //校验验证码

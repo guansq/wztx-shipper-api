@@ -25,7 +25,10 @@ class File extends BaseLogic{
             'file' => '@'.$info->getPathname()
         ];
 
-        $return_data = HttpService::post($this->url, $data);
+        $return_data = HttpService::post($this->url, $data, 60);
+        //trace($return_data);
+//        dump($data);
+//        dump($return_data);die;
         if(empty($return_data)){
             return resultArray(6001);
         }

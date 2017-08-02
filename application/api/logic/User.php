@@ -302,8 +302,8 @@ class User extends BaseLogic{
             $baseUser['create_at'] = $now;
             $baseUser['update_at'] = $now;
             $baseUser['recomm_code'] = randomStr(6);
-            if(isset($params['recom_code'])){
-                $baseUser['recomm_id'] = getBaseIdByRecommCode($params['recom_code']);//写入推荐人ID进数据库
+            if(isset($params['recomm_code'])){
+                $baseUser['recomm_id'] = getBaseIdByRecommCode($params['recomm_code']);//写入推荐人ID进数据库
             }
             $result = Db::name('sp_base_info')->insertGetId($baseUser);
             Db::commit();
