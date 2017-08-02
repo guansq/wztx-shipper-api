@@ -24,7 +24,7 @@ namespace service;
 class MsgService{
 
     const RT_APP_KEY  = 'wztx_shipper';
-    const RT_MSG_HOME = 'http://pushmsg.ruitukeji.com';
+    const RT_MSG_HOME = 'http://mps.ruitukeji.com';
 
     /**
      * Author: WILL<314112362@qq.com>
@@ -59,7 +59,7 @@ class MsgService{
         }
         $ret = json_decode($httpRet, true);
         if(empty($ret)){
-            return resultArray(6000,'',$httpRet);
+            return resultArray(6000,'',$ret);
         }
         if($ret['msg'] == '手机号码个数错'){
             $ret['msg'] = '手机号未注册';

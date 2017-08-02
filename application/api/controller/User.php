@@ -31,10 +31,10 @@ class User extends BaseController{
         $paramAll = $this->getReqParams(['type','user_name', 'password', 'recomm_code', 'captcha','pushToken']);
         //$result=$this->validate($paramAll,'User');
         $rule = [
-            'type' => 'require',
-            'user_name'=>['regex'=>'/^[1]{1}[3|5|7|8]{1}[0-9]{9}$/','require','unique:system_user_shipper'],
-            'password' => 'require|length:6,128',
-            'captcha' => 'require|length:4,8',
+            ['type','require','请选择注册用户的类型'],
+            ['user_name',['regex'=>'/^[1]{1}[3|5|7|8]{1}[0-9]{9}$/','require','unique:system_user_shipper'],['请输入合法的手机号','手机号必填','已经存在该用户，请不要重复注册']],
+            //['password',['require','length:6,128'],['请填写密码','密码长度不得小于6大于128字节']],
+            ['captcha',['require','length:4,8'],['验证码必填','验证码长度在4-8之间']]
         ];
         validateData($paramAll, $rule);
         $userLogic = model('User','logic');

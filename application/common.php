@@ -219,7 +219,7 @@ if(!function_exists('validateData')){
         if($validate->check($params)){
             return true;
         }
-        returnJson(4002, '', $validate->getError());
+        returnJson(4002, $validate->getError());
     }
 }
 
