@@ -12,6 +12,11 @@ namespace app\api\controller;
 use think\Controller;
 use pay\alipay_mobile;
 use EasyWeChat\Foundation\Application;
+use Payment\Common\PayException;
+use Payment\Client\Notify;
+use Payment\Notify\PayNotifyInterface;
+use PublicNotify;
+
 class Callback extends Controller
 {
     public function alipay_callback(){
@@ -55,7 +60,7 @@ class Callback extends Controller
                         'trade_no' => $data['trade_no'],//第三方交易流水号
                         'real_amount' =>$data['receipt_amount'],//真实支付金额
                         'pay_time'=>time(),
-                        'payway' => 1,//0=未支付，1=支付宝，2=微信
+                        'pay_way' => 1,//0=未支付，1=支付宝，2=微信
                         'pay_status' => 1,
                     ];
 
@@ -76,7 +81,7 @@ class Callback extends Controller
                     $statusdata = [
                         'trade_no' => $data['trade_no'],//第三方交易流水号
                         'pay_time'=>time(),
-                        'payway' => 1,//0=未支付，1=支付宝，2=微信
+                        'pay_way' => 1,//0=未支付，1=支付宝，2=微信
                         'real_amount' => $data['receipt_amount'],
                         'pay_status' => 1,
                     ];
@@ -99,45 +104,21 @@ class Callback extends Controller
 
 
     public function wxpay_callback(){
-        $options = [
-            // 前面的appid什么的也得保留哦
-            'app_id' => 'wx6470b69abdf65e06',
-            // payment
-            'payment' => [
-                'merchant_id'        => '1383659202',
-                'key'                => '2D2C5B0CDFA135D8FAB37227B0F569E5',
-                'cert_path'          => '/wxpayment/apiclient_cert.pem', // XXX: 绝对路径！！！！
-                'key_path'           => '/wxpayment/apiclient_key.pem',      // XXX: 绝对路径！！！！
-                'notify_url'         => 'http://wztx.shp.api.ruitukeji.com/callback/wxpay_callback',       // 你也可以在下单时单独设置来想覆盖它
-            ],
-        ];
-        $app = new Application($options);
-
-        $response = $app->payment->handleNotify(function($notify, $successful){
-            // 用户是否支付成功
-            if ($successful) {
-                $order_num=$notify['out_trade_no'];
-                $where = ['order_code'=>$order_num];
-                $statusdata = [
-                    'status' => 'pay_success',
-                    'payway' => 2,//0=未支付，1=余额，2=微信，3=支付宝，4-凭证通过
-                    'is_pay' =>1,
-                ];
-                $transportLogic = model('TransportOrder','logic');
-                $result = $transportLogic->updateTransport($where,$statusdata);
-                $order_info = $transportLogic->getTransportOrderInfo($where);//得到订单信息
-                $this->payRecord(1,$order_info,$notify);//1支付成功->保存支付记录
-                if($result['code'] == 2000){
-                    //进行负责给推荐人分发奖金
-                    returnJson(2000,'支付成功');
-                }else{
-                    returnJson(4000,'支付失败');
-                }
-            } else { // 用户支付失败
-                returnJson(4000,'支付失败');
-            }
-        });
-        $response->send();
+        controller('PublicNotify');//引用控制器
+        $callback = new PublicNotify();
+        $type = 'wx_charge';
+        try {
+            // 获取第三方的原始数据，未进行签名检查，根据自己需要决定是否需要该步骤
+            //$retData = Notify::getNotifyData($type, $config);
+            $wxConfig = require_once APP_PATH.'wxconfig.php';
+            $ret = Notify::run($type, $wxConfig, $callback);// 处理回调，内部进行了签名检查
+        } catch (PayException $e) {
+            trace($e->errorMessage());//记录微信错误日志
+            exit;
+        }
+        trace($ret);
+        //echo $ret;
+        return $ret;
     }
 
     /**

@@ -14,6 +14,7 @@ use Payment\Client\Charge;
 use Payment\Common\PayException;
 use Payment\Config;
 
+
 class Pay extends BaseController{
 
     /**
@@ -472,7 +473,7 @@ class Pay extends BaseController{
         $marginData = [
             'sp_id' => $this->loginUser['id'],
             'total_amount' => wztxMoney($paramAll['money']),
-            'pay_orderid' => $order_code,
+            'order_code' => $order_code,
             'pay_time' => time(),
             'pay_way' => 2,//微信
             'pay_status' => 0,//未支付
@@ -485,8 +486,7 @@ class Pay extends BaseController{
             'order_no' => $order_code,
             'timeout_express' => time() + 600,// 表示必须 600s 内付款
             'amount' => '0.01',// 微信沙箱模式，需要金额固定为3.01
-            'return_param' => '123',
-            'attach' => '11111',
+            'return_param' => 'wx_recharge',//微信充值
             'client_ip' => isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1',// 客户地址
         ];
 
