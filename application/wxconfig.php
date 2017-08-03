@@ -6,7 +6,7 @@
  */
 
 return [
-    'use_sandbox'       => true,// 是否使用 微信支付仿真测试系统
+    'use_sandbox'       => false,// 是否使用 微信支付仿真测试系统
 
     'app_id'            => 'wxc50f5bf05f014dee',  // 公众账号ID
     'mch_id'            => '1483170282',// 商户id
@@ -20,9 +20,9 @@ return [
     ],// 指定不能使用信用卡支付   不传入，则均可使用
     'fee_type'          => 'CNY',// 货币类型  当前仅支持该字段
 
-    'notify_url'        => 'http://wztx.shp.api.ruitukeji.com/callback/wxpay_callback',
+    'notify_url'        => getenv("WEXIN_CALLBACK_URL"),
 
-    'redirect_url'      => 'http://wztx.shp.api.ruitukeji.com/callback/wxpay_callback',// 如果是h5支付，可以设置该值，返回到指定页面
+    'redirect_url'      => '',// 如果是h5支付，可以设置该值，返回到指定页面
 
     'return_raw'        => false,// 在处理回调时，是否直接返回原始数据，默认为true
 ];

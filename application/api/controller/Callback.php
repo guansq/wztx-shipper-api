@@ -120,7 +120,7 @@ class Callback extends Controller
                 $where = ['order_code'=>$order_num];
                 $statusdata = [
                     'status' => 'pay_success',
-                    'payway' => 3,//0=未支付，1=余额，2=微信，3=支付宝，4-凭证通过
+                    'payway' => 2,//0=未支付，1=余额，2=微信，3=支付宝，4-凭证通过
                     'is_pay' =>1,
                 ];
                 $transportLogic = model('TransportOrder','logic');

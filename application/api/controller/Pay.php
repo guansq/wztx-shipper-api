@@ -285,7 +285,7 @@ class Pay extends BaseController{
             'subject' => 'test subject',
             'order_no' => $orderNo,
             'timeout_express' => time() + 600,// 表示必须 600s 内付款
-            'amount' => '3.01',// 微信沙箱模式，需要金额固定为3.01
+            'amount' => '0.01',// 微信沙箱模式，需要金额固定为3.01
             'return_param' => '123',
             'client_ip' => isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1',// 客户地址
         ];
@@ -310,55 +310,7 @@ class Pay extends BaseController{
             'order_id' => 'require'
         ];
         validateData($paramAll, $rule);
-        $options = [
-            // 前面的appid什么的也得保留哦
-            //'app_id' => 'wx6470b69abdf65e06',
-            'app_id' => 'wxc50f5bf05f014dee',
-            // payment
-            'payment' => [
-                //'merchant_id'        => '1383659202',
-                'merchant_id' => '1483170282',
-                //'key'                => '2D2C5B0CDFA135D8FAB37227B0F569E5',
-                'key' => 'd39be96f2e538480fc567ea12d54c59e',//RUITU111111KEJImd5
-                'cert_path' => '/wxpayment/apiclient_cert.pem', // XXX: 绝对路径！！！！
-                'key_path' => '/wxpayment/apiclient_key.pem',      // XXX: 绝对路径！！！！
-                'notify_url' => 'http://wztx.shp.api.ruitukeji.com/callback/wxpay_callback',       // 你也可以在下单时单独设置来想覆盖它
-            ],
-        ];
-        $app = new Application($options);
-        $payment = $app->payment;
 
-        $attributes = [
-            'trade_type' => 'APP', // JSAPI，NATIVE，APP...
-            'body' => 'biaoti',//标题
-            'detail' => 'xiangxijieshao',//详细介绍
-            'out_trade_no' => '2017072310254561',//商家订单号
-            'total_fee' => 1,
-            // 'total_fee'        => $order_info['meal_price'],
-            'notify_url' => 'http://wztx.shp.api.ruitukeji.com/callback/wxpay_callback', // 支付结果通知网址，如果不设置则会使用配置里的默认地址
-            // ...
-        ];
-
-        $order = new Order($attributes);
-
-        $result = $payment->prepare($order);
-        //dump($result);
-        if($result->return_code == 'SUCCESS' && $result->result_code == 'SUCCESS'){
-            $prepayId = $result->prepay_id;
-        }else{
-            returnJson(4000, '调用支付失败');
-        }
-
-        $app_data['appid'] = $options['app_id'];
-        $app_data['partnerid'] = $options['payment']['merchant_id'];
-        $app_data['prepayid'] = $prepayId;
-        $app_data['package'] = 'Sign=WXPay';
-        $app_data['noncestr'] = uniqid();
-        $app_data['timestamp'] = time();
-
-        $params = array_filter($app_data);
-        $params['sign'] = $this->generate_sign($params, $options['payment']['key'], 'md5');
-        returnJson(2000, '成功', $params);
     }
 
     /**
@@ -509,8 +461,43 @@ class Pay extends BaseController{
      * @apiParam  {String} money    充值金额
      */
     public function rechargeByWexin(){
+        $paramAll = $this->getReqParams(['money']);
+        $rule = [
+            'money' => 'require'
+        ];
+        validateData($paramAll,$rule);
 
+        $wxConfig = require_once APP_PATH.'wxconfig.php';
+        $order_code = order_num();
+        $marginData = [
+            'sp_id' => $this->loginUser['id'],
+            'total_amount' => wztxMoney($paramAll['money']),
+            'pay_orderid' => $order_code,
+            'pay_time' => time(),
+            'pay_way' => 2,//微信
+            'pay_status' => 0,//未支付
+        ];
+        model('SpRechargeOrder','logic')->saveRechargeOrder($marginData);
+        // 订单信息
+        $payData = [
+            'body' => $this->loginUser['user_name'].'微信充值',
+            'subject' => '微信充值',
+            'order_no' => $order_code,
+            'timeout_express' => time() + 600,// 表示必须 600s 内付款
+            'amount' => '0.01',// 微信沙箱模式，需要金额固定为3.01
+            'return_param' => '123',
+            'attach' => '11111',
+            'client_ip' => isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1',// 客户地址
+        ];
+
+        try{
+            $ret = Charge::run(Config::WX_CHANNEL_APP, $wxConfig, $payData);
+        }catch(PayException $e){
+            //echo $e->errorMessage();
+            returnJson(2000, $e->errorMessage(), '');
+            exit;
+        }
+        //$str = json_encode($ret, JSON_UNESCAPED_UNICODE);
+        returnJson(2000, '成功', $ret);
     }
-
-
 }
