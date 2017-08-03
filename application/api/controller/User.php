@@ -41,7 +41,7 @@ class User extends BaseController{
         //校验验证码
         $result = MsgService::verifyCaptcha($paramAll['user_name'],'reg',$paramAll['captcha']);
         if($result['code'] != 2000){
-            returnJson($result);
+            returnJson(4000,'验证码输入有误');
         }
         //判断推荐码
         if(isset($paramAll['recomm_code']) && !empty($paramAll['recomm_code'])){
@@ -411,9 +411,9 @@ class User extends BaseController{
         $paramAll = $this->getReqParams(['old_password', 'new_password', 'repeat_password']);
         $rule = [
             //'account' => ['regex'=>'/^[1]{1}[3|5|7|8]{1}[0-9]{9}$/','require'],
-            'old_password' => 'require|length:6,128',
-            'new_password' => 'require|length:6,128',
-            'repeat_password' => 'require|confirm:new_password',
+            ['old_password',['require','length:6,128'],['旧密码必填','旧密码长度在6-128之间']],
+            ['new_password',['require','length:6,128'],['新密码必填','新密码长度在6-128之间']],
+            ['repeat_password',['require','confirm:new_password'],['重复密码必填','重复密码和新密码填写不一致']]
         ];
 
 

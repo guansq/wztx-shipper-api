@@ -482,8 +482,8 @@ class Pay extends BaseController{
         ];
         model('SpRechargeOrder','logic')->saveRechargeOrder($marginData);
         $bizData =[
-            'body'=>$this->loginUser['user_name'].'支付保证金',
-            "subject"=>"保证金支付",
+            'body'=>$this->loginUser['user_name'].'充值',
+            "subject"=>"充值",
             "out_trade_no"=>$order_code,
             "timeout_express"=>"90m",
             "total_amount"=>wztxMoney($paramAll['money']),//保证金金额

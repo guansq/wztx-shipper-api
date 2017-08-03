@@ -64,7 +64,7 @@ class Callback extends Controller
                     $userWhere = [
                         'id' => $order_info['sp_id'],
                     ];
-                    model('SpBaseInfo','logic')->updateUserBalance($userWhere,['status'=>'bond_status','bond'=>$order_info['total_amount']]);//更新认证信息
+                    model('SpBaseInfo','logic')->updateUserBalance($userWhere,['bond_status'=>'checked','bond'=>$order_info['total_amount']]);//更新认证信息
                     //更改认证信息
                     $this->payRecord(1,$order_info,$data,$pay_type_order);//1支付成功->保存支付记录
                     trace("进行保证金支付操作");
