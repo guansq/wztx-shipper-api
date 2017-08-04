@@ -461,9 +461,18 @@ class Pay extends BaseController{
         $request = new \AlipayTradeAppPayRequest();
         //SDK已经封装掉了公共参数，这里只需要传入业务参数 sp_margin_order
         $order_code = order_num();
+        if(!empty($this->loginUser['company_id'])){
+            $name = $this->loginUser['company_name'];
+        }else{
+            $name = $this->loginUser['real_name'];
+        }
         $marginData = [
             'sp_id' => $this->loginUser['id'],
             'total_amount' => wztxMoney($paramAll['money']),
+            'type' => $this->loginUser['type'],
+            'name' => $name,
+            'phone' => $this->loginUser['user_name'],
+            'balance' => $this->loginUser['balance'],
             'order_code' => $order_code,
             'pay_time' => time(),
             'pay_way' => 1,//支付宝
@@ -506,9 +515,18 @@ class Pay extends BaseController{
 
         $wxConfig = require_once APP_PATH.'wxconfig.php';
         $order_code = order_num();
+        if(!empty($this->loginUser['company_id'])){
+            $name = $this->loginUser['company_name'];
+        }else{
+            $name = $this->loginUser['real_name'];
+        }
         $marginData = [
             'sp_id' => $this->loginUser['id'],
             'total_amount' => wztxMoney($paramAll['money']),
+            'type' => $this->loginUser['type'],
+            'name' => $name,
+            'phone' => $this->loginUser['user_name'],
+            'balance' => $this->loginUser['balance'],
             'order_code' => $order_code,
             'pay_time' => time(),
             'pay_way' => 2,//微信
