@@ -434,7 +434,7 @@ define({ "api": [
             "type": "String",
             "optional": true,
             "field": "insured_amount",
-            "description": "<p>投保金额</p>"
+            "description": "<p>保险金额</p>"
           },
           {
             "group": "Parameter",
