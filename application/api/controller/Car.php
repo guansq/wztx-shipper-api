@@ -44,7 +44,7 @@ class Car extends BaseController{
     }
 
     /**
-     * @api {get} /test/test 测试
+     * @api {get} /car/test 测试
      * @apiName test
      * @apiGroup Test
      *
@@ -54,6 +54,6 @@ class Car extends BaseController{
      * @apiSuccess {String} lastname  Lastname of the User.
      */
     public function test(){
-
+        pushInfo('120c83f76013ea0748d','ceshi','ceshi','wztx_driver');
     }
 }

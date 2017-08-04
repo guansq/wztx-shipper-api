@@ -382,6 +382,7 @@ function sendMsg($sendeeId,$title,$content,$basetype=0,$type='single',$pri=3){
         'title' => $title,
         'content' => $content,
         'type' => $basetype,
+        'push_type'=> $type,
         'publish_time' => time(),
         'pri' => $pri,
         'create_at' => time(),
@@ -419,10 +420,10 @@ function sendSMS($phone,$content,$rt_key='wztx_shipper'){
 /*
  * 推送信息 推送给货主为$rt_key='wztx_shipper' 推送给司机为 $rt_key='wztx_driver'
  */
-function pushInfo($token,$title,$content,$rt_key='wztx_shipper'){
+function pushInfo($token,$title,$content,$rt_key='wztx_driver'){
     $sendData = [
         "platform" => "all",
-        "rt_appkey" => "wztx_shipper",
+        "rt_appkey" => $rt_key,
         "req_time" => time(),
         "req_action" => 'push',
         "alert" => $title,
@@ -446,7 +447,6 @@ function pushInfo($token,$title,$content,$rt_key='wztx_shipper'){
     $skArr = explode('_',config('app_access_key'));
     $sendData['sign'] = $desClass->strEnc($arrOrder,$skArr[0],$skArr[1],$skArr[2]);//签名
     $result = HttpService::post(getenv('APP_API_HOME').'push',http_build_query($sendData));
-    //dump($result);
 }
 /*
  * 得到司机推送token

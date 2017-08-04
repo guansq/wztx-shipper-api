@@ -90,6 +90,7 @@ class Quote extends BaseController{
         $quoteLogic = model('Quote','logic');
         //更改订单为询价中
         model('Goods','logic')->updateGoodsInfo(['id'=>$paramAll['goods_id']],['status'=>'quote']);//更改订单为询价中
+        //dump($list);die;
         foreach($list as $k => $v){
             $info['goods_name'] = $goodsInfo['goods_name'];
             $info['weight'] = $goodsInfo['weight'];
