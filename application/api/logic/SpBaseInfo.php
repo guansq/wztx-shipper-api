@@ -48,11 +48,18 @@ class SpBaseInfo extends BaseLogic{
     public function saveBusinessAuth($param,$userInfo){
         $now = time();
         //Db::startTrans();
-        //存入公司信息到数据库
         $param['sp_id'] = $userInfo['id'];
-        //$param['sp_id'] = $userInfo['id'];
-        $ret = model('sp_company_auth')->allowField(true)->save($param);
-        $company_id = $this->getLastInsID();
+        //存入公司信息到数据库
+        if(empty($userInfo['company_id'])){
+            //$this->loginUser['company_name'] = getCompanyName($this->loginUser);
+            $ret = model('sp_company_auth')->allowField(true)->save($param);
+            if(empty($ret)){
+                return resultArray(6000,'保存公司信息失败');
+            }
+            $company_id = $this->getLastInsID();
+        }else{
+            $company_id = $userInfo['company_id'];
+        }
 
         //更新法人信息 //'real_name' =>操作人名
         $updateArr = [
@@ -66,9 +73,9 @@ class SpBaseInfo extends BaseLogic{
         ];
         $result = $this->where("id",$userInfo['id'])->update($updateArr);
         if($result !== false){
-            return resultArray('2000','保存企业验证信息成功');
+            return resultArray(2000,'保存企业验证信息成功');
         }
-        return resultArray('4020','保存企业验证信息失败');
+        return resultArray(4020,'保存企业验证信息失败');
     }
 
     /**
