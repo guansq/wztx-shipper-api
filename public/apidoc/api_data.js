@@ -432,6 +432,13 @@ define({ "api": [
           {
             "group": "Parameter",
             "type": "String",
+            "optional": true,
+            "field": "insured_amount",
+            "description": "<p>投保金额</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
             "optional": false,
             "field": "org_address_maps",
             "description": "<p>出发地地址的坐标 如116.480881,39.989410</p>"
@@ -1861,13 +1868,6 @@ define({ "api": [
             "optional": false,
             "field": "order_id",
             "description": "<p>订单ID</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "total_amount",
-            "description": "<p>支付金额</p>"
           }
         ]
       }
@@ -2360,13 +2360,6 @@ define({ "api": [
             "optional": false,
             "field": "order_id",
             "description": "<p>订单ID</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "total_amount",
-            "description": "<p>支付金额</p>"
           }
         ]
       }
@@ -2377,6 +2370,34 @@ define({ "api": [
     "sampleRequest": [
       {
         "url": "http://wztx.shp.zenmechi.cc/pay/wxpay"
+      }
+    ]
+  },
+  {
+    "type": "POST",
+    "url": "/pay/wxpayCash",
+    "title": "微信保证金支付done",
+    "name": "wxpayCash",
+    "group": "Pay",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization-token",
+            "description": "<p>token.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "application/api/controller/Pay.php",
+    "groupTitle": "Pay",
+    "sampleRequest": [
+      {
+        "url": "http://wztx.shp.zenmechi.cc/pay/wxpayCash"
       }
     ]
   },
@@ -3093,6 +3114,40 @@ define({ "api": [
         ]
       }
     },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "deposit_name",
+            "description": "<p>开户名称.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "bank",
+            "description": "<p>开户行.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "account",
+            "description": "<p>结算账号.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "hold_pic",
+            "description": "<p>操作人手持身份证照.</p>"
+          }
+        ]
+      }
+    },
     "version": "0.0.0",
     "filename": "application/api/controller/User.php",
     "groupTitle": "User",
@@ -3165,6 +3220,13 @@ define({ "api": [
             "optional": false,
             "field": "sex",
             "description": "<p>性别 1=男 2=女 0=未知</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "hold_pic",
+            "description": "<p>手持身份证</p>"
           },
           {
             "group": "Success 200",

@@ -50,7 +50,7 @@ class PublicNotify implements PayNotifyInterface
 
             }elseif($data['return_param'] == 'bond'){//微信支付保证金的回调处理
                 $pay_type_order = 'bond';
-                
+
 
             }
             //trace($data);
