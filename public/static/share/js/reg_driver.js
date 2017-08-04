@@ -24,9 +24,14 @@ function test(){
   }
   return true;
 }
-
+var flag = 0;
 // 发送验证码的点击事件
 $(".get_ident").click(function(e){
+  if(flag == 1){
+    return;
+  }
+   flag = 1;
+
   validate();
 });
 
@@ -54,6 +59,7 @@ function validate(){
   };
   // console.log(JSON.stringify(Jsdata));
   $.post("http://wztx.drv.api.zenmechi.cc/index/sendCaptcha",Jsdata,function(resData){
+      flag = 0;
     if(resData.code == 2000){
       settime($(".get_ident").get(0));
     }
