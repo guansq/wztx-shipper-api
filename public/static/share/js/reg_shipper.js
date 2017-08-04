@@ -50,7 +50,7 @@ function validate(){
     "validationId": validationId
   };
   // console.log(JSON.stringify(Jsdata));
-  $.post("http://wztx.drv.api.ruitukeji.com/index/sendCaptcha",Jsdata,function(resData){
+  $.post("http://wztx.drv.api.zenmechi.cc/index/sendCaptcha",Jsdata,function(resData){
     if(resData.code == 2000){
       settime($(".get_ident").get(0));
     }
@@ -90,7 +90,7 @@ $(".consignor").click(function(e){
       "recomm_code": "",
       "pushToken": ""
     }
-    $.post("http://wztx.shp.api.ruitukeji.com/User/reg",dataObj,function(resData){
+    $.post("http://wztx.shp.api.zenmechi.cc/User/reg",dataObj,function(resData){
       console.log(resData);
       if(resData.code == 2000){
         alert("注册成功");
