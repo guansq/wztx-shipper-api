@@ -469,6 +469,7 @@ class Pay extends BaseController{
         $marginData = [
             'sp_id' => $this->loginUser['id'],
             'total_amount' => wztxMoney($paramAll['money']),
+            'real_amount' => wztxMoney($paramAll['money']),
             'type' => $this->loginUser['type'],
             'name' => $name,
             'phone' => $this->loginUser['user_name'],
@@ -523,6 +524,7 @@ class Pay extends BaseController{
         $marginData = [
             'sp_id' => $this->loginUser['id'],
             'total_amount' => wztxMoney($paramAll['money']),
+            'real_amount' => wztxMoney($paramAll['money']),
             'type' => $this->loginUser['type'],
             'name' => $name,
             'phone' => $this->loginUser['user_name'],
