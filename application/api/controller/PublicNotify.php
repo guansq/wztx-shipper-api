@@ -50,8 +50,23 @@ class PublicNotify implements PayNotifyInterface
 
             }elseif($data['return_param'] == 'bond'){//微信支付保证金的回调处理
                 $pay_type_order = 'bond';
+                $order_num=$data['order_no'];//自家的订单CODE
+                $where = ['order_code'=>$order_num];
+                $statusdata = [
+                    'trade_no' => $data['transaction_id'],//第三方交易流水号
+                    'real_amount' =>$data['amount'],//真实支付金额
+                    'pay_time'=>time(),
+                    'pay_way' => 2,//0=未支付，1=支付宝，2=微信
+                    'pay_status' => 1,
+                ];
 
-
+                model('SpMarginOrder','logic')->updateOrder($where,$statusdata);//更改订单信息
+                $order_info = model('SpMarginOrder','logic')->getOrderInfo($where);
+                $userWhere = [
+                    'id' => $order_info['sp_id'],
+                ];
+                model('SpBaseInfo','logic')->updateUserBalance($userWhere,['bond_status'=>'checked','bond'=>$order_info['total_amount']]);//更新认证信息
+                //更改认证信息
             }
             //trace($data);
             //需要进行存入sp_pay_order表里
