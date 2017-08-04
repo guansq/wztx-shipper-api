@@ -137,6 +137,31 @@ class Index extends BaseController{
     public function test () {
         saveOrderShare(1);
     }
+    /**
+     * @api      {GET} /index/getArticle 获取文章内容done
+     * @apiDescription
+     * @apiName  getArticle
+     * @apiGroup Index
+     *
+     * @apiParam    {String}    type           文章标识(货主端:关于我们-shipper_about，发布订单协议-shipper_order_agreement，货物保险说明-shipper_insurance_instructions，推荐奖励说明-shipper_recommend_reward，用户注册协议-shipper_registration_protocol)
+     * @apiSuccess {String} title    文章标题.
+     * @apiSuccess {String} content   文章内容.
+     * @apiSuccess {String} type     文章标识.
+     */
+    public function getArticle(){
 
+        $paramAll = $this->getReqParams([
+            'type',
+        ]);
+        $rule = [
+            'type' => 'require',
+        ];
+        validateData($paramAll, $rule);
+        $ret = model('Article', 'logic')->getArticleInfo($paramAll['type']);
+        if(empty($ret)){
+            returnJson(4004, '未获取到文章内容');
+        }
+        returnJson(2000, '', $ret);
+    }
 
 }

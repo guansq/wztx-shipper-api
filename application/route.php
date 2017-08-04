@@ -7,7 +7,7 @@ Route::any('lastApk','Index/lastApk');
 
 Route::get('index/home','Index/home');
 Route::post('index/sendCaptcha','Index/sendCaptcha');
-
+Route::post('index/getArticle','Index/getArticle');
 
 Route::get('user/info','User/info');
 Route::get('user/computeQlfScore','User/computeQlfScore');
