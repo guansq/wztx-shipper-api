@@ -21,6 +21,7 @@ class Goods extends BaseController{
      * @apiParam  {String}  type=often                    often-实时 urgent-加急 appoint-预约
      * @apiParam  {String}  [appoint_at]                  预约时间
      * @apiParam  {String}  [premium_amount]                  保费金额
+     * @apiParam  {String}  [insured_amount]                  投保金额
      * @apiParam  {String}  org_address_maps              出发地地址的坐标 如116.480881,39.989410
      * @apiParam  {String}  org_city                      出发地省市区
      * @apiParam  {String}  org_address_name              出发地名称
