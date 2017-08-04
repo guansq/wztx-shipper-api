@@ -46,7 +46,21 @@ class PublicNotify implements PayNotifyInterface
 
             }elseif($data['return_param'] == 'transport'){//微信支付订单的回调处理
                 $pay_type_order = 'transport';
-
+                trace('进行订单状态更改');
+                $order_num=$data['out_trade_no'];//自家的订单CODE
+                $where = ['order_code'=>$order_num];
+                $statusdata = [
+                    'status' => 'pay_success',
+                    'payway' => 2,//0=未支付，1=余额，2=微信，3=支付宝，4-凭证通过
+                    'is_pay' =>1,
+                    'pay_time'=>time()
+                ];
+                $transportLogic = model('TransportOrder','logic');
+                $transportLogic->updateTransport($where,$statusdata);
+                $order_info = $transportLogic->getTransportOrderInfo($where);//得到订单信息
+                //trace($order_info);
+                saveOrderShare($order_info['id']);//存入推荐列表
+                $pay_type_order = 'transport';
 
             }elseif($data['return_param'] == 'bond'){//微信支付保证金的回调处理
                 $pay_type_order = 'bond';
