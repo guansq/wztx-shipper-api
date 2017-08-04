@@ -139,7 +139,6 @@ class Pay extends BaseController{
      * @apiGroup Pay
      * @apiHeader {String} authorization-token      token.
      * @apiParam  {Number}  order_id                订单ID
-     * @apiParam  {Number}  total_amount            支付金额
      */
     public function alipay(){
         $ispass = ispassAuth($this->loginUser);
@@ -266,6 +265,58 @@ class Pay extends BaseController{
     }
 
 
+    /**
+     * @api      {POST} /pay/wxpayCash  微信保证金支付done
+     * @apiName  wxpayCash
+     * @apiGroup Pay
+     * @apiHeader {String} authorization-token      token.
+     */
+    public function wxpayCash(){
+        $ispass = ispassAuth($this->loginUser);
+        if($ispass){
+            returnJson(4000,'您已认证过，无需重复缴纳保证金');
+        }
+        if($this->loginUser['type'] == 'person'){
+            $amount = getSysconf('bond_person_amount');
+        }elseif($this->loginUser['type'] == 'company'){
+            $amount = getSysconf('bond_company_amount');
+        }
+
+        $order_code = order_num();
+        $marginData = [
+            'sp_id' => $this->loginUser['id'],
+            'type' => $this->loginUser['type'],
+            'name' => $this->loginUser['real_name'],
+            'phone' => $this->loginUser['user_name'],
+            'total_amount' => $amount,
+            'order_code' => $order_code,
+            'pay_time' => time(),
+            'pay_way' => 2,//支付宝
+            'pay_status' => 0,//未支付
+        ];
+        model('SpMarginOrder','logic')->saveMarginOrder($marginData);
+        $wxConfig = require_once APP_PATH.'wxconfig.php';
+        // 订单信息
+        $payData = [
+            'body' => '支付订单',
+            'subject' => '支付订单金额',
+            'order_no' => $order_code,
+            'timeout_express' => time() + 600,// 表示必须 600s 内付款
+            'amount' => $amount,// 微信沙箱模式，需要金额固定为3.01
+            'return_param' => 'bond',//支付保证金
+            'client_ip' => isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1',// 客户地址
+        ];
+
+        try{
+            $ret = Charge::run(Config::WX_CHANNEL_APP, $wxConfig, $payData);
+        }catch(PayException $e){
+            returnJson(4000,$e->errorMessage());
+            exit;
+        }
+        returnJson(2000, '成功', $ret);
+    }
+
+
 
 
 
@@ -275,59 +326,44 @@ class Pay extends BaseController{
      * @apiGroup Pay
      * @apiHeader {String} authorization-token      token.
      * @apiParam  {Number}  order_id                订单ID
-     * @apiParam  {Number}  total_amount            支付金额
      */
     public function wxpay(){
+        $ispass = ispassAuth($this->loginUser);
+        if(!$ispass){
+            returnJson(4000,'您未认证或未缴纳保证金');
+        }
+        $paramAll = $this->getReqParams(['order_id']);
+        $rule = [
+            'order_id' => 'require'
+        ];
+        validateData($paramAll,$rule);
+        $order_info = model('TransportOrder','logic')->getTransportOrderInfo(['id'=>$paramAll['order_id'],'sp_id'=>$this->loginUser['id'],'status'=>'photo']);//需要拍照后的状态
+        if(empty($order_info)){
+            returnJson(4000,'暂无待付款订单信息');
+        }
+
         $wxConfig = require_once APP_PATH.'wxconfig.php';
-        $orderNo = time().rand(1000, 9999);
+        $orderNo = $order_info['order_code'];
         // 订单信息
         $payData = [
-            'body' => 'test body',
-            'subject' => 'test subject',
+            'body' => '支付订单',
+            'subject' => '支付订单金额',
             'order_no' => $orderNo,
             'timeout_express' => time() + 600,// 表示必须 600s 内付款
             'amount' => '0.01',// 微信沙箱模式，需要金额固定为3.01
-            'return_param' => '123',
+            'return_param' => 'transport',//支付订单
             'client_ip' => isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1',// 客户地址
         ];
 
         try{
             $ret = Charge::run(Config::WX_CHANNEL_APP, $wxConfig, $payData);
         }catch(PayException $e){
-            echo $e->errorMessage();
+            returnJson(4000,$e->errorMessage());
             exit;
         }
-
-        //$str = json_encode($ret, JSON_UNESCAPED_UNICODE);
         returnJson(2000, '成功', $ret);
-        die;
-
-        $ispass = ispassAuth($this->loginUser);
-        if(!$ispass){
-            returnJson(4000, '您未认证或未缴纳保证金');
-        }
-        $paramAll = $this->getReqParams(['order_id']);
-        $rule = [
-            'order_id' => 'require'
-        ];
-        validateData($paramAll, $rule);
-
     }
 
-    /**
-     * 生成微信sign
-     * @param array  $attributes
-     * @param        $key
-     * @param string $encryptMethod
-     * @return string
-     */
-    public function generate_sign(array $attributes, $key, $encryptMethod = 'md5'){
-        ksort($attributes);
-
-        $attributes['key'] = $key;
-
-        return strtoupper(call_user_func_array($encryptMethod, [urldecode(http_build_query($attributes))]));
-    }
 
     /**
      * @api      {POST} /pay/scorePay  通过余额支付（订单）done
@@ -428,7 +464,7 @@ class Pay extends BaseController{
         $marginData = [
             'sp_id' => $this->loginUser['id'],
             'total_amount' => wztxMoney($paramAll['money']),
-            'pay_orderid' => $order_code,
+            'order_code' => $order_code,
             'pay_time' => time(),
             'pay_way' => 1,//支付宝
             'pay_status' => 0,//未支付
@@ -500,4 +536,6 @@ class Pay extends BaseController{
         //$str = json_encode($ret, JSON_UNESCAPED_UNICODE);
         returnJson(2000, '成功', $ret);
     }
+
+
 }
