@@ -409,7 +409,10 @@ class Pay extends BaseController{
         ];
         saveOrderShare($order_info['id']);//存入推荐列表
 
-        $transportLogic->updateTransport($where,$statusdata);
+        $ret = $transportLogic->updateTransport($where,$statusdata);
+        if($ret['code'] == 4000){
+            returnJson($ret);
+        }
         $pay_type_order = 'transport';
         //需要进行存入sp_pay_order表里
         $data = [

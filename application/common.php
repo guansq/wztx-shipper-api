@@ -360,7 +360,7 @@ function getCompanyName($userInfo){
  */
 function getBaseIdByRecommCode($recommCode){
     if(!empty($recommCode)){
-        return Db::name('dr_base_info')->where("recomm_code",$recommCode)->value('id');
+        return Db::name('sp_base_info')->where("recomm_code",$recommCode)->value('id');
     }
     return '';
 }

@@ -17,7 +17,7 @@ class SpPayOrder extends BaseLogic{
         $ret = $this->allowField(true)->save($param);
         if ($ret > 0) {
             $order_id = $this->getLastInsID();
-            return resultArray(2000, '成功', ['order_id' => $order_id]);
+            return resultArray(2000, '成功');
         }
         return resultArray(4000, '保存订单失败');
     }
