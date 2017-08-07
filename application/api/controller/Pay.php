@@ -175,12 +175,15 @@ class Pay extends BaseController{
         //实例化具体API对应的request类,类名称和接口名称对应,当前调用接口名称：alipay.trade.app.pay
         $request = new \AlipayTradeAppPayRequest();
         //SDK已经封装掉了公共参数，这里只需要传入业务参数
+        if(empty($order_info['final_price'])){
+            returnJson(4000,'抱歉，该订单没有最终价格，无法下单');
+        }
         $bizData =[
             'body'=>$order_info['id'],
             "subject"=>"订单支付",
             "out_trade_no"=>$order_info['order_code'],
             "timeout_express"=>"90m",
-            "total_amount"=>"1",
+            "total_amount"=>$order_info['final_price'],//支付最终报价的价格
             "product_code"=>"QUICK_MSECURITY_PAY",
             "passback_params" => "transport"//传入额外的参数
         ];
