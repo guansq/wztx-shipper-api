@@ -406,7 +406,7 @@ class Order extends BaseController {
         if ($changeStatus['code'] != '2000') {
             returnJson($changeStatus);
         }
-        returnJson('200', '成功', ['order_id' => $paramAll['order_id']]);
+        returnJson('2000', '成功', ['order_id' => $paramAll['order_id']]);
     }
 
 
