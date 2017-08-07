@@ -47,7 +47,7 @@ class User extends BaseController{
         if(isset($paramAll['recomm_code']) && !empty($paramAll['recomm_code'])){
             $recomm_id = getBaseIdByRecommCode($paramAll['recomm_code']);//写入推荐人ID进数据库
             if(!empty($recomm_id)){
-                returnJson(4000,'请填写正确的推荐码');
+                returnJson(4000,'输入的邀请码有误');
             }
         }
         //进行注册

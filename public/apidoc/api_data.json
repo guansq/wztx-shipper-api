@@ -666,6 +666,62 @@
   },
   {
     "type": "GET",
+    "url": "/index/getArticle",
+    "title": "获取文章内容done",
+    "description": "<p>@apiName  getArticle</p>",
+    "group": "Index",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "type",
+            "description": "<p>文章标识(货主端:关于我们-shipper_about，发布订单协议-shipper_order_agreement，货物保险说明-shipper_insurance_instructions，推荐奖励说明-shipper_recommend_reward，用户注册协议-shipper_registration_protocol)</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>文章标题.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "content",
+            "description": "<p>文章内容.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "type",
+            "description": "<p>文章标识.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "application/api/controller/Index.php",
+    "groupTitle": "Index",
+    "name": "GetIndexGetarticle",
+    "sampleRequest": [
+      {
+        "url": "http://wztx.shp.zenmechi.cc/index/getArticle"
+      }
+    ]
+  },
+  {
+    "type": "GET",
     "url": "/apiCode",
     "title": "返回码说明done",
     "description": "<p>技术支持：<a href=\"http://www.ruitukeji.com\" target=\"_blank\">睿途科技</a></p>",
@@ -1568,6 +1624,20 @@
             "group": "Success 200",
             "type": "String",
             "optional": false,
+            "field": "effective_time",
+            "description": "<p>在途时效</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "remark",
+            "description": "<p>备注</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
             "field": "org_address_maps",
             "description": "<p>出发地地址的坐标 如116.480881,39.989410</p>"
           },
@@ -1814,34 +1884,6 @@
   },
   {
     "type": "POST",
-    "url": "/pay/alipayCash",
-    "title": "支付宝保证金支付done",
-    "name": "alipay",
-    "group": "Pay",
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "authorization-token",
-            "description": "<p>token.</p>"
-          }
-        ]
-      }
-    },
-    "version": "0.0.0",
-    "filename": "application/api/controller/Pay.php",
-    "groupTitle": "Pay",
-    "sampleRequest": [
-      {
-        "url": "http://wztx.shp.zenmechi.cc/pay/alipayCash"
-      }
-    ]
-  },
-  {
-    "type": "POST",
     "url": "/pay/alipay",
     "title": "支付宝订单支付done",
     "name": "alipay",
@@ -1878,6 +1920,34 @@
     "sampleRequest": [
       {
         "url": "http://wztx.shp.zenmechi.cc/pay/alipay"
+      }
+    ]
+  },
+  {
+    "type": "POST",
+    "url": "/pay/alipayCash",
+    "title": "支付宝保证金支付done",
+    "name": "alipay",
+    "group": "Pay",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization-token",
+            "description": "<p>token.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "application/api/controller/Pay.php",
+    "groupTitle": "Pay",
+    "sampleRequest": [
+      {
+        "url": "http://wztx.shp.zenmechi.cc/pay/alipayCash"
       }
     ]
   },
@@ -2771,7 +2841,7 @@
   },
   {
     "type": "get",
-    "url": "/test/test",
+    "url": "/car/test",
     "title": "测试",
     "name": "test",
     "group": "Test",
@@ -2813,7 +2883,7 @@
     "groupTitle": "Test",
     "sampleRequest": [
       {
-        "url": "http://wztx.shp.zenmechi.cc/test/test"
+        "url": "http://wztx.shp.zenmechi.cc/car/test"
       }
     ]
   },
