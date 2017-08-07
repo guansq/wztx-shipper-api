@@ -25,7 +25,6 @@ class Callback extends Controller
         $aop->signType = "RSA2";
         $data=input('param.');
         trace('调用alipay_callback接口');
-        trace($data);
         $alipay_public_key = getenv('ALIPAY_ALI_PUBLIC_KEY');
         $aop->alipayrsaPublicKey = $alipay_public_key;
         $flag = $aop->rsaCheckV1($_POST, NULL, "RSA2");//校验签名
@@ -35,6 +34,7 @@ class Callback extends Controller
         $transportLogic = model('TransportOrder','logic');
         if($flag){
             if($data['trade_status'] == 'TRADE_SUCCESS'){
+                trace($data);
                 if($data['passback_params'] == 'transport'){
                     trace('进行订单状态更改');
                     $order_num=$data['out_trade_no'];//自家的订单CODE
@@ -74,7 +74,7 @@ class Callback extends Controller
                     $this->payRecord(1,$order_info,$data,$pay_type_order);//1支付成功->保存支付记录
                     trace("进行保证金支付操作");
                 }else if($data['passback_params'] == 'recharge'){
-
+                    trace('进行充值');
                     $pay_type_order = 'recharge';
                     $order_num=$data['out_trade_no'];//自家的订单CODE
                     $where = ['order_code'=>$order_num];
