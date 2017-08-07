@@ -37,10 +37,9 @@ class BaseController extends Controller {
         //不需要token验证的控制器方法
         $except_controller = [
             "User" => ["login", "reg", "forget", 'computeQlfScore'],
-            "Index" => ["apiCode", 'lastApk', 'appConfig', 'sendCaptcha','test','getarticle'],
+            "Index" => ["apiCode", 'lastApk', 'appConfig', 'sendCaptcha','test','getArticle'],
             "Car" => ['getallcarstyle'],
         ];
-
         if (!array_key_exists($this->controller, $except_controller) || !in_array($this->action, $except_controller[$this->controller])) {
             $token = request()->header('authorization-token', '');
             $except_token_controller = [

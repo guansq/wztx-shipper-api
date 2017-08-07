@@ -214,6 +214,8 @@ class Order extends BaseController {
      * @apiSuccess  {String} system_price       系统出价
      * @apiSuccess  {String} mind_price         货主出价
      * @apiSuccess  {String} final_price        总运费
+     * @apiSuccess  {String} effective_time      在途时效
+     * @apiSuccess  {String} remark              备注
      * @apiSuccess  {String} org_address_maps        出发地地址的坐标 如116.480881,39.989410
      * @apiSuccess  {String} dest_address_maps       目的地地址的坐标 如116.480881,39.989410
      * @apiSuccess  {String} map_code       该订单司机的高德云图ID
@@ -273,6 +275,8 @@ class Order extends BaseController {
             'system_price' => wztxMoney($orderInfo['system_price']),
             'mind_price' => wztxMoney($orderInfo['mind_price']),
             'final_price' => wztxMoney($orderInfo['final_price']),
+            'effective_time' => $orderInfo['effective_time'],
+            'remark' => $orderInfo['remark'],
             'org_address_maps' =>$orderInfo['org_address_maps'],
             'dest_address_maps' =>$orderInfo['dest_address_maps'],
             'map_code' => $drBaseInfo['map_code']
