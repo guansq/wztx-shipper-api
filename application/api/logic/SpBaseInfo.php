@@ -35,10 +35,10 @@ class SpBaseInfo extends BaseLogic{
      */
     public function savePersonAuth($where,$data){
         $ret = $this->where($where)->update($data);
-        if($ret === false){
-            return resultArray('4020', '更新失败');
+        if($ret === true){
+            return resultArray('2000','更新成功');
         }
-        return resultArray('2000','更新成功');
+        return resultArray('4020', '更新失败');
     }
 
     /**
@@ -72,7 +72,7 @@ class SpBaseInfo extends BaseLogic{
             'auth_status' => 'check'
         ];
         $result = $this->where("id",$userInfo['id'])->update($updateArr);
-        if($result !== false){
+        if($result === true){
             return resultArray(2000,'保存企业验证信息成功');
         }
         return resultArray(4020,'保存企业验证信息失败');

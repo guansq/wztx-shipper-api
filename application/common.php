@@ -591,3 +591,13 @@ function saveOrderShare($order_id = ''){
 function bondStatus($sp_id){
     return Db::name('sp_base_info')->where('id',$sp_id)->value('bond_status');
 }
+
+
+//通过goods_id去查找未报价订单
+function findOrderByGoodsId($goods_id){
+    $where = [
+        'status'  => 'quote',
+        'goods_id' => $goods_id
+    ];
+    return Db::name('transport_order')->where($where)->find();
+}

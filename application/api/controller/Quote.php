@@ -18,6 +18,8 @@ class Quote extends BaseController{
     const DRMSG = '您的报价已被货主接收';
     const DRTITLE = '您的报价已被货主接收';
     const DRCONTENT = '您的报价已被货主接收';
+    const UNGETTITLE = '抱歉，您的订单已被其他人接单';
+    const UNGECONTENT = '抱歉，您的订单已被其他人接单';
     /**
      * @api {POST}  /quote/showDriverQuoteList      显示司机报价列表 done
      * @apiName     showDriverQuoteList
@@ -208,18 +210,18 @@ class Quote extends BaseController{
         }*/
         model('Quote','logic')->changeQuote(['id'=>$paramAll['quote_id']],['is_receive'=>1]);//货主确认该报价
         $quoteInfo = $ret['result'];
-        $final_price = $quoteInfo['dr_price'];
-        //获得司机报价的价格
+        $final_price = $quoteInfo['dr_price'];//获得司机报价的价格
+
         $data = [
             'status' => 'quoted',
             'final_price' => $final_price,
             'dr_id' => $quoteInfo['dr_id'],
         ];
-        //保存订单
-
+        //更改货源状态为已报价完毕等待发货
+        model('Goods','logic')->updateGoodsInfo(['id'=>$quoteInfo['goods_id']],['status'=>'quoted']);
         //更改订单状态
-        //$result = model('TransportOrder','logic')->updateTransport(['id'=>$paramAll['order_id'],'sp_id'=>$this->loginUser['id'],'status'=>'quote'],$data);
-        $result = saveOrderBygoodsInfo($quoteInfo['goods_id'],$quoteInfo);
+        $result = model('TransportOrder','logic')->updateTransport(['goods_id'=>$quoteInfo['goods_id'],'sp_id'=>$this->loginUser['id'],'status'=>'quote'],$data);
+        //$result = saveOrderBygoodsInfo($quoteInfo['goods_id'],$quoteInfo);
         if($result['code'] == 4000){
             returnJson($result);
         }
@@ -229,6 +231,23 @@ class Quote extends BaseController{
         $push_token = getPushToken($quoteInfo['dr_id']);//得到推送token
         if(!empty($push_token)){
             pushInfo($push_token,self::DRTITLE,self::DRCONTENT,'wztx_driver');//推送给司机
+        }
+        //推送消息未获得到该订单的司机->取出所有的报价列表
+        $allQuoteId = model('Quote','logic')->getAllQuote($quoteInfo['goods_id']);
+        if(!$allQuoteId->isEmpty()){
+            $unGetDr = [];
+            foreach($allQuoteId as $v){
+                if($v['id'] != $paramAll['quote_id']){
+                    $unGetDr[] = $v['dr_id'];
+                }
+            }
+            foreach($unGetDr as $v){
+                //发送推送消息
+                $push_token = getPushToken($v);//得到推送token
+                if(!empty($push_token)){
+                    pushInfo($push_token,self::UNGETTITLE,self::UNGETCONTENT,'wztx_driver');//推送给司机
+                }
+            }
         }
         //发送短信给司机
 

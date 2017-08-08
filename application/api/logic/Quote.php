@@ -59,6 +59,12 @@ class Quote extends BaseLogic{
 
         return resultArray(2000, '', $ret);
     }
+    /*
+     * 取出所有货源的报价
+     */
+    public function getAllQuote($goods_id){
+        return $this->field('id','dr_id')->where('goods_id')->select();
+    }
 
     /**
      * Auther: guanshaoqiu <94600115@qq.com>
