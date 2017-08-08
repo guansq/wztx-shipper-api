@@ -19,7 +19,7 @@ class Quote extends BaseController{
     const DRTITLE = '您的报价已被货主接收';
     const DRCONTENT = '您的报价已被货主接收';
     const UNGETTITLE = '抱歉，您的订单已被其他人接单';
-    const UNGECONTENT = '抱歉，您的订单已被其他人接单';
+    const UNGETCONTENT = '抱歉，您的订单已被其他人接单';
     /**
      * @api {POST}  /quote/showDriverQuoteList      显示司机报价列表 done
      * @apiName     showDriverQuoteList

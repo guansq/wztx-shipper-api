@@ -334,6 +334,7 @@ class Order extends BaseController {
         foreach ($orderInfo['list'] as $k =>$v){
             $list[$k]['order_id'] = $v['id'];
             $list[$k]['org_city'] = $v['org_city'];
+            $list[$k]['goods_id'] = $v['goods_id'];
             $list[$k]['dest_city'] = $v['dest_city'];
             $list[$k]['weight'] =strval($v['weight']);
             $list[$k]['goods_name'] = $v['goods_name'];
