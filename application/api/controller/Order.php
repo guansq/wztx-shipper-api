@@ -403,7 +403,7 @@ class Order extends BaseController {
             returnJson('4000', '当前状态不能拍照上传');
         }
         //没有问题存入数据库
-        $changeStatus = model('TransportOrder', 'logic')->updateTransport(['id' => $paramAll['order_id']], ['pay_cer_pic' => $paramAll['img_url']]);
+        $changeStatus = model('TransportOrder', 'logic')->updateTransport(['id' => $paramAll['order_id']], ['pay_cer_pic' => $paramAll['img_url'],'per_status'=>'check']);
         if ($changeStatus['code'] != '2000') {
             returnJson($changeStatus);
         }
