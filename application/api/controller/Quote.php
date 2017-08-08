@@ -46,7 +46,7 @@ class Quote extends BaseController{
         $where = [
             'goods_id' => $paramAll['goods_id'],
             'sp_id' => $this->loginUser['id'],
-            'status' => 'quote',//司机已报价
+            //'status' => 'quote',//司机已报价
         ];
         $ret = model('Quote','logic')->showQuoteList($where,$pageParam);//显示我的报价列表
         returnJson($ret);
@@ -234,7 +234,7 @@ class Quote extends BaseController{
         }
         //推送消息未获得到该订单的司机->取出所有的报价列表
         $allQuoteId = model('Quote','logic')->getAllQuote($quoteInfo['goods_id']);
-        if(!$allQuoteId->isEmpty()){
+        if(!collection($allQuoteId)->isEmpty()){
             $unGetDr = [];
             foreach($allQuoteId as $v){
                 if($v['id'] != $paramAll['quote_id']){
