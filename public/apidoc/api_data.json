@@ -1587,10 +1587,17 @@
           },
           {
             "group": "Success 200",
-            "type": "Int",
+            "type": "String",
             "optional": false,
             "field": "is_pay",
             "description": "<p>是否支付1为已支付 0为未支付</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "per_status",
+            "description": "<p>通过转账的记录状态init初始状态，check=认证中，pass审核通过，refuse审核拒绝</p>"
           },
           {
             "group": "Success 200",

@@ -209,7 +209,9 @@ class Order extends BaseController {
      * @apiSuccess  {String} avatar             车主头像
      * @apiSuccess  {String} card_number        司机车牌号
      * @apiSuccess  {String} policy_code        保单编号
-     * @apiSuccess  {Int} is_pay                是否支付1为已支付 0为未支付
+     * @apiSuccess  {String} is_pay                是否支付1为已支付 0为未支付
+     * @apiSuccess  {String} status                订单状态 quote报价中 quoted已报价-未配送（装货中）distribute配送中（在配送-未拍照）发货中 photo 拍照完毕（订单已完成）pay_failed（支付失败）/pay_success（支付成功）comment（已评论）
+     * @apiSuccess  {String} per_status            通过转账的记录状态init初始状态，check=认证中，pass审核通过，refuse审核拒绝
      * @apiSuccess  {String} is_receipt         货物回单1-是-默认，2-否
      * @apiSuccess  {String} system_price       系统出价
      * @apiSuccess  {String} mind_price         货主出价
@@ -271,6 +273,8 @@ class Order extends BaseController {
             'card_number' => $dr_card_number,
             'policy_code' => $orderInfo['policy_code'],
             'is_pay' => $orderInfo['is_pay'],
+            'status' => $orderInfo['status'],
+            'per_status' => $orderInfo['per_status'],
             'is_receipt' => $orderInfo['is_receipt'],
             'system_price' => wztxMoney($orderInfo['system_price']),
             'mind_price' => wztxMoney($orderInfo['mind_price']),
