@@ -54,6 +54,7 @@ class Car extends BaseController{
      * @apiSuccess {String} lastname  Lastname of the User.
      */
     public function test(){
-        dump($this->loginUser);
+        pushInfo('1a0018970a914ba8460','test11111111','test','wztx_shipper');
+        //dump($this->loginUser);
     }
 }

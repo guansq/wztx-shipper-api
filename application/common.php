@@ -436,10 +436,7 @@ function pushInfo($token,$title,$content,$rt_key='wztx_driver',$type='private'){
             "priority" => 0,
             "style" => 0,
             "alert_type" => -1,
-            "extras" => [
-                "0" => "RuiTu",
-                "type" => $type
-            ]
+            "extras" => ['type'=>$type]
         ]
     ];
     $desClass = new DesUtils();
