@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta content="application/xhtml+xml;charset=UTF-8" http-equiv="Content-Type"/>
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+    <meta http-equiv="expires" content="Wed, 26 Feb 1997 08:21:57 GMT">
+    <meta content="telephone=no, address=no" name="format-detection"/>
+    <!--IOS私有属性，可以添加到主屏幕-->
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+    <meta name="csrf-token" content="WrH4No5hr30bTJgefuj7YnxjP0WsssMx3SyQv7Rh"/>
+    <meta name="format-detection" content="telephone=no">
+    <title>物载天下</title>
+    <!--让IE8，IE9，支持Html5和Css3-->
+    <!--[if lte IE 8]>
+    <script src="/lib/common/mediaqueries/selectivity-full.min.js"></script>
+    <![endif]-->
+    <!--[if lt IE 9]>
+    <script src="lib/common/mediaqueries/css3-mediaqueries.js"></script>
+    <script src="lib/common/mediaqueries/html5shiv.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" href="lib/common/reset.css">
+    <link rel="stylesheet" href="css/reg.css">
+</head>
+<body>
+    <div class="success_b">
+        <div class="title_d">
+            <img src="image/success.png" alt="">
+            <p>注册成功</p>
+        </div>
+        <div class="download">
+            <h3>APP下载入口</h3>
+            <p>
+                <a href="#" class="az">安卓入口</a>
+                <a href="" class="ios">IOS入口</a>
+            </p>
+        </div>
+    </div>
+</body>
+<script src="lib/jQuery/jquery-min.js"></script>
+<script>
+    $(document).ready(function(){
+        var u = navigator.userAgent;
+        console.log(u);
+        var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+        var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+        if(isAndroid){
+            $(".ios").attr("href","javascript:void(0);");
+        }else{
+//            $(".ios").attr("href","");
+        }
+        if(isiOS){
+            $(".az").attr("href","javascript:void(0);");
+        }else{
+//            $(".az").attr("href","");
+        }
+    });
+</script>
+</html>
+
+
+
+
+
+
+

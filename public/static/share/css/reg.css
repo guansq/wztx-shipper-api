@@ -126,5 +126,53 @@ html,body{
   color: #666666;
 }
 
+/*
+  注册成功
+*/
+.success_b{
+  padding: 40px 0 0 0;
+}
+.success_b .title_d{
+  text-align: center;
+}
+.title_d img{
+  width: 70px;
+}
+.title_d p{
+  margin-top: 20px;
+  font-size: 17px;
+  color: #333;
+}
+.download{
+  padding-top: 40px;
+  text-align: center;
+}
+.download h3{
+  font-weight: normal;
+  color: #666;
+  font-size: 18px;
+  margin-bottom: 25px;
+}
+.download p a{
+  display: inline-block;
+  width: 146px;
+  height: 42px;
+  font-size: 16px;
+  border-radius: 6px;
+  line-height: 40px;
+  text-decoration: none;
+}
+.download p a.az{
+  border: 1px solid #FF937D;
+  background: #ffffff;
+  color: #FF937D;
+  margin-right: 8px;
+}
+.download p a.ios{
+  border: 1px solid #FF6243;
+  background: #FF6243;
+  color: #fff;
+  margin-left: 8px;
+}
 
 

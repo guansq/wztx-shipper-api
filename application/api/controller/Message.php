@@ -118,7 +118,25 @@ class Message extends BaseController {
         ];
         returnJson(2000, '成功获取', ['list' => $list]);
     }
+    /**
+     * @api {GET} /message/delMessage     删除消息done
+     * @apiName delMessage
+     * @apiGroup Message
+     * @apiHeader {String} authorization-token   token.
+     * @apiParam {String}   msg_id                  消息
+     */
+    public function delMessage() {
+        $paramAll = $this->getReqParams([
+            'msg_id',
+        ]);
+        $rule = [
+            'msg_id' => ['require', 'regex' => '^[0-9]*$'],
+        ];
+        validateData($paramAll, $rule);
 
+        $ret = model('Message', 'logic')->delMyMessage($paramAll,$this->loginUser);
+        returnJson($ret);
+    }
     /*
      * @api {GET} /message/onlineService      在线客服
      * @apiName onlineService

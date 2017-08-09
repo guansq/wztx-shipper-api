@@ -353,7 +353,7 @@ class Pay extends BaseController{
             'subject' => '支付订单金额',
             'order_no' => $orderNo,
             'timeout_express' => time() + 600,// 表示必须 600s 内付款
-            'amount' => '0.01',// 微信沙箱模式，需要金额固定为3.01
+            'amount' => $order_info['final_price'],// 微信沙箱模式，需要金额固定为3.01 //0.01
             'return_param' => 'transport',//支付订单
             'client_ip' => isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1',// 客户地址
         ];
@@ -547,7 +547,7 @@ class Pay extends BaseController{
             'subject' => '微信充值',
             'order_no' => $order_code,
             'timeout_express' => time() + 600,// 表示必须 600s 内付款
-            'amount' => '0.01',// 微信沙箱模式，需要金额固定为3.01
+            'amount' =>  wztxMoney($paramAll['money']),// 微信沙箱模式，需要金额固定为3.01'0.01'
             'return_param' => 'wx_recharge',//微信充值
             'client_ip' => isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1',// 客户地址
         ];

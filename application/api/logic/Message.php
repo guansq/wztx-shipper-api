@@ -114,6 +114,7 @@ class Message extends BaseLogic {
                 'ms.type' => 0,
                 'm.push_type' => ['not in', ['all']],
                 'm.delete_at'=>['exp',' is  null'],
+                'ms.delete_at'=>['exp',' is  null'],
             ];
             $dataTotal = $this->alias('m')
                 ->join('MessageSendee ms', 'm.id = ms.msg_id')
@@ -210,6 +211,55 @@ class Message extends BaseLogic {
             return resultArray(2000, '', $ret);
         }
     }
+
+    /**
+     * 消息删除
+     */
+    public function delMyMessage($paramAll,$user) {
+        $id =  $paramAll['msg_id'];
+        $detailMsg = $this->where(['id' =>$id,'type'=>0,  'delete_at'=>['exp',' is  null']])->find();
+        if (empty($detailMsg)) {
+            return resultArray(4004);
+        }
+        if ($detailMsg['push_type'] != 'all') {
+            $where = [
+                'ms.sendee_id' => $user['id'],
+                'ms.msg_id' => $id,
+                'ms.type' => 0,
+            ];
+            $dbRet =  db('MessageSendee')->where($where)->update(['delete_at'=>time()]);
+
+            if (empty($dbRet)) {
+                return resultArray(4004);
+            }
+            return resultArray(2000, '', []);
+        } else {
+            $MsgSendeeModel = db('MessageSendee');
+            $info = $MsgSendeeModel->alias('m')->where(['sendee_id' => $user['id'], 'msg_id' => $detailMsg['id'], 'type' => 0])->find();
+            if (empty($info)) {
+                //插入阅读数据
+                $insertData['msg_id'] = $detailMsg['id'];
+                $insertData['sendee_id'] = $user['id'];
+                $insertData['create_at'] = time();
+                $insertData['read_at'] = time();
+                $insertData['delete_at'] = time();
+                $insertData['type'] = 0;
+                $dbRet =  db('MessageSendee')->insert($insertData);
+            }else{
+                $where = [
+                    'ms.sendee_id' => $user['id'],
+                    'ms.msg_id' => $id,
+                    'ms.type' => 0,
+                ];
+                $dbRet =  db('MessageSendee')->where($where)->update(['delete_at'=>time()]);
+            }
+            if(empty($dbRet)){
+                return resultArray(4004);
+            }
+            return resultArray(2000, '', []);
+        }
+    }
+
 
     /**
      * Author: WILL<314112362@qq.com>

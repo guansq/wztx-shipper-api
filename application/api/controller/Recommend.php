@@ -52,6 +52,7 @@ class Recommend extends BaseController {
             $v['bonus'] = wztxMoney($v['bonus']);
             $list[$k]['avatar'] = $v['avatar'];
             $list[$k]['name'] = $v['real_name'];
+            $list[$k]['phone'] = $v['phone'];
             $list[$k]['bonus'] = $v['bonus'];
         }
         $ret['list'] = $list;
