@@ -23,11 +23,12 @@ define({
     "withGenerator": false,
     "jQueryAjaxSetup": {}
   },
-  "apidoc": "0.2.0",
+  "defaultVersion": "0.0.0",
+  "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
-    "time": "2017-08-08T09:08:22.333Z",
+    "time": "2017-08-09T11:07:48.989Z",
     "url": "http://apidocjs.com",
-    "version": "0.16.1"
+    "version": "0.17.6"
   }
 });

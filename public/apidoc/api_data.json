@@ -1031,6 +1031,47 @@
   },
   {
     "type": "GET",
+    "url": "/message/delMessage",
+    "title": "删除消息done",
+    "name": "delMessage",
+    "group": "Message",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization-token",
+            "description": "<p>token.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "msg_id",
+            "description": "<p>消息</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "application/api/controller/Message.php",
+    "groupTitle": "Message",
+    "sampleRequest": [
+      {
+        "url": "http://wztx.shp.zenmechi.cc/message/delMessage"
+      }
+    ]
+  },
+  {
+    "type": "GET",
     "url": "/message/detail",
     "title": "我的消息-详情done",
     "name": "detail",
@@ -1891,6 +1932,34 @@
   },
   {
     "type": "POST",
+    "url": "/pay/alipayCash",
+    "title": "支付宝保证金支付done",
+    "name": "alipay",
+    "group": "Pay",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization-token",
+            "description": "<p>token.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "application/api/controller/Pay.php",
+    "groupTitle": "Pay",
+    "sampleRequest": [
+      {
+        "url": "http://wztx.shp.zenmechi.cc/pay/alipayCash"
+      }
+    ]
+  },
+  {
+    "type": "POST",
     "url": "/pay/alipay",
     "title": "支付宝订单支付done",
     "name": "alipay",
@@ -1927,34 +1996,6 @@
     "sampleRequest": [
       {
         "url": "http://wztx.shp.zenmechi.cc/pay/alipay"
-      }
-    ]
-  },
-  {
-    "type": "POST",
-    "url": "/pay/alipayCash",
-    "title": "支付宝保证金支付done",
-    "name": "alipay",
-    "group": "Pay",
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "authorization-token",
-            "description": "<p>token.</p>"
-          }
-        ]
-      }
-    },
-    "version": "0.0.0",
-    "filename": "application/api/controller/Pay.php",
-    "groupTitle": "Pay",
-    "sampleRequest": [
-      {
-        "url": "http://wztx.shp.zenmechi.cc/pay/alipayCash"
       }
     ]
   },
