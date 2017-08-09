@@ -49,6 +49,7 @@ class SpBaseInfo extends BaseLogic{
         $now = time();
         //Db::startTrans();
         $param['sp_id'] = $userInfo['id'];
+        //dump($userInfo);die;
         //存入公司信息到数据库
         if(empty($userInfo['company_id'])){
             //$this->loginUser['company_name'] = getCompanyName($this->loginUser);
