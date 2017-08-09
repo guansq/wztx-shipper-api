@@ -7,6 +7,7 @@
  */
 namespace app\api\logic;
 
+use app\common\model\SpCompanyAuth;
 use jwt\JwtHelper;
 use think\Db;
 
@@ -60,13 +61,37 @@ class SpBaseInfo extends BaseLogic{
             $company_id = $this->getLastInsID();
         }else{
             $company_id = $userInfo['company_id'];
+            $model = new SpCompanyAuth();//model('sp_company_auth')
+            $allowData = [
+                'com_name' => $param['com_name'],
+                'com_short_name' => $param['com_short_name'],
+                'com_buss_num' => $param['com_buss_num'],
+                'address' => $param['address'],
+                'deposit_name' => $param['deposit_name'],
+                'bank' => $param['bank'],
+                'account' => $param['account'],
+                'phone' => $param['phone'],
+                'identity' => $param['identity'],
+                'law_person' => $param['law_person'],
+                'buss_pic' => $param['buss_pic'],
+                'back_pic' => $param['back_pic'],
+                'front_pic' => $param['front_pic'],
+                'hold_pic' => $param['hold_pic'],
+            ];
+            $where = [
+                'id' => $company_id
+            ];
+            $ret = model('sp_company_auth')->where($where)->update($allowData);
+            if($ret === false){
+                return resultArray(6000,'更新公司信息失败');
+            }
         }
 
         //更新法人信息 //'real_name' =>操作人名
         $updateArr = [
             'company_id' => $company_id,
             'real_name' => $param['com_name'],
-            'identity' => $param['identity'],
+            'identity' => $param['sp_identity'],//操作人的省份证
             'hold_pic' => $param['sp_hold_pic'],
             'front_pic' => $param['sp_front_pic'],
             'back_pic' => $param['sp_back_pic'],

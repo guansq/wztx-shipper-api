@@ -155,7 +155,7 @@ class User extends BaseController{
             'com_buss_num'=>'require|min:10|max:100',
             'law_person'=>'require|max:50',
             'identity' =>['require','regex'=>'/^(\d{15}$|^\d{18}$|^\d{17}(\d|X|x))$/'],
-            'phone'=>['regex'=>'/^[1]{1}[3|5|7|8]{1}[0-9]{9}$/','require'],
+            'phone'=>'require|min:8',
             'address'=>'require|max:100',
             'deposit_name'=>'require|max:50',
             'bank'=>'require|max:50',
