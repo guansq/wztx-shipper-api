@@ -69,6 +69,7 @@ class BaseController extends Controller {
                 $this->loginUser['type'] = $spBaseInfo['type'];
                 $this->loginUser['real_name'] = $spBaseInfo['real_name'];
                 $this->loginUser['balance'] = $spBaseInfo['balance'];
+                $this->loginUser['company_id'] = $spBaseInfo['company_id'];
                 if(!empty($spBaseInfo['company_id'])){
                     $this->loginUser['company_name'] = getCompanyName($this->loginUser);
                 }
