@@ -101,6 +101,7 @@ class Comment extends BaseController {
         $paramAll['status'] = 0;
         //获取pay_order_id undo
         $paramAll['pay_orderid'] = '111111111111';
+        $paramAll['order_code'] =$orderInfo['order_code'];
         //没有问题存入数据库
         $changeStatus = model('TransportOrder', 'logic')->updateTransport(['id' => $paramAll['order_id']], ['status' => 'comment']);
         if ($changeStatus['code'] != '2000') {

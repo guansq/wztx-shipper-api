@@ -91,7 +91,7 @@ $(".driver").click(function(e){
     "user_name": $("#tel").val(),
     "captcha": $("#identifying").val(),
     "password": psw,
-    "recomm_code": "",
+    "recomm_code": $('#referral').val(),
     "pushToken": ""
   }
   $.post("http://wztx.drv.api.zenmechi.cc/User/reg",dataObj,function(resData){
@@ -99,6 +99,8 @@ $(".driver").click(function(e){
       alert("注册成功");
     }else if(resData.code == 4002){
       alert("用户名已存在");
+    }else{
+        alert(resData.msg);
     }
   })
 
