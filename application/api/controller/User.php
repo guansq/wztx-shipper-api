@@ -46,7 +46,7 @@ class User extends BaseController{
         //判断推荐码
         if(isset($paramAll['recomm_code']) && !empty($paramAll['recomm_code'])){
             $recomm_id = getBaseIdByRecommCode($paramAll['recomm_code']);//写入推荐人ID进数据库
-            if(!empty($recomm_id)){
+            if(empty($recomm_id)){
                 returnJson(4000,'输入的邀请码有误');
             }
         }
@@ -185,6 +185,7 @@ class User extends BaseController{
         $result = $spBaseInfoLogic->saveBusinessAuth($paramAll,$this->loginUser);
         returnJson($result);
     }
+
     /**
      * @api      {POST} /User/login     用户登录done
      * @apiName  login
