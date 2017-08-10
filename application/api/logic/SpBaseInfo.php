@@ -39,7 +39,7 @@ class SpBaseInfo extends BaseLogic{
         if($ret){
             return resultArray('2000','更新成功');
         }
-        return resultArray('4020', '更新失败');
+        return resultArray('4020', '抱歉，修改失败');
     }
 
     /**
@@ -82,8 +82,9 @@ class SpBaseInfo extends BaseLogic{
                 'id' => $company_id
             ];
             $ret = model('sp_company_auth')->where($where)->update($allowData);
-            if($ret === false){
-                return resultArray(6000,'更新公司信息失败');
+
+            if(!$ret){
+                return resultArray(6000,'抱歉，修改失败');
             }
         }
 

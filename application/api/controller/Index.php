@@ -122,6 +122,12 @@ class Index extends BaseController{
                 returnJson('4000','该用户已存在');
             }
         }
+        if(in_array($data['opt'],['resetpwd'])){
+            $isReg = isReg($data['mobile']);
+            if(!$isReg){
+                returnJson(4000,'抱歉您还未注册');
+            }
+        }
         returnJson(MsgService::sendCaptcha($data['mobile'],$data['opt']));
     }
 
