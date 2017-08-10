@@ -163,9 +163,37 @@ class Message extends BaseLogic {
                 'ms.push_type' => 'all',
                 'ms.delete_at'=>['exp',' is  null'],
             ];
-            $dataTotal = $this->alias('ms')->where($where)->count();
-            if (empty($dataTotal)) {
-                return resultArray(4004);
+            if (empty($user['id'])) {
+                $dataTotal = $this->alias('ms')->where($where)->count();
+                if (empty($dataTotal)) {
+                    return resultArray(4004);
+                }
+            }
+
+
+            if (!empty($user['id'])) {
+                $whereSendee = [
+                    'm.sendee_id' => $user['id'],
+                    'm.delete_at'=>['exp',' is not null'],
+                    'm.type' => 0
+                ];
+                $MsgSendeeModel = db('MessageSendee');
+                $infodel = $MsgSendeeModel->alias('m')->where($whereSendee)->select();
+                $delId = '';
+                if(!empty($infodel)){
+                    $infodel = collection($infodel)->toArray();
+                    foreach ($infodel as $info => $v){
+                        $delId = $delId.','.$v['msg_id'];
+                    }
+                    $delId = substr($delId,1);
+                }
+                if(!empty($delId)){
+                    $where['ms.id'] = ['exp',' not in ('.$delId.')'];
+                }
+                $dataTotal = $this->alias('ms')->where($where)->count();
+                if (empty($dataTotal)) {
+                    return resultArray(4004);
+                }
             }
             $dbRet = $this->alias('ms')
                 ->where($where)
@@ -223,9 +251,9 @@ class Message extends BaseLogic {
         }
         if ($detailMsg['push_type'] != 'all') {
             $where = [
-                'ms.sendee_id' => $user['id'],
-                'ms.msg_id' => $id,
-                'ms.type' => 0,
+                'sendee_id' => $user['id'],
+                'msg_id' => $id,
+                'type' => 0,
             ];
             $dbRet =  db('MessageSendee')->where($where)->update(['delete_at'=>time()]);
 
@@ -247,9 +275,9 @@ class Message extends BaseLogic {
                 $dbRet =  db('MessageSendee')->insert($insertData);
             }else{
                 $where = [
-                    'ms.sendee_id' => $user['id'],
-                    'ms.msg_id' => $id,
-                    'ms.type' => 0,
+                    'sendee_id' => $user['id'],
+                    'msg_id' => $id,
+                    'type' => 0,
                 ];
                 $dbRet =  db('MessageSendee')->where($where)->update(['delete_at'=>time()]);
             }
