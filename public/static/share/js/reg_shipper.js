@@ -80,7 +80,7 @@ $(".consignor").click(function (e) {
         alert("请填写短信验证码");
         return false;
     }
-    if ($("#identifying").val().length < 6 || $("#psw").val().length > 6) {
+    if ($("#identifying").val().length < 6 || $("#identifying").val().length > 6) {
         alert("验证码长度应为6位");
         return false;
     }

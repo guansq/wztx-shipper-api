@@ -119,7 +119,7 @@ class Message extends BaseController {
         returnJson(2000, '成功获取', ['list' => $list]);
     }
     /**
-     * @api {GET} /message/delMessage     删除消息done
+     * @api {POST} /message/delMessage     删除消息done
      * @apiName delMessage
      * @apiGroup Message
      * @apiHeader {String} authorization-token   token.
