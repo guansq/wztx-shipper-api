@@ -54,7 +54,8 @@ class Car extends BaseController{
      * @apiSuccess {String} lastname  Lastname of the User.
      */
     public function test(){
-        pushInfo('1a0018970a914ba8460','test11111111','test','wztx_shipper');
+        //pushInfo('1a0018970a914ba8460','test11111111','test','wztx_shipper');
+        echo isReg('18451847702');
         //dump($this->loginUser);
     }
 }

@@ -598,3 +598,10 @@ function findOrderByGoodsId($goods_id){
     ];
     return Db::name('transport_order')->where($where)->find();
 }
+
+/*
+ * 判断是否注册
+ */
+function isReg($phone){
+    return Db::name('system_user_shipper')->where("user_name",$phone)->count();//存在为1 不存在为0
+}
