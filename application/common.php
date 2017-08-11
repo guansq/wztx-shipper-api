@@ -526,9 +526,9 @@ function saveOrderShare($order_id = ''){
     }
     if(in_array($orderInfo['status'],['pay_success','comment'])){
         $spBaseInfo = model('SpBaseInfo', 'logic')->findInfoByUserId($orderInfo['sp_id']);
+        $share_money = wztxMoney($orderInfo['final_price']*getSysconf('share_percent')/100);
         if(!empty($spBaseInfo['recomm_id'])){
             $spInviteBaseInfo = model('SpBaseInfo', 'logic')->findInfoByUserId($spBaseInfo['recomm_id']);
-            $share_money = wztxMoney($orderInfo['final_price']*getSysconf('share_percent')/100);
             $whereSp = [
                 'share_name'=>$spBaseInfo['real_name'],
                 'share_id'=>$spBaseInfo['recomm_id'],
