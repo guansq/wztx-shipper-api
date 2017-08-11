@@ -113,7 +113,7 @@ class Quote extends BaseController{
             //dump($info);
             //$quoteId = $quoteLogic->saveQuoteInfo($info);不生成询价单
             //发送系统消息给司机
-            sendMsg($info['dr_id'],self::TITLE,self::CONTENT,1);
+            //sendMsg($info['dr_id'],self::TITLE,self::CONTENT,1);
             //发送推送消息
             $push_token = getPushToken($info['dr_id']);//得到推送token
             if(!empty($push_token)){
@@ -242,6 +242,8 @@ class Quote extends BaseController{
                 }
             }
             foreach($unGetDr as $v){
+                //发送消息给司机
+                sendMsg($v,self::UNGETTITLE,self::UNGETCONTENT,1);
                 //发送推送消息
                 $push_token = getPushToken($v);//得到推送token
                 if(!empty($push_token)){
