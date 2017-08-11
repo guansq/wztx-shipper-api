@@ -97,6 +97,7 @@ class Callback extends Controller
                     trace("进行充值操作记录");
                 }
             }
+            echo 'success';
         }else{
             //$this->payRecord(1,$order_info,$data);//0支付失败
         }
