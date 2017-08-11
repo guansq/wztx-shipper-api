@@ -359,10 +359,7 @@ function getCompanyName($userInfo){
  * 通过推荐码得到推荐人ID
  */
 function getBaseIdByRecommCode($recommCode){
-    if(!empty($recommCode)){
-        return Db::name('sp_base_info')->where("recomm_code",$recommCode)->value('id');
-    }
-    return '';
+    return Db::name('sp_base_info')->where("recomm_code",$recommCode)->value('id');
 }
 
 /**
