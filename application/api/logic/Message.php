@@ -29,9 +29,9 @@ class Message extends BaseLogic {
             return 0;
         }
         $where = [
-            'read_at' => 'NULL',
+            'read_at' => ['exp',' is  null'],
             'type' => 0,
-            'delete_at'=>'NULL'
+            'delete_at'=>['exp',' is  null'],
         ];
         return Db::table('rt_message_sendee')->where($where)->where('sendee_id', $user['id'])->count();
     }
@@ -51,7 +51,7 @@ class Message extends BaseLogic {
             $where2 = [];
         }else{
             $where2=[
-                'read_at' => 'NULL',
+                'read_at' =>['exp',' is  null'],
             ];
         }
         $item = $this->alias('m')
