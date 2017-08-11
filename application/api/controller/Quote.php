@@ -249,6 +249,8 @@ class Quote extends BaseController{
                 }
             }
         }
+        //更改所有的报价为已完成状态
+        model('Quote','logic')->changeQuote(['goods_id'=>$quoteInfo['goods_id']],['status'=>'complete']);
         //发送短信给司机
 
         sendSMS(getDrPhone($quoteInfo['dr_id']),self::DRCONTENT,'wztx_driver');
