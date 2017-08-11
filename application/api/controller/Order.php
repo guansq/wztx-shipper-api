@@ -235,17 +235,20 @@ class Order extends BaseController {
         if (empty($orderInfo)) {
             returnJson('4004', '未获取到订单信息');
         }
+
         if (!empty($orderInfo['dr_id'])) {
             $drBaseInfo = model('DrBaseInfo', 'logic')->findInfoByUserId($orderInfo['dr_id']);
             $dr_phone = $drBaseInfo['phone'];
             $dr_real_name = $drBaseInfo['real_name'];
             $dr_avatar = $drBaseInfo['avatar'];
             $dr_card_number = getCardNumber($drBaseInfo['car_id']);
+            $map_code = $drBaseInfo['map_code'];
         } else {
             $dr_phone = '';
             $dr_real_name = '';
             $dr_avatar = '';
             $dr_card_number = '';
+            $map_code = null;
         }
 
         $detail = [
@@ -283,7 +286,7 @@ class Order extends BaseController {
             'remark' => $orderInfo['remark'],
             'org_address_maps' =>$orderInfo['org_address_maps'],
             'dest_address_maps' =>$orderInfo['dest_address_maps'],
-            'map_code' => $drBaseInfo['map_code']
+            'map_code' => $map_code
         ];
         returnJson('2000', '成功', $detail);
     }
