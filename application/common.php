@@ -463,7 +463,7 @@ function createSign($sendData){
  * 得到司机车牌号
  */
 function getCardNumber($id){
-    return Db::name('dr_carinfo_auth')->where("id",$id)->value('card_number');
+    return Db::name('dr_carinfo_auth')->where("dr_id",$id)->value('card_number');
 }
 
 /*
