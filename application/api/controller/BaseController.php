@@ -66,6 +66,9 @@ class BaseController extends Controller {
                 if (empty($spBaseInfo)) {
                     returnJson(4011);
                 }
+                if($spBaseInfo['is_black'] === 1){
+                    returnJson(4000,'用户被加入黑名单');
+                }
                 $this->loginUser['type'] = $spBaseInfo['type'];
                 $this->loginUser['real_name'] = $spBaseInfo['real_name'];
                 $this->loginUser['balance'] = $spBaseInfo['balance'];
