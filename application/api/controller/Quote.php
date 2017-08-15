@@ -133,7 +133,7 @@ class Quote extends BaseController{
         //echo getSysconf('grab_range');
         //然后从数据库把司机给
         if(empty($datas)){
-            returnJson('4000','附近没有找到司机');
+            returnJson(2000,'附近没有找到司机');
         }
 
         foreach($datas as $k => $v){
@@ -149,7 +149,7 @@ class Quote extends BaseController{
         ];
         $driver = model('DrBaseInfo','logic')->getEnableDriver($where);
         if(empty($driver)){
-            returnJson('4000','附近没有找到司机');
+            returnJson(2000,'附近没有找到司机');
         }
         return $driver;//返回司机列表
     }
