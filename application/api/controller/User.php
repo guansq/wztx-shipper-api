@@ -33,22 +33,23 @@ class User extends BaseController{
         $rule = [
             ['type','require','请选择注册用户的类型'],
             ['user_name',['regex'=>'/^[1]{1}[3|5|7|8]{1}[0-9]{9}$/','require','unique:system_user_shipper'],['请输入合法的手机号','手机号必填','已经存在该用户，请不要重复注册']],
-            //['password',['require','length:6,128'],['请填写密码','密码长度不得小于6大于128字节']],
+            ['password',['require'],['请填写密码']],
             ['captcha',['require','length:4,8'],['验证码必填','验证码长度在4-8之间']]
         ];
         validateData($paramAll, $rule);
         $userLogic = model('User','logic');
-        //校验验证码
-        $result = MsgService::verifyCaptcha($paramAll['user_name'],'reg',$paramAll['captcha']);
-        if($result['code'] != 2000){
-            returnJson(4000,'验证码输入有误');
-        }
+
         //判断推荐码
         if(isset($paramAll['recomm_code']) && !empty($paramAll['recomm_code'])){
             $recomm_id = getBaseIdByRecommCode($paramAll['recomm_code']);//写入推荐人ID进数据库
             if(empty($recomm_id)){
                 returnJson(4000,'输入的邀请码有误');
             }
+        }
+        //校验验证码
+        $result = MsgService::verifyCaptcha($paramAll['user_name'],'reg',$paramAll['captcha']);
+        if($result['code'] != 2000){
+            returnJson(4000,'验证码输入有误');
         }
         //进行注册
         $result = $userLogic->reg($paramAll);
