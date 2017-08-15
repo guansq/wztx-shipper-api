@@ -523,8 +523,9 @@ function saveOrderShare($order_id = ''){
     }
     if(in_array($orderInfo['status'],['pay_success','comment'])){
         $spBaseInfo = model('SpBaseInfo', 'logic')->findInfoByUserId($orderInfo['sp_id']);
-        $share_money = wztxMoney($orderInfo['final_price']*getSysconf('share_percent')/100);
-        if(!empty($spBaseInfo['recomm_id'])){
+        $share_money =floor($orderInfo['final_price']*getSysconf('share_percent'))/100;
+       // $share_money = wztxMoney($orderInfo['final_price']*getSysconf('share_percent')/100);
+        if(!empty($spBaseInfo['recomm_id']) && !empty($share_money)){
             $spInviteBaseInfo = model('SpBaseInfo', 'logic')->findInfoByUserId($spBaseInfo['recomm_id']);
             $whereSp = [
                 'share_name'=>$spInviteBaseInfo['real_name'],
@@ -544,7 +545,7 @@ function saveOrderShare($order_id = ''){
         }
 
         $drBaseInfo = model('DrBaseInfo', 'logic')->findInfoByUserId($orderInfo['dr_id']);
-        if(!empty($drBaseInfo['recomm_id'])){
+        if(!empty($drBaseInfo['recomm_id']) && !empty($share_money)){
             $drInviteBaseInfo = model('DrBaseInfo', 'logic')->findInfoByUserId($drBaseInfo['recomm_id']);
 
             $whereSp = [
