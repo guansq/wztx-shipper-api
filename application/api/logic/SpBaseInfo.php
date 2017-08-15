@@ -209,4 +209,11 @@ class SpBaseInfo extends BaseLogic{
            return resultArray(4000,'失败');
        }
     }
+
+    // 获得被推荐人的总bonus
+    public function getRecommBonusAll($where){
+        $ret =Db::name('ShareList')->where($where)->field("sum(amount) amount")->select();
+        // echo $this->getLastSql();
+        return $ret;
+    }
 }

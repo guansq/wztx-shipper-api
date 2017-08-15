@@ -27,9 +27,11 @@ class Pay extends BaseController{
      */
     public function index(){
         $spBaseInfo = model('SpBaseInfo', 'logic')->findInfoByUserId($this->loginUser['id']);
+        $bonus = model('SpBaseInfo', 'logic')->getRecommBonusAll(['share_id' => $this->loginUser['id'], 'status' => 0, 'type' => 0]);
+        $bonus = empty($bonus[0]['amount'])?0:$bonus[0]['amount'];
         returnJson('2000', '成功', [
             'balance' => wztxMoney($spBaseInfo['balance']),
-            'bonus' => wztxMoney($spBaseInfo['bonus'])
+            'bonus' => wztxMoney($bonus)
         ]);
     }
 
@@ -120,7 +122,7 @@ class Pay extends BaseController{
         $pageParam = $this->getPagingParams();
         $recordInfo = model('Pay', 'logic')->getRechargeRecordList($where, $pageParam);
         if(empty($recordInfo)){
-            returnJson('4004', '暂无订单信息');
+            returnJson('4004', '暂无充值记录');
         }
         $list = $recordInfo['list'];
 
