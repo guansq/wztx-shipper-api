@@ -666,62 +666,6 @@ define({ "api": [
   },
   {
     "type": "GET",
-    "url": "/index/getArticle",
-    "title": "获取文章内容done",
-    "description": "<p>@apiName  getArticle</p>",
-    "group": "Index",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "type",
-            "description": "<p>文章标识(货主端:关于我们-shipper_about，发布订单协议-shipper_order_agreement，货物保险说明-shipper_insurance_instructions，推荐奖励说明-shipper_recommend_reward，用户注册协议-shipper_registration_protocol)</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "title",
-            "description": "<p>文章标题.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "content",
-            "description": "<p>文章内容.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "type",
-            "description": "<p>文章标识.</p>"
-          }
-        ]
-      }
-    },
-    "version": "0.0.0",
-    "filename": "application/api/controller/Index.php",
-    "groupTitle": "Index",
-    "name": "GetIndexGetarticle",
-    "sampleRequest": [
-      {
-        "url": "http://wztx.shp.zenmechi.cc/index/getArticle"
-      }
-    ]
-  },
-  {
-    "type": "GET",
     "url": "/apiCode",
     "title": "返回码说明done",
     "description": "<p>技术支持：<a href=\"http://www.ruitukeji.com\" target=\"_blank\">睿途科技</a></p>",
@@ -859,6 +803,61 @@ define({ "api": [
     "sampleRequest": [
       {
         "url": "http://wztx.shp.zenmechi.cc/appConfig"
+      }
+    ]
+  },
+  {
+    "type": "GET",
+    "url": "/index/getArticle",
+    "title": "获取文章内容done",
+    "name": "getArticle",
+    "group": "Index",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "type",
+            "description": "<p>文章标识(货主端:关于我们-shipper_about，发布订单协议-shipper_order_agreement，货物保险说明-shipper_insurance_instructions，推荐奖励说明-shipper_recommend_reward，用户注册协议-shipper_registration_protocol)</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>文章标题.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "content",
+            "description": "<p>文章内容.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "type",
+            "description": "<p>文章标识.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "application/api/controller/Index.php",
+    "groupTitle": "Index",
+    "sampleRequest": [
+      {
+        "url": "http://wztx.shp.zenmechi.cc/index/getArticle"
       }
     ]
   },
@@ -1030,7 +1029,7 @@ define({ "api": [
     ]
   },
   {
-    "type": "GET",
+    "type": "POST",
     "url": "/message/delMessage",
     "title": "删除消息done",
     "name": "delMessage",
@@ -1526,6 +1525,13 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "dest_phone",
+            "description": "<p>收货人手机</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": true,
+            "field": "dest_telphone",
             "description": "<p>收货人电话</p>"
           },
           {
@@ -1554,6 +1560,13 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "org_phone",
+            "description": "<p>寄件人手机</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": true,
+            "field": "org_telphone",
             "description": "<p>寄件人电话</p>"
           },
           {
