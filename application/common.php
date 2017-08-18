@@ -572,7 +572,7 @@ function saveOrderShare($order_id = ''){
 
 // 保存推荐信息
  function saveRecomm($where) {
-     if (empty($where['share_id']) || empty($where['share_id']) || !in_array($where['type'], ['0', '1'])) {
+     if (empty($where['share_id']) || empty($where['invite_id']) || !in_array($where['type'], ['0', '1'])) {
          return false;
      }
      $whereExist = ['share_id' => $where['share_id'], 'invite_id' => $where['invite_id'], 'type' => $where['type']];
