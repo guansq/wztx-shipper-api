@@ -243,7 +243,7 @@ class Order extends BaseController {
             $dr_phone = $drBaseInfo['phone'];
             $dr_real_name = $drBaseInfo['real_name'];
             $dr_avatar = $drBaseInfo['avatar'];
-            $dr_card_number = getCardNumber($drBaseInfo['dr_id']);
+            $dr_card_number = getCardNumber($orderInfo['dr_id']);
             $map_code = $drBaseInfo['map_code'];
         } else {
             $dr_phone = '';
