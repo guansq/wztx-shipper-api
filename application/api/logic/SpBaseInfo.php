@@ -59,6 +59,7 @@ class SpBaseInfo extends BaseLogic{
                 return resultArray(6000,'保存公司信息失败');
             }
             $company_id = $this->getLastInsID();
+            $flag = 1;
         }else{
             $company_id = $userInfo['company_id'];
             $model = new SpCompanyAuth();//model('sp_company_auth')
@@ -81,11 +82,16 @@ class SpBaseInfo extends BaseLogic{
             $where = [
                 'id' => $company_id
             ];
-            $ret = model('sp_company_auth')->where($where)->update($allowData);
 
-            if(!$ret){
-                return resultArray(6000,'抱歉，修改失败');
+            $org_data = model('sp_company_auth')->where($where)->find();
+            $flag = 0;
+            foreach ($allowData as $k => $v){
+                if($v != $org_data[$k]){
+                    $flag = 1;
+                    break;
+                }
             }
+            $ret = model('sp_company_auth')->where($where)->update($allowData);
         }
 
         //更新法人信息 //'real_name' =>操作人名
@@ -98,6 +104,21 @@ class SpBaseInfo extends BaseLogic{
             'back_pic' => $param['sp_back_pic'],
             'auth_status' => 'check'
         ];
+        if(empty($flag)){
+            $org_data = $this->where("id",$userInfo['id'])->find();
+            foreach ($updateArr as $k => $v){
+                if(in_array($k,['company_id','auth_status'])){
+                    continue;
+                }
+                if($v != $org_data[$k]){
+                    $flag = 1;
+                    break;
+                }
+            }
+        }
+        if($flag == 0){
+            return resultArray(6000,'抱歉，修改失败');
+        }
         $result = $this->where("id",$userInfo['id'])->update($updateArr);
         if($result){
             return resultArray(2000,'保存企业验证信息成功');
