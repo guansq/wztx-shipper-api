@@ -186,26 +186,47 @@ class Goods extends BaseController{
         action('Quote/sendOrder',[$ret['result']['goods_id'],$paramAll['org_address_maps']]);
     }
     /**
-     * @api GET goods/goodsList 显示货源列表
+     * @api {POST} goods/goodsList 显示货源列表
      * @apiName goodsList
      * @apiGroup    Goods
      * @apiHeader authorization-token    token
      * @apiParam  type                  货源类型 quote报价中 quoted已报价
      */
     public function goodsList(){
-        $paramAll = $this->getReqParams([
-            'type',
-        ]);
+        $paramAll = $this->getReqParams(['type']);
         $rule = [
-            'type' => ['require', '/^(all|quoted|success)$/'],
+            'type' => ['require', '/^(all|quote|quoted)$/'],
         ];
         validateData($paramAll, $rule);
+
         if(!ispassAuth($this->loginUser)){//判断用户是否缴纳保证金
             returnJson([4000,'抱歉您还未缴纳保证金，或认证通过']);
         }
+        $where = [
+            'sp_id' => $this->loginUser['id']
+        ];
         if ($paramAll['type'] != 'all') {
             $where['status'] = $paramAll['type'];
         }
-        $goodsLogic = model('Goods','logic')->getGoodsList();
+        $pageParam = $this->getPagingParams();
+
+        $goodsList = model('Goods','logic')->getGoodsList($where,$pageParam);
+
+        if (empty($goodsList)) {
+            returnJson(4004, '暂无货源信息');
+        }
+        $list = [];
+        foreach ($goodsList['list'] as $k =>$v){
+            $list[$k]['goods_id'] = $v['id'];
+            $list[$k]['org_city'] = $v['org_city'];
+            $list[$k]['dest_city'] = $v['dest_city'];
+            $list[$k]['weight'] =strval($v['weight']);
+            $list[$k]['goods_name'] = $v['goods_name'];
+            $list[$k]['status'] = $v['status'];
+            $list[$k]['car_style_length'] = $v['car_style_length'];
+            $list[$k]['car_style_type'] =$v['car_style_type'];
+        }
+        $goodsList['list'] = $list;
+        returnJson('2000', '成功', $goodsList);
     }
 }
