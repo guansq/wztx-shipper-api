@@ -117,7 +117,7 @@ class Index extends BaseController{
         validateData($data, $rule);
         //加上黑名单验证
         $blackwhere = [
-            'id_del'=>0,
+            'is_del'=>0,
             'phone'=>$data['mobile'],
             'type'=>0
         ];
