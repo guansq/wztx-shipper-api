@@ -135,7 +135,7 @@ if(!function_exists('getCodeMsg')){
             5030 => '文件操作异常',
 
             // 调用第三方接口异常
-            6000 => '调用第三方接口异常',
+            6000 => '服务器端错误，请重新提交',
         ];
         if(key_exists($code, $CODE_MSG)){
             return $CODE_MSG[$code];
@@ -572,7 +572,7 @@ function saveOrderShare($order_id = ''){
 
 // 保存推荐信息
  function saveRecomm($where) {
-     if (empty($where['share_id']) || empty($where['share_id']) || !in_array($where['type'], ['0', '1'])) {
+     if (empty($where['share_id']) || empty($where['invite_id']) || !in_array($where['type'], ['0', '1'])) {
          return false;
      }
      $whereExist = ['share_id' => $where['share_id'], 'invite_id' => $where['invite_id'], 'type' => $where['type']];
