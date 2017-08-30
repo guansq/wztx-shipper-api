@@ -198,7 +198,8 @@ class Goods extends BaseController{
             returnJson([4000,'抱歉您还未缴纳保证金，或认证通过']);
         }
         $where = [
-            'sp_id' => $this->loginUser['id']
+            'sp_id' => $this->loginUser['id'],
+            'is_cancel' => 0
         ];
         if ($paramAll['type'] != 'all') {
             $where['status'] = $paramAll['type'];
@@ -240,8 +241,8 @@ class Goods extends BaseController{
             'goods_id' => 'require'
         ];
         validateData($paramAll,$rule);
-        $ret = model('Goods','logic')->cancelGoods(['id'=>$paramAll['goods_id']]);
-        if($ret === false){
+        $ret = model('Goods','logic')->cancelGoods(['id'=>$paramAll['goods_id'],'sp_id'=>$this->loginUser['id']]);
+        if(!$ret){
             returnJson(4000,'取消货源状态失败');
         }
         returnJson(2000,'成功');
