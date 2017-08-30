@@ -661,3 +661,11 @@ function findOrderByGoodsId($goods_id){
 function isReg($phone){
     return Db::name('system_user_shipper')->where("user_name",$phone)->count();//存在为1 不存在为0
 }
+
+/*
+ * 判断是否司机进行保价
+ */
+function isQuote($goods_id){
+    $quoteNum = Db::name('quote')->where('goods_id',$goods_id)->count();
+    return $quoteNum == 0 ? 0 : 1;
+}

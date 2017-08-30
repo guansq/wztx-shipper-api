@@ -300,7 +300,7 @@ class Order extends BaseController {
      * @apiName     showOrderList
      * @apiGroup    Order
      * @apiHeader {String}  authorization-token         token
-     * @apiParam   {String} type                        订单状态（all全部状态，quote报价中，quoted已报价，待发货 distribute配送中（在配送-未拍照）发货中 photo 拍照完毕（订单已完成））
+     * @apiParam   {String} type                        订单状态（all全部状态，quoted已报价，待发货 distribute配送中（在配送-未拍照）发货中 photo 拍照完毕（订单已完成））
      * @apiParam {Number} [page=1]                      页码.
      * @apiParam {Number} [pageSize=20]                 每页数据量.
      * @apiSuccess {Array}  list                        订单列表
@@ -322,7 +322,7 @@ class Order extends BaseController {
             'type',
         ]);
         $rule = [
-            'type' => ['require', '/^(all|quote|quoted|distribute|photo|success)$/'],
+            'type' => ['require', '/^(all|quoted|distribute|photo|success)$/'],
         ];
         validateData($paramAll, $rule);
         $where = [];

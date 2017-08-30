@@ -665,6 +665,88 @@ define({ "api": [
     ]
   },
   {
+    "type": "POST",
+    "url": "goods/cancelGoods",
+    "title": "取消货源功能",
+    "name": "cancelGoods",
+    "group": "Goods",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization-token",
+            "description": "<p>token</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "goods_id",
+            "description": "<p>货源ID</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "application/api/controller/Goods.php",
+    "groupTitle": "Goods",
+    "sampleRequest": [
+      {
+        "url": "http://wztx.shp.zenmechi.ccgoods/cancelGoods"
+      }
+    ]
+  },
+  {
+    "type": "POST",
+    "url": "goods/goodsList",
+    "title": "显示货源列表",
+    "name": "goodsList",
+    "group": "Goods",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization-token",
+            "description": "<p>token</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "type",
+            "description": "<p>货源类型 quote报价中 quoted已报价</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "application/api/controller/Goods.php",
+    "groupTitle": "Goods",
+    "sampleRequest": [
+      {
+        "url": "http://wztx.shp.zenmechi.ccgoods/goodsList"
+      }
+    ]
+  },
+  {
     "type": "GET",
     "url": "/apiCode",
     "title": "返回码说明done",
@@ -1755,7 +1837,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "type",
-            "description": "<p>订单状态（all全部状态，quote报价中，quoted已报价，待发货 distribute配送中（在配送-未拍照）发货中 photo 拍照完毕（订单已完成））</p>"
+            "description": "<p>订单状态（all全部状态，quoted已报价，待发货 distribute配送中（在配送-未拍照）发货中 photo 拍照完毕（订单已完成））</p>"
           },
           {
             "group": "Parameter",
@@ -1945,34 +2027,6 @@ define({ "api": [
   },
   {
     "type": "POST",
-    "url": "/pay/alipayCash",
-    "title": "支付宝保证金支付done",
-    "name": "alipay",
-    "group": "Pay",
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "authorization-token",
-            "description": "<p>token.</p>"
-          }
-        ]
-      }
-    },
-    "version": "0.0.0",
-    "filename": "application/api/controller/Pay.php",
-    "groupTitle": "Pay",
-    "sampleRequest": [
-      {
-        "url": "http://wztx.shp.zenmechi.cc/pay/alipayCash"
-      }
-    ]
-  },
-  {
-    "type": "POST",
     "url": "/pay/alipay",
     "title": "支付宝订单支付done",
     "name": "alipay",
@@ -2009,6 +2063,34 @@ define({ "api": [
     "sampleRequest": [
       {
         "url": "http://wztx.shp.zenmechi.cc/pay/alipay"
+      }
+    ]
+  },
+  {
+    "type": "POST",
+    "url": "/pay/alipayCash",
+    "title": "支付宝保证金支付done",
+    "name": "alipay",
+    "group": "Pay",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization-token",
+            "description": "<p>token.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "application/api/controller/Pay.php",
+    "groupTitle": "Pay",
+    "sampleRequest": [
+      {
+        "url": "http://wztx.shp.zenmechi.cc/pay/alipayCash"
       }
     ]
   },

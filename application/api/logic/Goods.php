@@ -49,5 +49,31 @@ class Goods extends BaseLogic {
         return $ret;
     }
 
+    /**
+     * Auther: guanshaoqiu <94600115@qq.com>
+     * 得到货源列表
+     */
+    public function getGoodsList($where,$pageParam){
+        $dataTotal = $this->where($where)->order('create_at desc')->count();
+        if (empty($dataTotal)) {
+            return false;
+        }
+        $list = $this->where($where)->order('create_at desc')->page($pageParam['page'], $pageParam['pageSize'])->select();
+        //dump(collection($list)->toArray());die;
+        $ret = [
+            'list' => $list,
+            'page' => $pageParam['page'],
+            'pageSize' => $pageParam['pageSize'],
+            'dataTotal' => $dataTotal,
+            'pageTotal' => intval(($dataTotal + $pageParam['pageSize'] - 1) / $pageParam['pageSize']),
+        ];
+        return $ret;
+    }
 
+    /**
+     * 取消订单
+     */
+    public function cancelGoods($where){
+        return $this->where($where)->update(['is_cancel'=>1]);
+    }
 }

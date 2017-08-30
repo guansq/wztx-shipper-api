@@ -155,12 +155,7 @@ class Goods extends BaseController{
             $beyond_price = $beyond_kilo * $carInfo['over_metres_price'] + $paramAll['weight'] * $carInfo['weight_price'] * $beyond_kilo;//超出公里价格
             $systemPrice = $init_price + $beyond_price;
         }
-        //echo $systemPrice.'<br>';
-        //echo $paramAll['system_price'];
-        //die;
-        //echo $paramAll['system_price'];
-        //echo '<br>';
-        //echo wztxMoney($paramAll['system_price']);die;
+
         $systemPrice = wztxMoney($systemPrice);
         $paramAll['system_price'] = wztxMoney($paramAll['system_price']);
         if ($systemPrice != $paramAll['system_price']) {
@@ -184,5 +179,72 @@ class Goods extends BaseController{
         }
         //进行派单
         action('Quote/sendOrder',[$ret['result']['goods_id'],$paramAll['org_address_maps']]);
+    }
+    /**
+     * @api     {POST}  goods/goodsList             显示货源列表
+     * @apiName     goodsList
+     * @apiGroup    Goods
+     * @apiHeader   {String} authorization-token    token
+     * @apiParam  {String}  type                  货源类型 quote报价中 quoted已报价
+     */
+    public function goodsList(){
+        $paramAll = $this->getReqParams(['type']);
+        $rule = [
+            'type' => ['require', '/^(all|quote|quoted)$/'],
+        ];
+        validateData($paramAll, $rule);
+
+        if(!ispassAuth($this->loginUser)){//判断用户是否缴纳保证金
+            returnJson([4000,'抱歉您还未缴纳保证金，或认证通过']);
+        }
+        $where = [
+            'sp_id' => $this->loginUser['id'],
+            'is_cancel' => 0
+        ];
+        if ($paramAll['type'] != 'all') {
+            $where['status'] = $paramAll['type'];
+        }
+        $pageParam = $this->getPagingParams();
+
+        $goodsList = model('Goods','logic')->getGoodsList($where,$pageParam);
+
+        if (empty($goodsList)) {
+            returnJson(4004, '暂无货源信息');
+        }
+        $list = [];
+        foreach ($goodsList['list'] as $k =>$v){
+            $list[$k]['goods_id'] = $v['id'];
+            $list[$k]['org_city'] = $v['org_city'];
+            $list[$k]['dest_city'] = $v['dest_city'];
+            $list[$k]['weight'] =strval($v['weight']);
+            $list[$k]['goods_name'] = $v['goods_name'];
+            $list[$k]['status'] = $v['status'];
+            $list[$k]['car_style_length'] = $v['car_style_length'];
+            $list[$k]['car_style_type'] =$v['car_style_type'];
+            $list[$k]['is_quote'] = isQuote($v['id']);
+        }
+        $goodsList['list'] = $list;
+        returnJson(2000, '成功', $goodsList);
+    }
+
+    /**
+     * @api {POST}  goods/cancelGoods       取消货源功能
+     * @apiName     cancelGoods
+     * @apiGroup    Goods
+     *
+     * @apiHeader   {String}    authorization-token    token
+     * @apiParam    {Number}    goods_id        货源ID
+     */
+    public function cancelGoods(){
+        $paramAll = $this->getReqParams(['goods_id']);
+        $rule = [
+            'goods_id' => 'require'
+        ];
+        validateData($paramAll,$rule);
+        $ret = model('Goods','logic')->cancelGoods(['id'=>$paramAll['goods_id'],'sp_id'=>$this->loginUser['id']]);
+        if(!$ret){
+            returnJson(4000,'取消货源状态失败');
+        }
+        returnJson(2000,'成功');
     }
 }
