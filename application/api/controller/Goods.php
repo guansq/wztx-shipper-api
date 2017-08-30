@@ -155,12 +155,7 @@ class Goods extends BaseController{
             $beyond_price = $beyond_kilo * $carInfo['over_metres_price'] + $paramAll['weight'] * $carInfo['weight_price'] * $beyond_kilo;//超出公里价格
             $systemPrice = $init_price + $beyond_price;
         }
-        //echo $systemPrice.'<br>';
-        //echo $paramAll['system_price'];
-        //die;
-        //echo $paramAll['system_price'];
-        //echo '<br>';
-        //echo wztxMoney($paramAll['system_price']);die;
+
         $systemPrice = wztxMoney($systemPrice);
         $paramAll['system_price'] = wztxMoney($paramAll['system_price']);
         if ($systemPrice != $paramAll['system_price']) {
@@ -186,11 +181,11 @@ class Goods extends BaseController{
         action('Quote/sendOrder',[$ret['result']['goods_id'],$paramAll['org_address_maps']]);
     }
     /**
-     * @api {POST} goods/goodsList 显示货源列表
-     * @apiName goodsList
+     * @api     {POST}  goods/goodsList             显示货源列表
+     * @apiName     goodsList
      * @apiGroup    Goods
-     * @apiHeader authorization-token    token
-     * @apiParam  type                  货源类型 quote报价中 quoted已报价
+     * @apiHeader   {String} authorization-token    token
+     * @apiParam  {String}  type                  货源类型 quote报价中 quoted已报价
      */
     public function goodsList(){
         $paramAll = $this->getReqParams(['type']);
@@ -225,8 +220,30 @@ class Goods extends BaseController{
             $list[$k]['status'] = $v['status'];
             $list[$k]['car_style_length'] = $v['car_style_length'];
             $list[$k]['car_style_type'] =$v['car_style_type'];
+            $list[$k]['is_quote'] = isQuote($v['id']);
         }
         $goodsList['list'] = $list;
-        returnJson('2000', '成功', $goodsList);
+        returnJson(2000, '成功', $goodsList);
+    }
+
+    /**
+     * @api {POST}  goods/cancelGoods       取消货源功能
+     * @apiName     cancelGoods
+     * @apiGroup    Goods
+     *
+     * @apiHeader   {String}    authorization-token    token
+     * @apiParam    {Number}    goods_id        货源ID
+     */
+    public function cancelGoods(){
+        $paramAll = $this->getReqParams(['goods_id']);
+        $rule = [
+            'goods_id' => 'require'
+        ];
+        validateData($paramAll,$rule);
+        $ret = model('Goods','logic')->cancelGoods(['id'=>$paramAll['goods_id']]);
+        if($ret === false){
+            returnJson(4000,'取消货源状态失败');
+        }
+        returnJson(2000,'成功');
     }
 }

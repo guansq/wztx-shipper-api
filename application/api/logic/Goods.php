@@ -69,4 +69,11 @@ class Goods extends BaseLogic {
         ];
         return $ret;
     }
+
+    /**
+     * 取消订单
+     */
+    public function cancelGoods($where){
+        return $this->where($where)->update(['is_cancel'=>1]);
+    }
 }
