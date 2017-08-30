@@ -455,4 +455,34 @@ class User extends BaseController{
         returnJson($ret);
     }
 
+
+    /**
+     * @api      {GET} /User/isAd   获取广告状态done
+     * @apiName  isAd
+     * @apiGroup User
+     * @apiHeader {String} authorization-token           token.
+     * @apiSuccess  {String} is_ad  显示广告状态 0=显示，1=不显示
+     */
+    public function isAd() {
+        $ret = model('SpBaseInfo','logic')->getAdInfo(['id'=>$this->loginUser['id']]);
+        returnJson($ret);
+    }
+
+    /**
+     * @api      {POST} /User/changeAd   改变广告状态done
+     * @apiName  changeAd
+     * @apiGroup User
+     * @apiHeader {String} authorization-token           token.
+     * @apiParam  {String} is_ad  显示广告状态 0=显示，1=不显示
+     */
+    public function changeAd() {
+        $paramAll = $this->getReqParams(['is_ad']);
+        $rule = [
+            'is_ad' => ['regex'=>'/^(0|1)$/','require'],
+        ];
+        validateData($paramAll, $rule);
+        $ret = model('SpBaseInfo','logic')->changeAd(['id'=>$this->loginUser['id']],['is_ad'=>$paramAll['is_ad']]);
+        returnJson($ret);
+    }
+
 }

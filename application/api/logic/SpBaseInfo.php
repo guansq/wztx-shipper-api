@@ -237,4 +237,24 @@ class SpBaseInfo extends BaseLogic{
         // echo $this->getLastSql();
         return $ret;
     }
+    /*
+       * 得到工作状态
+       */
+    public function getAdInfo($where){
+        $result = $this->field('is_ad')->where($where)->find();
+        return resultArray(2000,'成功',$result);
+    }
+    /*
+     * 改变广告状态
+     */
+    public function changeAd($where,$data){
+        $ret = $this->where($where)->update($data);
+        //echo $this->getLastSql();die;
+        if($ret !== false){
+            return resultArray(2000,'成功');
+        }
+        return resultArray(4000,'更改状态失败');
+    }
+
+
 }
