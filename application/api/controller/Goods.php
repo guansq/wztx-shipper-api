@@ -188,6 +188,7 @@ class Goods extends BaseController{
     /**
      * @api GET goods/goodsList 显示货源列表
      * @apiName goodsList
+     * @apiGroup    Goods
      * @apiHeader authorization-token    token
      * @apiParam  type                  货源类型 quote报价中 quoted已报价
      */

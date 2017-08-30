@@ -332,45 +332,6 @@ define({ "api": [
     ]
   },
   {
-    "type": "",
-    "url": "GET",
-    "title": "goods/goodsList 显示货源列表",
-    "name": "goodsList",
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "optional": false,
-            "field": "authorization-token",
-            "description": "<p>token</p>"
-          }
-        ]
-      }
-    },
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "optional": false,
-            "field": "type",
-            "description": "<p>订单类型</p>"
-          }
-        ]
-      }
-    },
-    "version": "0.0.0",
-    "filename": "application/api/controller/Goods.php",
-    "group": "D__work_wztx_shipper_api_application_api_controller_Goods_php",
-    "groupTitle": "D__work_wztx_shipper_api_application_api_controller_Goods_php",
-    "sampleRequest": [
-      {
-        "url": "http://wztx.shp.zenmechi.ccGET"
-      }
-    ]
-  },
-  {
     "type": "POST",
     "url": "/file/uploadImg",
     "title": "上传图片done",
@@ -700,6 +661,45 @@ define({ "api": [
     "sampleRequest": [
       {
         "url": "http://wztx.shp.zenmechi.cc/goods/addGoods"
+      }
+    ]
+  },
+  {
+    "type": "",
+    "url": "GET",
+    "title": "goods/goodsList 显示货源列表",
+    "name": "goodsList",
+    "group": "Goods",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "optional": false,
+            "field": "authorization-token",
+            "description": "<p>token</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "optional": false,
+            "field": "type",
+            "description": "<p>货源类型 quote报价中 quoted已报价</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "application/api/controller/Goods.php",
+    "groupTitle": "Goods",
+    "sampleRequest": [
+      {
+        "url": "http://wztx.shp.zenmechi.ccGET"
       }
     ]
   },
