@@ -706,6 +706,228 @@ define({ "api": [
     ]
   },
   {
+    "type": "GET",
+    "url": "/goods/detail",
+    "title": "货源详情done",
+    "name": "detail",
+    "group": "Goods",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization-token",
+            "description": "<p>token.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>货源ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "goods_name",
+            "description": "<p>货品名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "weight",
+            "description": "<p>重量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "org_city",
+            "description": "<p>起始地</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "dest_city",
+            "description": "<p>目的地</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "dest_receive_name",
+            "description": "<p>收货人姓名</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "dest_phone",
+            "description": "<p>收货人电话</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "dest_address_name",
+            "description": "<p>收货人地址</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "dest_address_detail",
+            "description": "<p>收货人地址详情</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "org_send_name",
+            "description": "<p>寄件人姓名</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "org_phone",
+            "description": "<p>寄件人电话</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "org_address_name",
+            "description": "<p>寄件人地址</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "org_address_datail",
+            "description": "<p>寄件人地址详情</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "usecar_time",
+            "description": "<p>用车时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "send_time",
+            "description": "<p>发货时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "arr_time",
+            "description": "<p>到达时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "real_name",
+            "description": "<p>车主姓名</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>联系电话</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "policy_code",
+            "description": "<p>保单编号</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Int",
+            "optional": false,
+            "field": "is_pay",
+            "description": "<p>是否支付1为已支付 0为未支付</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "is_receipt",
+            "description": "<p>货物回单1-是-默认，2-否</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "system_price",
+            "description": "<p>系统出价</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "mind_price",
+            "description": "<p>货主出价</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "final_price",
+            "description": "<p>总运费</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "effective_time",
+            "description": "<p>在途时效</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "remark",
+            "description": "<p>备注</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "application/api/controller/Goods.php",
+    "groupTitle": "Goods",
+    "sampleRequest": [
+      {
+        "url": "http://wztx.shp.zenmechi.cc/goods/detail"
+      }
+    ]
+  },
+  {
     "type": "POST",
     "url": "goods/goodsList",
     "title": "显示货源列表",
@@ -3191,6 +3413,47 @@ define({ "api": [
     ]
   },
   {
+    "type": "POST",
+    "url": "/User/changeAd",
+    "title": "改变广告状态done",
+    "name": "changeAd",
+    "group": "User",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization-token",
+            "description": "<p>token.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "is_ad",
+            "description": "<p>显示广告状态 0=显示，1=不显示</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "application/api/controller/User.php",
+    "groupTitle": "User",
+    "sampleRequest": [
+      {
+        "url": "http://wztx.shp.zenmechi.cc/User/changeAd"
+      }
+    ]
+  },
+  {
     "type": "GET",
     "url": "/user/getCompanyAuthInfo",
     "title": "获取企业公司认证信息done",
@@ -3568,6 +3831,47 @@ define({ "api": [
     "sampleRequest": [
       {
         "url": "http://wztx.shp.zenmechi.cc/user/info"
+      }
+    ]
+  },
+  {
+    "type": "GET",
+    "url": "/User/isAd",
+    "title": "获取广告状态done",
+    "name": "isAd",
+    "group": "User",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization-token",
+            "description": "<p>token.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "is_ad",
+            "description": "<p>显示广告状态 0=显示，1=不显示</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "application/api/controller/User.php",
+    "groupTitle": "User",
+    "sampleRequest": [
+      {
+        "url": "http://wztx.shp.zenmechi.cc/User/isAd"
       }
     ]
   },
