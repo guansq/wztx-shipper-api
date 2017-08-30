@@ -416,6 +416,7 @@ class Pay extends BaseController{
             returnJson($ret);
         }
         saveOrderShare($order_info['id']);//存入推荐列表
+        clearOrder($order_info['id']) ;
         $pay_type_order = 'transport';
         //需要进行存入sp_pay_order表里
         $data = [

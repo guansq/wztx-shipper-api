@@ -60,6 +60,7 @@ class PublicNotify implements PayNotifyInterface
                 $order_info = $transportLogic->getTransportOrderInfo($where);//得到订单信息
                 trace($order_info);
                 saveOrderShare($order_info['id']);//存入推荐列表
+                clearOrder($order_info['id']) ;
                 $pay_type_order = 'transport';
 
             }elseif($data['return_param'] == 'bond'){//微信支付保证金的回调处理

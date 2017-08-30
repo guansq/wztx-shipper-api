@@ -211,11 +211,16 @@ class Quote extends BaseController{
         model('Quote','logic')->changeQuote(['id'=>$paramAll['quote_id']],['is_receive'=>1]);//货主确认该报价
         $quoteInfo = $ret['result'];
         $final_price = $quoteInfo['dr_price'];//获得司机报价的价格
+        //丰富司机姓名和电话
+//$quoteInfo['dr_id']
+        $dr_base_info = model('DrBaseInfo','logic')->findInfoByUserId($quoteInfo['dr_id']);
 
         $data = [
             'status' => 'quoted',
             'final_price' => $final_price,
             'dr_id' => $quoteInfo['dr_id'],
+            'dr_name'=>$dr_base_info['real_name'],
+            'dr_phone'=>$dr_base_info['phone']
         ];
         //更改货源状态为已报价完毕等待发货
         model('Goods','logic')->updateGoodsInfo(['id'=>$quoteInfo['goods_id']],['status'=>'quoted']);

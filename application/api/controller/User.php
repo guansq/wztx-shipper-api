@@ -95,6 +95,20 @@ class User extends BaseController{
             ];
             returnJson($ret);
         }
+        //加上黑名单验证
+        $blackwhere = [
+            'id_del'=>0,
+            'number'=>$paramAll['identity'],
+            'type'=>2
+        ];
+        if(!empty(getBlackInfo($blackwhere))) {
+            $ret = [
+                'code' => '4022',
+                'msg' => '用户被加入黑名单',
+                'result' => []
+            ];
+            returnJson($ret);
+        }
         //验证信息入库更改状态为check
         $paramAll['auth_status'] = 'check';
         $where = [
@@ -179,6 +193,20 @@ class User extends BaseController{
                 'code' => '4022',
                 'msg' => '您已经重复验证过了',
                 'result' => ['auth_status'=>$authStatus]
+            ];
+            returnJson($ret);
+        }
+        //加上黑名单验证
+        $blackwhere = [
+            'id_del'=>0,
+            'number'=>$paramAll['com_buss_num'],
+            'type'=>3
+        ];
+        if(!empty(getBlackInfo($blackwhere))) {
+            $ret = [
+                'code' => '4022',
+                'msg' => '用户被加入黑名单',
+                'result' => []
             ];
             returnJson($ret);
         }

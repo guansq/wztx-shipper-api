@@ -49,6 +49,8 @@ class Callback extends Controller
                     $order_info = $transportLogic->getTransportOrderInfo($where);//得到订单信息
                     //trace($order_info);
                     saveOrderShare($order_info['id']);//存入推荐列表
+                    clearOrder($order_info['id']) ;
+                    //订单结算
                     $pay_type_order = 'transport';
                     $this->payRecord(1,$order_info,$data,$pay_type_order);//1支付成功->保存支付记录
                 }else if($data['passback_params'] == 'bond'){
