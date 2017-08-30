@@ -49,5 +49,12 @@ class Goods extends BaseLogic {
         return $ret;
     }
 
+    /**
+     * Auther: guanshaoqiu <94600115@qq.com>
+     * 得到货源列表
+     */
+    public function getGoodsList($where,$page){
+        $ret = $this->where($where)->select();
 
+    }
 }

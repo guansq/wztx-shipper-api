@@ -185,4 +185,26 @@ class Goods extends BaseController{
         //进行派单
         action('Quote/sendOrder',[$ret['result']['goods_id'],$paramAll['org_address_maps']]);
     }
+    /**
+     * @api GET goods/goodsList 显示货源列表
+     * @apiName goodsList
+     * @apiHeader authorization-token    token
+     * @apiParam  type                  货源类型 quote报价中 quoted已报价
+     */
+    public function goodsList(){
+        $paramAll = $this->getReqParams([
+            'type',
+        ]);
+        $rule = [
+            'type' => ['require', '/^(all|quoted|success)$/'],
+        ];
+        validateData($paramAll, $rule);
+        if(!ispassAuth($this->loginUser)){//判断用户是否缴纳保证金
+            returnJson([4000,'抱歉您还未缴纳保证金，或认证通过']);
+        }
+        if ($paramAll['type'] != 'all') {
+            $where['status'] = $paramAll['type'];
+        }
+        $goodsLogic = model('Goods','logic')->getGoodsList();
+    }
 }

@@ -332,6 +332,45 @@ define({ "api": [
     ]
   },
   {
+    "type": "",
+    "url": "GET",
+    "title": "goods/goodsList 显示货源列表",
+    "name": "goodsList",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "optional": false,
+            "field": "authorization-token",
+            "description": "<p>token</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "optional": false,
+            "field": "type",
+            "description": "<p>订单类型</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "application/api/controller/Goods.php",
+    "group": "D__work_wztx_shipper_api_application_api_controller_Goods_php",
+    "groupTitle": "D__work_wztx_shipper_api_application_api_controller_Goods_php",
+    "sampleRequest": [
+      {
+        "url": "http://wztx.shp.zenmechi.ccGET"
+      }
+    ]
+  },
+  {
     "type": "POST",
     "url": "/file/uploadImg",
     "title": "上传图片done",
@@ -1755,7 +1794,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "type",
-            "description": "<p>订单状态（all全部状态，quote报价中，quoted已报价，待发货 distribute配送中（在配送-未拍照）发货中 photo 拍照完毕（订单已完成））</p>"
+            "description": "<p>订单状态（all全部状态，quoted已报价，待发货 distribute配送中（在配送-未拍照）发货中 photo 拍照完毕（订单已完成））</p>"
           },
           {
             "group": "Parameter",
@@ -1945,34 +1984,6 @@ define({ "api": [
   },
   {
     "type": "POST",
-    "url": "/pay/alipayCash",
-    "title": "支付宝保证金支付done",
-    "name": "alipay",
-    "group": "Pay",
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "authorization-token",
-            "description": "<p>token.</p>"
-          }
-        ]
-      }
-    },
-    "version": "0.0.0",
-    "filename": "application/api/controller/Pay.php",
-    "groupTitle": "Pay",
-    "sampleRequest": [
-      {
-        "url": "http://wztx.shp.zenmechi.cc/pay/alipayCash"
-      }
-    ]
-  },
-  {
-    "type": "POST",
     "url": "/pay/alipay",
     "title": "支付宝订单支付done",
     "name": "alipay",
@@ -2009,6 +2020,34 @@ define({ "api": [
     "sampleRequest": [
       {
         "url": "http://wztx.shp.zenmechi.cc/pay/alipay"
+      }
+    ]
+  },
+  {
+    "type": "POST",
+    "url": "/pay/alipayCash",
+    "title": "支付宝保证金支付done",
+    "name": "alipay",
+    "group": "Pay",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization-token",
+            "description": "<p>token.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "application/api/controller/Pay.php",
+    "groupTitle": "Pay",
+    "sampleRequest": [
+      {
+        "url": "http://wztx.shp.zenmechi.cc/pay/alipayCash"
       }
     ]
   },
