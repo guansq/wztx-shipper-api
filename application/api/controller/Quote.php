@@ -228,7 +228,7 @@ class Quote extends BaseController{
         //$result = model('TransportOrder','logic')->updateTransport(['goods_id'=>$quoteInfo['goods_id'],'sp_id'=>$this->loginUser['id'],'status'=>'quote'],$data);
         //保存订单
         $quoteInfo['dr_name'] = $dr_base_info['real_name'];
-        $quoteInfo['dr_phone'] = $dr_base_info['dr_phone'];
+        $quoteInfo['dr_phone'] = $dr_base_info['phone'];
         $result = $this->saveOrderBygoodsInfo($quoteInfo['goods_id'],$quoteInfo);
         if($result['code'] == 4000){
             returnJson($result);
@@ -277,8 +277,11 @@ class Quote extends BaseController{
         //生成订单
         $orderInfo['order_code'] = order_num();
         $orderInfo['sp_id'] = $goodsInfo['sp_id'];
+        $orderInfo['goods_id'] = $goods_id;
         //寻找司机ID
         $orderInfo['dr_id'] = $quoteInfo['dr_id'];
+        $orderInfo['dr_phone'] = $quoteInfo['dr_phone'];
+        $orderInfo['dr_name'] = $quoteInfo['dr_name'];
         $orderInfo['type'] = $goodsInfo['type'];
         $orderInfo['appoint_at'] = $goodsInfo['appoint_at'];
         $orderInfo['insured_amount'] = $goodsInfo['insured_amount'];
