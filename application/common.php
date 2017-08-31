@@ -580,7 +580,7 @@ function clearOrder($order_id = '') {
        return;
     }
     $final_price = $list['final_price'];
-    $clear_price =floor($final_price*(100-sysconf('clear_percent')))/100;
+    $clear_price =floor($final_price*(100-getSysconf('clear_percent')))/100;
     $status = ['is_clear' => '1', 'update_at' => time(),'clear_price'=>$clear_price];
     $where = ['id' => $id,'status'=>['exp','in ("pay_success","comment")'],'is_clear' => '0'];
     $detail = updateStatus($where, $status);
