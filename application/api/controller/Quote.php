@@ -215,18 +215,20 @@ class Quote extends BaseController{
 //$quoteInfo['dr_id']
         $dr_base_info = model('DrBaseInfo','logic')->findInfoByUserId($quoteInfo['dr_id']);
 
-        $data = [
+        /*$data = [
             'status' => 'quoted',
             'final_price' => $final_price,
             'dr_id' => $quoteInfo['dr_id'],
             'dr_name'=>$dr_base_info['real_name'],
             'dr_phone'=>$dr_base_info['phone']
-        ];
+        ];*/
         //更改货源状态为已报价完毕等待发货
         model('Goods','logic')->updateGoodsInfo(['id'=>$quoteInfo['goods_id']],['status'=>'quoted']);
         //更改订单状态
         //$result = model('TransportOrder','logic')->updateTransport(['goods_id'=>$quoteInfo['goods_id'],'sp_id'=>$this->loginUser['id'],'status'=>'quote'],$data);
         //保存订单
+        $quoteInfo['dr_name'] = $dr_base_info['real_name'];
+        $quoteInfo['dr_phone'] = $dr_base_info['dr_phone'];
         $result = $this->saveOrderBygoodsInfo($quoteInfo['goods_id'],$quoteInfo);
         if($result['code'] == 4000){
             returnJson($result);
