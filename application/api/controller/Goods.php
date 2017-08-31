@@ -241,7 +241,9 @@ class Goods extends BaseController{
             'goods_id' => 'require'
         ];
         validateData($paramAll,$rule);
+        //更改所有的报价为已完成状态
         $ret = model('Goods','logic')->cancelGoods(['id'=>$paramAll['goods_id'],'sp_id'=>$this->loginUser['id']]);
+        model('Quote','logic')->delQuote(['goods_id'=>$paramAll['goods_id']]);//取消订单删除所有报价
         if(!$ret){
             returnJson(4000,'取消货源状态失败');
         }

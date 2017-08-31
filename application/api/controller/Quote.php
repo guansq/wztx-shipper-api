@@ -225,8 +225,9 @@ class Quote extends BaseController{
         //更改货源状态为已报价完毕等待发货
         model('Goods','logic')->updateGoodsInfo(['id'=>$quoteInfo['goods_id']],['status'=>'quoted']);
         //更改订单状态
-        $result = model('TransportOrder','logic')->updateTransport(['goods_id'=>$quoteInfo['goods_id'],'sp_id'=>$this->loginUser['id'],'status'=>'quote'],$data);
-        //$result = saveOrderBygoodsInfo($quoteInfo['goods_id'],$quoteInfo);
+        //$result = model('TransportOrder','logic')->updateTransport(['goods_id'=>$quoteInfo['goods_id'],'sp_id'=>$this->loginUser['id'],'status'=>'quote'],$data);
+        //保存订单
+        $result = saveOrderBygoodsInfo($quoteInfo['goods_id'],$quoteInfo);
         if($result['code'] == 4000){
             returnJson($result);
         }

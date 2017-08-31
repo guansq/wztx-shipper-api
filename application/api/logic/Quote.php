@@ -85,6 +85,10 @@ class Quote extends BaseLogic{
         }
     }
 
+    public function delQuote($where){
+        $this->where($where)->delete();
+    }
+
     /**
      * Auther: guanshaoqiu <94600115@qq.com>
      * Describe:得到报价信息
