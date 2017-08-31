@@ -333,7 +333,7 @@ class Order extends BaseController {
                 $where['status'] = $paramAll['type'];
             }
         }else{
-            $where['status'] = ['not in',['init']];
+            $where['status'] = ['not in',['init','quote']];
         }
         $where['sp_id'] = $this->loginUser['id'];
         $pageParam = $this->getPagingParams();
