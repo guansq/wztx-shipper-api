@@ -23,9 +23,13 @@ class Car extends BaseController{
      * @apiSuccess  {String} length-type.init_price             车长-起步价
      */
     public function getAllCarStyle(){
-
         //dump($paramAll);die;
         $result = model('Car','logic')->getCarInfo();
+        foreach($result['result']['type'] as &$val){
+            $val['over_metres_price'] = wztxMoney($val['over_metres_price']);
+            $val['weight_price'] = wztxMoney($val['over_metres_price']);
+            $val['init_price'] = wztxMoney($val['over_metres_price']);
+        }
         returnJson($result);
     }
 
